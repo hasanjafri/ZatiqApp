@@ -3,34 +3,37 @@ import { Text, View, ImageBackground, ScrollView, TouchableOpacity, StyleSheet, 
 import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
+var url = require('/Users/hasanjafri/Documents/ZatiqApp/allicons/Breakfast.png');
+
 var styles = StyleSheet.create({
     item: {
         justifyContent: 'flex-end',
         borderRadius: 5,
         padding: 10,
         height: 150,
-        backgroundColor: '#7f8c8d'
+        backgroundColor: '#7f8c8d',
     },
     text: {
         color: "white",
-        fontSize: 32
+        fontSize: 32,
     }
 });
 
-var CATEGORIES = [ 'Breakfast', 'Brunch', 'Lunch', 'Indian', 'Greek', 'Chinese', 'Japanese', 'Korean', 'Sushi', 'Dessert', 'Burger', 'Pizza', 'Fast Food', 'Cheap Eats', 'Caribbean', 'Mexican', 'Spicy', 'Fine Food', 'Halal', 'Kosher', 'Healthy', 'Vegan', 'Vegetarian', 'Gluten Free', 'Italian', 'Middle Eastern', 'Quick Bite', 'Thai', 'Canadian', 'Vietnamese', 'Dinner', 'Snack' ];
+var CATEGORIES = [ 'Breakfast', 'Brunch', 'Lunch', 'Indian', 'Greek', 'Chinese', 'Japanese', 'Korean', 'Sushi', 'Dessert', 'Burger', 'Pizza', 'Fast Food', 'Cheap Eats', 'Caribbean', 'Mexican', 'Spicy', 'Fine Food', 'Halal', 'Kosher', 'Healthy', 'Vegan', 'Vegetarian', 'Gluten Free', 'Italian', 'Middle Eastern', 'Quick Bite', 'Thai', 'Canadian', 'Vietnamese', 'Dinner' ];
 
-function renderItem(item) {
+function renderItem(item, i) {
     return (
         <TouchableOpacity>
             <View style={styles.item}>
-                    <Text style={styles.text}>{item}</Text>
+                <Image style={{height: 50, width: 50}} source={url}></Image>
+                <Text style={styles.text}>{item}</Text>
             </View>
         </TouchableOpacity>
     )
 }
 
 const FeelingScreen = ({navigation}) => (
-  <ImageBackground style={{height: '100%', width: '100%'}} source={require('/Users/hasanjafri/Documents/ZatiqApp/background.png')}>
+  <ImageBackground style={{height: '100%', width: '100%', flex: 1}} source={require('/Users/hasanjafri/Documents/ZatiqApp/background.png')}>
     <ImageBackground style={{height: '30%', width: '100%', justifyContent: 'center', alignItems: 'center'}} source={require('/Users/hasanjafri/Documents/ZatiqApp/header.png')}>
             <ImageBackground style={{height: '50%', width: '50%', marginBottom: 80, marginLeft: 88}} source={require('/Users/hasanjafri/Documents/ZatiqApp/logo.png')}/>
     </ImageBackground>
@@ -61,7 +64,7 @@ const FeelingScreen = ({navigation}) => (
         <View style={{height: 110, width: '90%', marginLeft: 20, marginBottom: 10}}>
             <TouchableOpacity style={{height: '100%'}}>
                 <ImageBackground style={{height: '100%', width: '70%', justifyContent: 'center'}} source={require('/Users/hasanjafri/Documents/ZatiqApp/surpriseme.png')}>
-                    <Text style={{fontSize: 24, fontWeight: 'bold', color: 'white', alignSelf: 'center'}}>SURPRISE ME</Text>
+                    <Text style={{fontSize: 24, fontWeight: 'bold', color: 'white', marginLeft: 10}}>SURPRISE ME</Text>
                 </ImageBackground>
             </TouchableOpacity>
         </View>
