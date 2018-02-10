@@ -1,68 +1,101 @@
 import React from 'react';
-import { TextInput, StyleSheet, View, ImageBackground, KeyboardAvoidingView, TouchableOpacity, AsyncStorage } from 'react-native';
-import { Button } from 'react-native-elements';
+import { TextInput, Text, StyleSheet, View, ImageBackground, KeyboardAvoidingView, TouchableOpacity, AsyncStorage } from 'react-native';
+import { SocialIcon } from 'react-native-elements';
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+    },
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        height: '100%',
-        width: '100%'
+        justifyContent: 'center',
+        backgroundColor: '#2896d3',
+        paddingLeft: 40,
+        paddingRight: 40
     },
-    formfield: {
-        width: 200,
-        margin: 10,
-        color: 'white'
+    header: {
+        fontSize: 24,
+        marginBottom: 60,
+        color: '#fff',
+        fontWeight: 'bold',
+        borderBottomColor: '#f8f8f8',
+        borderBottomWidth: 1
     },
-    buttons: {
+    textInput: {
+        alignSelf: 'stretch',
+        padding: 16,
+        marginBottom: 20,
+        backgroundColor: '#fff',
+    },
+    button: {
+        alignSelf: 'stretch',
+        backgroundColor: '#01c853',
+        padding: 20,
+        alignItems: 'center',
+        borderRadius: 10
+    },
+    buttons2: {
         borderRadius: 10,
-        padding: 15
+        padding: 20,
+        alignSelf: 'stretch'
     }
 })
 
 class BusinessSignUpScreen extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            userName: '',
-            userEmail: '',
-            userPassword: ''
-        }
-    }
-
-    componentDidMount() {
-        this.loadInitialState().done();
-    }
-
-    loadInitialState = async () => {
-        var value = await AsyncStorage.getItem('userEmail');
-        if (value !== null) {
-            this.props.navigation.navigate('BusinessProfile');
+            businessName: '',
+            businessEmail: '',
+            businessPassword: ''
         }
     }
 
     businessRegister = () => {
+        fetch('http://192.168.2.13:3000/businesses/register', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                businessName: this.state.businessName,
+                businessEmail: this.state.businessEmail,
+                businessPassword: this.state.businessPassword
+            })
+        })
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.success === true) {
+                alert(res.message);
+            } else {
+                alert(res.message);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <ImageBackground style={styles.container} source={require('/Users/hasanjafri/Documents/ZatiqApp/background.png')}>
-                <ImageBackground style={{height: '30%', width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: -163}} source={require('/Users/hasanjafri/Documents/ZatiqApp/header.png')}>
-                    <ImageBackground style={{height: '50%', width: '50%', marginBottom: 80, marginLeft: 88}} source={require('/Users/hasanjafri/Documents/ZatiqApp/logo.png')}/>
-                </ImageBackground>
+            <View style={styles.wrapper}>
                 <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
-                    <View style={styles.formContainer}>
-                        
+                    <View style={styles.container}>
+                        <Text style={styles.header}>- SIGN UP WITH ZATIQ -</Text>
+                        <TextInput style={styles.textInput} placeholder="enter your business e-mail" onChangeText={(businessEmail) => this.setState({businessEmail})} underlineColorAndroid='transparent'/>
+                        <TextInput style={styles.textInput} placeholder="enter your business name" onChangeText={(businessName) => this.setState({businessName})} underlineColorAndroid='transparent'/>
+                        <TextInput style={styles.textInput} placeholder="enter your desired password" onChangeText={(businessPassword) => this.setState({businessPassword})} secureTextEntry underlineColorAndroid='transparent'/>
+                        <TouchableOpacity style={styles.button} onPress={this.businessRegister}>
+                            <Text>SIGN UP</Text>
+                        </TouchableOpacity>
+                        <SocialIcon title="Already registered? Login here!" button light style={styles.buttons2} onPress={() => this.props.navigation.navigate('BusinessLogin')}/>
+                        <SocialIcon title="Not a business?" button light style={styles.buttons2} onPress={() => this.props.navigation.navigate('Login')}/>
                     </View>
                 </KeyboardAvoidingView>
-                {/* <TextInput placeholder="enter business name" style={styles.formfield} onChangeText={userName => this.setState({userName})} />
-                <TextInput placeholder="enter password" style={styles.formfield} onChangeText={userPassword => this.setState({userPassword})}/>
-                <TextInput placeholder="enter preferred email address" style={styles.formfield} onChangeText={userEmail => this.setState({userEmail})}/>
-                <Button title="Sign Up" large rounded style={styles.buttons} onPress={this.businessRegister}/>
-                <Button title="Not a Business?" onPress={() => navigate('Login')} style={styles.buttons}/> */}
-            </ImageBackground>
+            </View>
         );
     }
 }

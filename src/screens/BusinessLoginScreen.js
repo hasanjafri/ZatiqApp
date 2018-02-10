@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableOpacity, AsyncStorage } from 'react-native';
+import { SocialIcon } from 'react-native-elements';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -29,7 +30,13 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         backgroundColor: '#01c853',
         padding: 20,
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 10
+    },
+    buttons2: {
+        borderRadius: 10,
+        padding: 20,
+        alignSelf: 'stretch'
     }
 });
 
@@ -43,12 +50,12 @@ export default class BusinessLoginScreen extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.loadInitialState().done();
-    }
+    // componentDidMount() {
+    //     this.loadInitialState().done();
+    // }
 
     loadInitialState = async () => {
-        var value = await AsyncStorage.getItem('businessEmail');
+        var value = await AsyncStorage.getItem('businessName');
         if (value !== null) {
             this.props.navigation.navigate('BusinessProfile');
         }
@@ -89,6 +96,7 @@ export default class BusinessLoginScreen extends React.Component {
                     <TouchableOpacity style={styles.button} onPress={this.login}>
                         <Text>Log In</Text>
                     </TouchableOpacity>
+                    <SocialIcon title="Not registered yet? Sign up here!" button light style={styles.buttons2} onPress={() => this.props.navigation.navigate('BusinessSignUp')}/>
                 </View>
             </KeyboardAvoidingView>
         );
