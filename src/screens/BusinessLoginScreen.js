@@ -62,7 +62,7 @@ export default class BusinessLoginScreen extends React.Component {
     }
 
     login = () => {
-        fetch('http://192.168.2.13:3000/businesses/', {
+        fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
