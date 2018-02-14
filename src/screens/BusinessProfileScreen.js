@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 const styles = StyleSheet.create({
     container: {
@@ -15,13 +16,36 @@ const styles = StyleSheet.create({
 
 export default class BusinessProfileScreen extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            hasSetInformation: 0
+        }
+    }
+
+    componentWillMount() {
+        //this.loadInitialState().done();
+    }
+
+    loadInitialState = async () => {
+        let value = await AsyncStorage.getItem('hasSetInformation');
+        if (value !== null) {
+            this.setState({
+                hasSetInformation: value
+            });
+        }
     }
 
     render() {
+        if (this.state.hasSetInformation == '0') {
+            return(
+                <View style={styles.container}>
+                    <Text style={styles.text}>Not Set Yet!</Text>
+                </View>
+            );
+        }
         return(
             <View style={styles.container}>
-                <Text style={styles.text}>Welcome to Business Area</Text>
+                <Text style={styles.text}>Set!</Text>
             </View>
         );
     }

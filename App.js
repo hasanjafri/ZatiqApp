@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, AsyncStorage } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 import FeelingScreen from './src/screens/FeelingScreen';
@@ -42,6 +42,15 @@ const Application = StackNavigator({
 });
 
 export default class App extends React.Component {
+
+    componentDidMount() {
+        this.clearLoginData().done();
+    }
+
+    clearLoginData = async () => {
+        var value = AsyncStorage.removeItem('businessName');
+    }
+
     render() {
         return (
             <Application/>

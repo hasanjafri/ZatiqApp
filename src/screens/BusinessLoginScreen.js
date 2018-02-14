@@ -50,9 +50,9 @@ export default class BusinessLoginScreen extends React.Component {
         }
     }
 
-    // componentDidMount() {
-    //     this.loadInitialState().done();
-    // }
+    componentDidMount() {
+        this.loadInitialState().done();
+    }
 
     loadInitialState = async () => {
         var value = await AsyncStorage.getItem('businessName');
@@ -61,8 +61,14 @@ export default class BusinessLoginScreen extends React.Component {
         }
     }
 
+    updateStorage = async () => {
+        await AsyncStorage.setItem('businessName', this.state.loggedBusiness);
+        await AsyncStorage.setItem('hasSetInformation', this.state.hasSetInformation);
+    }
+
     login = () => {
-        fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/', {
+        //fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/', {
+        fetch('http://192.168.2.13:3000/businesses/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -77,7 +83,11 @@ export default class BusinessLoginScreen extends React.Component {
         .then((res) => {
 
             if (res.success === true) {
-                AsyncStorage.setItem('businessName', res.business);
+                this.setState({
+                    loggedBusiness: res.business,
+                    hasSetInformation: res.hasSetInformation
+                });
+                this.updateStorage();
                 this.props.navigation.navigate('BusinessProfile');
             } else {
                 alert(res.message);

@@ -53,7 +53,8 @@ class BusinessSignUpScreen extends React.Component {
     }
 
     businessRegister = () => {
-        fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/register', {
+        //fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/register', {
+        fetch('http://192.168.2.13:3000/businesses/register', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
