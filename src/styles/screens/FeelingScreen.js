@@ -6,67 +6,62 @@ export default styles = StyleSheet.create({
         width: '100%',
         flex: 1
     },
-    // Header
-    header: {
-        height: '30%',
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    headerLogo: {
-        height: '50%',
-        width: '50%',
-        marginBottom: 80,
-        marginLeft: 88
-    },
-    // Mood Container
-    moodContainer: {
+
+    // Question Container
+    questionView: {
         borderBottomColor: 'white',
         borderBottomWidth: 1,
+        marginTop: 11,
         marginBottom: 11
     },
-    suggestions: {
-        backgroundColor: '#70757c',
-        height: 110,
-        width: '90%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginLeft: 20,
-        marginBottom: 10
-    },
+
     // Top picks
-    topPick: {
-        height: '100%',
-        width: '100%', 
+    topPickView: {
+        height: 130,
+        width: '100%',
+        paddingRight: 10,
+        paddingLeft: 10,
+        paddingBottom: 10,
         alignItems: 'center',
+        justifyContent:'center'
+    },
+    topPickImage: {
+        height: '100%',
+        width: '100%',
+        backgroundColor: '#70757c'
+    },
+    topPickImageOverlay: {
+        flex: 1,
         justifyContent: 'center'
     },
-    topPickView: {
-        justifyContent: 'center',
-        alignItems: 'center'
+
+    // Surprise Me & Popular & Newset
+    equalWidthsContainer: {
+        paddingRight: 10,
+        paddingLeft: 10,
+        paddingBottom: 10,
+        flexDirection: 'row',
     },
-    // Surprise me
-    surpriseMeView: {
-        height: 110,
-        width: '90%',
-        marginLeft: 20,
-        marginBottom: 10
+    equalWitdhView: {
+        width: '50%',
+        height: 130
     },
-    surpriseMeContainer: {
+    imageContainer: {
+        height: '100%',
+        backgroundColor: '#70757c',
+        flex: 1,
+        justifyContent: 'center'
+    },
+    equalHeightContainer: {
         height: '100%'
     },
-    surpriseMeImageBackground: {
-        height: '100%',
-        width: '70%',
-        justifyContent: 'center'
+    equalHeightView: {
+        height: 65
     },
+
+    // Categories
     scrollViewContainer: {
-        marginTop: -120,
         flex: 1
-    },
-    scrollView: {
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     item: {
         justifyContent: 'flex-end',
