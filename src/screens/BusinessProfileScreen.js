@@ -1,18 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#2896d3'
-    },
-    text: {
-        color: '#fff'
-    }
-})
+import styles from '../styles/screens/BuisnessProfileScreen';
 
 export default class BusinessProfileScreen extends React.Component {
     constructor(props) {

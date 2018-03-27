@@ -1,47 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableOpacity, AsyncStorage } from 'react-native';
 import { SocialIcon } from 'react-native-elements';
-
-const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1
-    },
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#2896d3',
-        paddingLeft: 40,
-        paddingRight: 40
-    },
-    header: {
-        fontSize: 24,
-        marginBottom: 60,
-        color: '#fff',
-        fontWeight: 'bold'
-    },
-    textInput: {
-        alignSelf: 'stretch',
-        padding: 16,
-        marginBottom: 20,
-        backgroundColor: '#fff'
-    },
-    button: {
-        alignSelf: 'stretch',
-        backgroundColor: '#01c853',
-        padding: 20,
-        alignItems: 'center',
-        borderRadius: 10
-    },
-    buttons2: {
-        borderRadius: 10,
-        padding: 20,
-        alignSelf: 'stretch'
-    }
-});
+import styles from '../styles/screens/BuisnessLoginScreen';
 
 export default class BusinessLoginScreen extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
