@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, View, ImageBackground, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
-import styles from '../styles/screens/FeelingScreen';
-import textStyles from '../styles/text';
+import styles from '../styles/screens/FeelingScreen.style';
+import textStyles from '../styles/text.style';
 
 class FeelingScreen extends React.Component {
     constructor(props) {

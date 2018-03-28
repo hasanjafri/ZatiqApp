@@ -3,11 +3,14 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { Button, SocialIcon } from 'react-native-elements';
 import { Video } from 'expo';
 import  Icon  from 'react-native-vector-icons';
-import styles from '../styles/screens/LoginScreen';
+import styles from '../styles/screens/LoginScreen.style';
+import { NavigationActions } from 'react-navigation'
+
+// ...
 
 class LoginScreen extends React.Component {
     render() {
-        const { navigate } = this.props.navigation;
+        const { navigate, dispatch } = this.props.navigation;
         return (
             <View style={styles.view}>
                 <Video source={require('../assets/backgrounds/Zatiq.mp4')}
@@ -24,7 +27,12 @@ class LoginScreen extends React.Component {
                         button
                         type="facebook"
                         style={styles.signInButtons}
-                        onPress={() => navigate('Feeling')}/>
+                        onPress={() => dispatch(NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({ routeName: 'Feeling' })
+                            ]
+                        }))}/>
                     <SocialIcon title="Sign in with Google"
                         button
                         type="google-plus-official"
