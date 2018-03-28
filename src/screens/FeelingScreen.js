@@ -21,9 +21,10 @@ class FeelingScreen extends React.Component {
             'Quick Bite', 'Thai', 'Canadian',
             'Vietnamese', 'Dinner' ];
     }
-    renderCategoryItem = (item, i) => {
+    _renderCategoryItem = (item, i) => {
+        const { navigate } = this.props.navigation;
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigate('Suggestion', { category: item })}>
                 <View style={styles.item}>
                     <Image style={{height: 50, width: 50}} source={require('../assets/icons/Breakfast.png')}></Image>
                     <Text style={styles.text}>{item}</Text>
@@ -31,14 +32,15 @@ class FeelingScreen extends React.Component {
             </TouchableOpacity>
         )
     }
-    renderTextWithBackground = (source, text) => {
+    _renderTextWithBackground = (source, text) => {
         return (
             <ImageBackground style={styles.imageContainer} source={source}>
-                <Text style={textStyles.whiteLargeBold}>{text}}</Text>
+                <Text style={textStyles.whiteLargeBold}>{text}</Text>
             </ImageBackground>
         );
     }
     render() {
+        const { navigate } = this.props.navigation;
         return (
             <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
                 <View style={styles.questionView}>
@@ -47,7 +49,7 @@ class FeelingScreen extends React.Component {
                     <Text style={[textStyles.whiteSmallBold, { paddingTop: 10, paddingBottom: 10 }]}>What are you in the mood for?</Text>
                 </View>
                 <ScrollView style={styles.scrollViewContainer}>
-                    <TouchableOpacity style={styles.topPickView}>
+                    <TouchableOpacity style={styles.topPickView} onPress={() => navigate('Suggestion', { category: 'Top Pick' })}>
                         <ImageBackground style={styles.topPickImage} source={require('../assets/backgrounds/top-picks.png')}>
                             <View style={styles.topPickImageOverlay}>
                                 <Text style={textStyles.whiteLargeBold}>OUR</Text>
@@ -57,21 +59,21 @@ class FeelingScreen extends React.Component {
                         </ImageBackground>
                     </TouchableOpacity>
                     <View style={styles.equalWidthsContainer}>
-                        <TouchableOpacity style={[styles.equalWitdhView, { paddingRight: 5 }]}>
-                            {this.renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'SURPRISE ME')}
+                        <TouchableOpacity style={[styles.equalWitdhView, { paddingRight: 5 }]} onPress={() => navigate('Suggestion', { category: 'Surprise Me' })}>
+                            {this._renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'SURPRISE ME')}
                         </TouchableOpacity>
                         <View style={[styles.equalWitdhView, { paddingLeft: 5 }]}>
                             <View style={styles.equalHeightContainer}>
-                                <TouchableOpacity style={[styles.equalHeightView, { paddingBottom: 5 }]}>
-                                    {this.renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'POPULAR')}
+                                <TouchableOpacity style={[styles.equalHeightView, { paddingBottom: 5 }]} onPress={() => navigate('Suggestion', { category: 'Popular' })}>
+                                    {this._renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'POPULAR')}
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.equalHeightView, { paddingTop: 5 }]}>
-                                    {this.renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'NEWEST')}
+                                <TouchableOpacity style={[styles.equalHeightView, { paddingTop: 5 }]} onPress={() => navigate('Suggestion', { category: 'Newest' })}>
+                                    {this._renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'NEWEST')}
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </View>
-                    <GridView itemDimension={130} items={this.CATEGORIES} renderItem={this.renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
+                    <GridView itemDimension={130} items={this.CATEGORIES} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
                 </ScrollView>
             </ImageBackground>
         );

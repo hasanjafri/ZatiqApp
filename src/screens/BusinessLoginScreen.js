@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableOpaci
 import { SocialIcon } from 'react-native-elements';
 import styles from '../styles/screens/BuisnessLoginScreen';
 
-export default class BusinessLoginScreen extends React.Component {
+class BusinessLoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -74,3 +74,5 @@ export default class BusinessLoginScreen extends React.Component {
         );
     }
 }
+
+export default BusinessLoginScreen;

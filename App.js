@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Button, AsyncStorage, Image, ImageBackground, StyleSheet } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { View, Text, Button, AsyncStorage, Image, ImageBackground, StyleSheet, TouchableHighlight } from 'react-native';
+import { StackNavigator, NavigationActions } from 'react-navigation';
 
 import FeelingScreen from './src/screens/FeelingScreen';
+import SuggestionScreen from './src/screens/SuggestionScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import BusinessSignUpScreen from './src/screens/BusinessSignUpScreen';
 import BusinessLoginScreen from './src/screens/BusinessLoginScreen';
@@ -11,30 +12,42 @@ import BusinessProfileScreen from './src/screens/BusinessProfileScreen';
 const Header = props => {
     return (
         <View style={styles.headerContainer}>
+            { props.showBack ?
+                <TouchableHighlight underlayColor={'transparent'} style={styles.headerBackContainer} onPress={() => props.navigation.dispatch(NavigationActions.back())}>
+                    <Image style={styles.headerBack} source={require('./src/assets/widgets/cancel.png')} />
+                </TouchableHighlight> : null
+            }
             <Image style={styles.headerLogo} source={require('./src/assets/logos/logo.png')}/>
         </View>
-    )
-}
+    );
+};
 
-const ImageHeader = props => (
-    <View style={{ backgroundColor: '#eee' }}>
-        <Image style={StyleSheet.absoluteFill} source={require('./src/assets/backgrounds/header.png')} />
-        <Header {...props} style={styles.header}/>
-    </View>
-);
+const ImageHeader = props => {
+    return (
+        <View style={{ backgroundColor: '#eee' }}>
+            <Image style={StyleSheet.absoluteFill} source={require('./src/assets/backgrounds/header.png')} />
+            <Header {...props} style={styles.header}/>
+        </View>
+    );
+};
 
 const Application = StackNavigator({
     Login: {
         screen: LoginScreen,
         navigationOptions: {
             header: false
-        },
+        }
     },
     Feeling: {
         screen: FeelingScreen,
         navigationOptions: {
-            headerTitleStyle: { color: '#fff' },
-            header: (props) => <ImageHeader {...props} />,
+            header: (props) => <ImageHeader {...props} />
+        }
+    },
+    Suggestion: {
+        screen: SuggestionScreen,
+        navigationOptions: {
+            header: (props) => <ImageHeader showBack {...props} />
         }
     },
     BusinessSignUp: {
@@ -58,7 +71,6 @@ const Application = StackNavigator({
 });
 
 export default class App extends React.Component {
-
     componentDidMount() {
         this.clearLoginData().done();
     }
@@ -69,7 +81,7 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <Application/>
+            <Application />
         );
     }
 }
@@ -82,12 +94,23 @@ const styles = StyleSheet.create({
     },
     headerContainer: {
         height: 70,
-        marginTop: 20
+        width: '100%',
+        marginTop: 20,
+        flexDirection: 'row'
+    },
+    headerBackContainer: {
+        zIndex: 2,
+        justifyContent: 'center',
+        paddingHorizontal: 10
+    },
+    headerBack: {
+        width: 25,
+        height: 25
     },
     headerLogo: {
-        flex: 1,
-        width: null,
-        height: null,
+        position: 'absolute',
+        width: '100%',
+        height: 70,
         resizeMode: 'contain'
     }
 });

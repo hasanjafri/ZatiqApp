@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import styles from '../styles/screens/BuisnessProfileScreen';
 
-export default class BusinessProfileScreen extends React.Component {
+class BusinessProfileScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,3 +39,5 @@ export default class BusinessProfileScreen extends React.Component {
         );
     }
 }
+
+export default BusinessProfileScreen;
