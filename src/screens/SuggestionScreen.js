@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ImageBackground, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { ImageBackground } from 'react-native';
 import styles from '../styles/screens/SuggestionScreen.style';
 import Slider from '../components/slider/Slider';
 

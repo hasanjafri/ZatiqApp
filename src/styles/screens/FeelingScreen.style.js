@@ -37,8 +37,7 @@ export default styles = StyleSheet.create({
 
     // Surprise Me & Popular & Newset
     equalWidthsContainer: {
-        paddingRight: 10,
-        paddingLeft: 10,
+        paddingHorizontal: 10,
         paddingBottom: 10,
         flexDirection: 'row',
     },
@@ -68,7 +67,7 @@ export default styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         height: 150,
-        backgroundColor: '#7f8c8d',
+        backgroundColor: '#7f8c8d'
     },
     text: {
         color: "white",

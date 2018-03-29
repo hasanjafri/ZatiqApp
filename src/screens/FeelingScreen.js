@@ -4,30 +4,19 @@ import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 import styles from '../styles/screens/FeelingScreen.style';
 import textStyles from '../styles/text.style';
+import categories from '../data/categories';
 
 class FeelingScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.CATEGORIES = [
-            'Breakfast', 'Brunch', 'Lunch',
-            'Indian', 'Greek', 'Chinese',
-            'Japanese', 'Korean', 'Sushi',
-            'Dessert', 'Burger', 'Pizza',
-            'Fast Food', 'Cheap Eats',
-            'Caribbean', 'Mexican', 'Spicy',
-            'Fine Food', 'Halal', 'Kosher',
-            'Healthy', 'Vegan', 'Vegetarian',
-            'Gluten Free', 'Italian', 'Middle Eastern',
-            'Quick Bite', 'Thai', 'Canadian',
-            'Vietnamese', 'Dinner' ];
     }
     _renderCategoryItem = (item, i) => {
         const { navigate } = this.props.navigation;
         return (
-            <TouchableOpacity onPress={() => navigate('Suggestion', { category: item })}>
+            <TouchableOpacity onPress={() => navigate('Suggestion', { category: item.text })}>
                 <View style={styles.item}>
-                    <Image style={{height: 50, width: 50}} source={require('../assets/icons/Breakfast.png')}></Image>
-                    <Text style={styles.text}>{item}</Text>
+                    <Image style={{height: 50, width: 50}} source={item.source}></Image>
+                    <Text style={styles.text}>{item.text}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -73,7 +62,7 @@ class FeelingScreen extends React.Component {
                             </View>
                         </View>
                     </View>
-                    <GridView itemDimension={130} items={this.CATEGORIES} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
+                    <GridView itemDimension={130} items={categories} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
                 </ScrollView>
             </ImageBackground>
         );

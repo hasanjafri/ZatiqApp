@@ -99,18 +99,15 @@ export default StyleSheet.create({
         fontStyle: 'italic'
     },
     open: {
-        // width: 100,
-        flex: 1,
+        paddingHorizontal: 5,
         height: 25,
         marginTop: 10,
-        fontWeight: 'bold',
         marginLeft: 10,
-        paddingVertical: 3,
+        lineHeight: 25,
         color: 'white',
         textAlign: 'center'
     },
     buttonBar: {
-        paddingTop: 20
     },
     buttonCall: {
         backgroundColor: colors.blue,

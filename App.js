@@ -5,6 +5,7 @@ import { Icon } from 'react-native-elements';
 
 import FeelingScreen from './src/screens/FeelingScreen';
 import SuggestionScreen from './src/screens/SuggestionScreen';
+import RestaurantScreen from './src/screens/RestaurantScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import BusinessSignUpScreen from './src/screens/BusinessSignUpScreen';
 import BusinessLoginScreen from './src/screens/BusinessLoginScreen';
@@ -47,6 +48,12 @@ const Application = StackNavigator({
     },
     Suggestion: {
         screen: SuggestionScreen,
+        navigationOptions: {
+            header: (props) => <ImageHeader showBack {...props} />
+        }
+    },
+    Restaurant: {
+        screen: RestaurantScreen,
         navigationOptions: {
             header: (props) => <ImageHeader showBack {...props} />
         }
