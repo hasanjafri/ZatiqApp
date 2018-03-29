@@ -9,7 +9,7 @@ function wp (percentage) {
     return Math.round(value);
 }
 
-const slideHeight = viewportHeight * 0.36;
+const slideHeight = viewportHeight * 0.7;
 const slideWidth = wp(75);
 const itemHorizontalMargin = wp(2);
 
@@ -61,12 +61,12 @@ export default StyleSheet.create({
         left: 0,
         right: 0,
         height: entryBorderRadius,
-        backgroundColor: 'white'
+        backgroundColor: 'transparent'
     },
     radiusMaskEven: {
-        backgroundColor: colors.black
+        backgroundColor: 'transparent'
     },
-    textContainer: {
+    contentContainer: {
         justifyContent: 'center',
         paddingTop: 20 - entryBorderRadius,
         paddingBottom: 20,
@@ -75,8 +75,13 @@ export default StyleSheet.create({
         borderBottomLeftRadius: entryBorderRadius,
         borderBottomRightRadius: entryBorderRadius
     },
-    textContainerEven: {
-        backgroundColor: colors.black
+    contentContainerEven: {
+        backgroundColor: 'white'
+        // backgroundColor: colors.blue
+    },
+    ratingContainer: {
+        paddingVertical: 10,
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     title: {
         color: colors.black,
@@ -85,7 +90,7 @@ export default StyleSheet.create({
         letterSpacing: 0.5
     },
     titleEven: {
-        color: 'white'
+        color: colors.black
     },
     subtitle: {
         marginTop: 6,
@@ -93,7 +98,37 @@ export default StyleSheet.create({
         fontSize: 12,
         fontStyle: 'italic'
     },
-    subtitleEven: {
-        color: 'rgba(255, 255, 255, 0.7)'
+    open: {
+        // width: 100,
+        flex: 1,
+        height: 25,
+        marginTop: 10,
+        fontWeight: 'bold',
+        marginLeft: 10,
+        paddingVertical: 3,
+        color: 'white',
+        textAlign: 'center'
+    },
+    buttonBar: {
+        paddingTop: 20
+    },
+    buttonCall: {
+        backgroundColor: colors.blue,
+        height: 40,
+        flexDirection: 'row'
+    },
+    buttonView: {
+        backgroundColor: 'rgba(160, 160, 160, 1)',
+        height: 40,
+        flexDirection: 'row'
+    },
+    buttonText: {
+        fontWeight: 'bold',
+        color: 'white',
+        flex: 1,
+        width: '100%',
+        position: 'absolute',
+        textAlign: 'center',
+        lineHeight: 40
     }
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button, AsyncStorage, Image, ImageBackground, StyleSheet, TouchableHighlight } from 'react-native';
 import { StackNavigator, NavigationActions } from 'react-navigation';
+import { Icon } from 'react-native-elements';
 
 import FeelingScreen from './src/screens/FeelingScreen';
 import SuggestionScreen from './src/screens/SuggestionScreen';
@@ -14,7 +15,7 @@ const Header = props => {
         <View style={styles.headerContainer}>
             { props.showBack ?
                 <TouchableHighlight underlayColor={'transparent'} style={styles.headerBackContainer} onPress={() => props.navigation.dispatch(NavigationActions.back())}>
-                    <Image style={styles.headerBack} source={require('./src/assets/widgets/cancel.png')} />
+                    <Icon name='clear' color={'#FFF'} />
                 </TouchableHighlight> : null
             }
             <Image style={styles.headerLogo} source={require('./src/assets/logos/logo.png')}/>
@@ -102,10 +103,6 @@ const styles = StyleSheet.create({
         zIndex: 2,
         justifyContent: 'center',
         paddingHorizontal: 10
-    },
-    headerBack: {
-        width: 25,
-        height: 25
     },
     headerLogo: {
         position: 'absolute',

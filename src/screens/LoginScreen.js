@@ -6,8 +6,6 @@ import  Icon  from 'react-native-vector-icons';
 import styles from '../styles/screens/LoginScreen.style';
 import { NavigationActions } from 'react-navigation'
 
-// ...
-
 class LoginScreen extends React.Component {
     render() {
         const { navigate, dispatch } = this.props.navigation;

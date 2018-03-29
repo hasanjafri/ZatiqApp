@@ -2,13 +2,11 @@ import { StyleSheet } from 'react-native';
 
 export const colors = {
     black: '#1a1917',
-    gray: '#888888'
+    gray: '#888888',
+    blue: 'rgba(38, 170, 205, 1)'
 };
 
 export default StyleSheet.create({
-    gradient: {
-        ...StyleSheet.absoluteFillObject
-    },
     scrollview: {
         flex: 1
     },
