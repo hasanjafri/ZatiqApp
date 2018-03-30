@@ -1,10 +1,5 @@
 import { StyleSheet } from 'react-native';
-
-export const colors = {
-    black: '#1a1917',
-    gray: '#888888',
-    blue: 'rgba(38, 170, 205, 1)'
-};
+import colors from '../colors.style';
 
 export default StyleSheet.create({
     scrollview: {

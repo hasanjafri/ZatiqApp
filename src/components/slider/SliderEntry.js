@@ -80,11 +80,11 @@ export default class SliderEntry extends Component {
                     <View style={styles.buttonBar}>
                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={this.onPress}>
                             <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'call'} color={'white'} />
-                            <Text style={styles.buttonText}>Call To Order</Text>
+                            <Text style={[textStyles.whiteSmall, styles.buttonText]}>Call To Order</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => this.props.navigateTo('Restaurant')}>
                             <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'import-contacts'} color={'white'} />
-                            <Text style={styles.buttonText}>View Restaurant</Text>
+                            <Text style={[textStyles.whiteSmall, styles.buttonText]}>View Restaurant</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

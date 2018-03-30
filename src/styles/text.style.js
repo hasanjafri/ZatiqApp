@@ -8,6 +8,13 @@ export default styles = StyleSheet.create({
         lineHeight: 30,
         fontFamily: 'nunito'
     },
+    whiteTinySmall: {
+        fontSize: 14,
+        color: 'white',
+        textAlign: 'center',
+        lineHeight: 30,
+        fontFamily: 'nunito'
+    },
     whiteSmallBold: {
         fontSize: 16,
         color: 'white',

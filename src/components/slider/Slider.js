@@ -3,7 +3,8 @@ import { Platform, View, ScrollView, Text, SafeAreaView } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from '../../styles/components/SliderEntry.style';
 import SliderEntry from './SliderEntry';
-import styles, { colors } from '../../styles/components/Slider.style';
+import styles from '../../styles/components/Slider.style';
+import colors from '../../styles/colors.style';
 
 const INITIAL_ACTIVE_ITEM = 1;
 

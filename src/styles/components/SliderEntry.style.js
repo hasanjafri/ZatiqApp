@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { colors } from './Slider.style';
+import colors from '../colors.style';
 
 const IS_IOS = Platform.OS === 'ios';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -96,7 +96,7 @@ export default StyleSheet.create({
     buttonBar: {
     },
     buttonCall: {
-        backgroundColor: colors.blue,
+        backgroundColor: colors.primary,
         height: 40,
         flexDirection: 'row'
     },
@@ -106,8 +106,6 @@ export default StyleSheet.create({
         flexDirection: 'row'
     },
     buttonText: {
-        fontWeight: 'bold',
-        color: 'white',
         flex: 1,
         width: '100%',
         position: 'absolute',

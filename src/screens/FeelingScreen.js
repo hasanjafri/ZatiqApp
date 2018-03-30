@@ -2,6 +2,10 @@ import React from 'react';
 import { Text, View, ImageBackground, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
+
+// Custom imports
+import AddButton from '../components/add/AddButton';
+import AddOverlay from '../components/add/AddOverlay';
 import styles from '../styles/screens/FeelingScreen.style';
 import textStyles from '../styles/text.style';
 import categories from '../data/categories';
@@ -9,6 +13,9 @@ import categories from '../data/categories';
 class FeelingScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showOverlay: false
+        }
     }
     _renderCategoryItem = (item, i) => {
         const { navigate } = this.props.navigation;
@@ -16,7 +23,7 @@ class FeelingScreen extends React.Component {
             <TouchableOpacity activeOpacity={0.5} onPress={() => navigate('Suggestion', { category: item.text })}>
                 <View style={styles.item}>
                     <Image style={{ height: 60, alignItems: 'center' }} resizeMode="contain" source={item.source}></Image>
-                    <Text style={[textStyles.whiteMedium, {marginTop: 10}]}>{item.text.toUpperCase()}</Text>
+                    <Text style={[textStyles.whiteTinySmall, { marginTop: 10 }]}>{item.text.toUpperCase()}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -64,6 +71,8 @@ class FeelingScreen extends React.Component {
                     </View>
                     <GridView itemDimension={130} items={categories} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
                 </ScrollView>
+                <AddButton fixed onPress={() => this.setState({ showOverlay: true })}/>
+                <AddOverlay showOverlay={this.state.showOverlay}/>
             </ImageBackground>
         );
     }

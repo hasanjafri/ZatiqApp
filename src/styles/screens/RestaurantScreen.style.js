@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import colors from '../colors.style';
 
 export default styles = StyleSheet.create({
     view: {
@@ -21,14 +22,12 @@ export default styles = StyleSheet.create({
         borderColor: 'white'
     },
     buttonCall: {
-        backgroundColor: 'rgba(38, 170, 205, 1)',
+        backgroundColor: colors.primary,
         height: 40,
         flexDirection: 'row',
         width: 280
     },
     buttonText: {
-        fontWeight: 'bold',
-        color: 'white',
         flex: 1,
         width: '100%',
         position: 'absolute',
@@ -61,14 +60,11 @@ export default styles = StyleSheet.create({
     tag: {
         height: 25,
         lineHeight: 25,
-        fontWeight: 'bold',
-        color: 'white',
-        textAlign: 'center',
-        backgroundColor: 'rgba(38, 170, 205, 0.5)'
+        backgroundColor: colors.primaryHalfOpacity
     },
     reviewsContainer: {
         borderLeftWidth: 5,
-        borderLeftColor: 'rgba(38, 170, 205, 1)',
+        borderLeftColor: colors.primary,
         marginLeft: 10
     },
     reviewRow: {
@@ -81,11 +77,12 @@ export default styles = StyleSheet.create({
     reviewTitle: {
         color: 'white',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'nunito-bold',
         paddingBottom: 10
     },
     reviewContent: {
         color: 'white',
+        fontFamily: 'nunito',
         fontSize: 12
     }
 });
