@@ -13,10 +13,10 @@ class FeelingScreen extends React.Component {
     _renderCategoryItem = (item, i) => {
         const { navigate } = this.props.navigation;
         return (
-            <TouchableOpacity onPress={() => navigate('Suggestion', { category: item.text })}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => navigate('Suggestion', { category: item.text })}>
                 <View style={styles.item}>
-                    <Image style={{height: 50, width: 50}} source={item.source}></Image>
-                    <Text style={styles.text}>{item.text}</Text>
+                    <Image style={{ height: 60, alignItems: 'center' }} resizeMode="contain" source={item.source}></Image>
+                    <Text style={[textStyles.whiteMedium, {marginTop: 10}]}>{item.text.toUpperCase()}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -24,7 +24,7 @@ class FeelingScreen extends React.Component {
     _renderTextWithBackground = (source, text) => {
         return (
             <ImageBackground style={styles.imageContainer} source={source}>
-                <Text style={textStyles.whiteLargeBold}>{text}</Text>
+                <Text style={textStyles.whiteLarge}>{text}</Text>
             </ImageBackground>
         );
     }
@@ -41,9 +41,9 @@ class FeelingScreen extends React.Component {
                     <TouchableOpacity style={styles.topPickView} onPress={() => navigate('Suggestion', { category: 'Top Pick' })}>
                         <ImageBackground style={styles.topPickImage} source={require('../assets/backgrounds/top-picks.png')}>
                             <View style={styles.topPickImageOverlay}>
-                                <Text style={textStyles.whiteLargeBold}>OUR</Text>
+                                <Text style={textStyles.whiteLarge}>OUR</Text>
                                 <Text style={textStyles.yellowHugeBold}>TOP</Text>
-                                <Text style={textStyles.whiteLargeBold}>PICKS</Text>
+                                <Text style={textStyles.whiteLarge}>PICKS</Text>
                             </View>
                         </ImageBackground>
                     </TouchableOpacity>

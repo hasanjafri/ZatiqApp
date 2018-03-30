@@ -35,14 +35,14 @@ export default StyleSheet.create({
         shadowOpacity: 0.25,
         shadowOffset: { width: 0, height: 10 },
         shadowRadius: 10,
-        borderRadius: entryBorderRadius
+        // borderRadius: entryBorderRadius
     },
     imageContainer: {
         flex: 1,
         marginBottom: IS_IOS ? 0 : -1, // Prevent a random Android rendering issue
         backgroundColor: 'white',
-        borderTopLeftRadius: entryBorderRadius,
-        borderTopRightRadius: entryBorderRadius
+        // borderTopLeftRadius: entryBorderRadius,
+        // borderTopRightRadius: entryBorderRadius
     },
     imageContainerEven: {
         backgroundColor: colors.black
@@ -50,9 +50,9 @@ export default StyleSheet.create({
     image: {
         ...StyleSheet.absoluteFillObject,
         resizeMode: 'cover',
-        borderRadius: IS_IOS ? entryBorderRadius : 0,
-        borderTopLeftRadius: entryBorderRadius,
-        borderTopRightRadius: entryBorderRadius
+        // borderRadius: IS_IOS ? entryBorderRadius : 0,
+        // borderTopLeftRadius: entryBorderRadius,
+        // borderTopRightRadius: entryBorderRadius
     },
     // image's border radius is buggy on iOS; let's hack it!
     radiusMask: {
@@ -72,8 +72,8 @@ export default StyleSheet.create({
         paddingBottom: 20,
         paddingHorizontal: 16,
         backgroundColor: 'white',
-        borderBottomLeftRadius: entryBorderRadius,
-        borderBottomRightRadius: entryBorderRadius
+        // borderBottomLeftRadius: entryBorderRadius,
+        // borderBottomRightRadius: entryBorderRadius
     },
     contentContainerEven: {
         backgroundColor: 'white'
@@ -81,21 +81,6 @@ export default StyleSheet.create({
     ratingContainer: {
         paddingVertical: 10,
         backgroundColor: 'rgba(0,0,0,0)'
-    },
-    title: {
-        color: colors.black,
-        fontSize: 13,
-        fontWeight: 'bold',
-        letterSpacing: 0.5
-    },
-    titleEven: {
-        color: colors.black
-    },
-    subtitle: {
-        marginTop: 6,
-        color: colors.gray,
-        fontSize: 12,
-        fontStyle: 'italic'
     },
     open: {
         paddingHorizontal: 5,

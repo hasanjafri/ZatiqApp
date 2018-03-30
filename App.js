@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Button, AsyncStorage, Image, ImageBackground, StyleSheet, TouchableHighlight } from 'react-native';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import { Icon } from 'react-native-elements';
+import { Font } from 'expo';
 
 import FeelingScreen from './src/screens/FeelingScreen';
 import SuggestionScreen from './src/screens/SuggestionScreen';
@@ -88,6 +89,11 @@ const Application = StackNavigator({
 export default class App extends React.Component {
     componentDidMount() {
         this.clearLoginData().done();
+        Font.loadAsync({
+            'nunito': require('./src/assets/fonts/Nunito-Regular.ttf'),
+            'nunito-bold': require('./src/assets/fonts/Nunito-Bold.ttf'),
+            'nunito-italic': require('./src/assets/fonts/Nunito-Italic.ttf')
+        });
     }
 
     clearLoginData = async () => {

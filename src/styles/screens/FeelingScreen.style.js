@@ -63,14 +63,12 @@ export default styles = StyleSheet.create({
         flex: 1
     },
     item: {
-        justifyContent: 'flex-end',
-        borderRadius: 5,
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: '100%',
+        justifyContent: 'center',
         padding: 10,
         height: 150,
-        backgroundColor: '#7f8c8d'
-    },
-    text: {
-        color: "white",
-        fontSize: 32,
+        backgroundColor: 'rgba(127, 140, 141, 0.3)'
     }
 });

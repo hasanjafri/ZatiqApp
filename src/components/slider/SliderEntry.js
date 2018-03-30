@@ -5,6 +5,7 @@ import StarRating from 'react-native-star-rating';
 import { ParallaxImage } from 'react-native-snap-carousel';
 import { Badge, Icon } from 'react-native-elements';
 import styles from '../../styles/components/SliderEntry.style';
+import textStyles from '../../styles/text.style';
 
 export default class SliderEntry extends Component {
     constructor(props) {
@@ -52,15 +53,16 @@ export default class SliderEntry extends Component {
                     <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
                 </View>
                 <View style={[styles.contentContainer, even ? styles.contentContainerEven : {}]}>
-                    <Text style={[styles.title, even ? styles.titleEven : {}, { fontSize: 16 }]}
+                    <Text style={[textStyles.title, { fontSize: 16 }]}
+                        numberOfLines={2} >
+                        { title }
+                        
+                    </Text>
+                    <Text style={[textStyles.title, { marginTop: 6 }]}
                         numberOfLines={2} >
                         { restaurantName }
                     </Text>
-                    <Text style={[styles.title, even ? styles.titleEven : {}, { marginTop: 6 }]}
-                        numberOfLines={2} >
-                        { title }
-                    </Text>
-                    <Text style={[styles.subtitle, even ? styles.subtitleEven : {}]}
+                    <Text style={textStyles.subtitle}
                         numberOfLines={2} >
                         { subtitle }
                     </Text>
