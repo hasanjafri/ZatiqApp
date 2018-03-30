@@ -6,6 +6,17 @@ import styles from '../styles/screens/RestaurantScreen.style';
 import textStyles from '../styles/text.style';
 import StarRating from 'react-native-star-rating';
 
+const TAGS = [
+    { text: 'Features', source: require('../assets/icons/Breakfast.png') },
+    { text: 'Menu', source: require('../assets/icons/Brunch.png') },
+    { text: 'Photos', source: require('../assets/icons/Lunch.png') }
+];
+const REVIEWS = [
+    { text: 'This was the best food ever!jsdfasoidufoasudfoiasudfoiasudfoasufoasudofiasudogiabhfiuhiuiobhdfiogbhdfiobhfigbhfighbiuh', image: require('../assets/backgrounds/surprise-me.png'), name: 'Angelica C.', rating: 4 },
+    { text: 'Disgusting', image: require('../assets/backgrounds/surprise-me.png'), name: 'Angelica C.asdfsdf', rating: 3 },
+    { text: 'Ver long and random text, 1289347194h1i24hehdfoiguaosjodfgjodifjsdpofgsdpfgisdpfgsgisdpfigpsdfigpfipsdofigpfigpsdofigpsdofigosdpfigpsdofigsdpofgispdofigpsdfoigdfgfpodfpgispdfigpsdog', image: require('../assets/icons/Lunch.png'), name: 'Angelica C.asdfsdf', rating: 2 }
+];
+
 class RestaurantScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -16,19 +27,14 @@ class RestaurantScreen extends React.Component {
             { text: 'Menu', source: require('../assets/icons/Brunch.png') },
             { text: 'Photos', source: require('../assets/icons/Lunch.png') }
         ];
-        this.TAGS = [
-            { text: 'Features', source: require('../assets/icons/Breakfast.png') },
-            { text: 'Menu', source: require('../assets/icons/Brunch.png') },
-            { text: 'Photos', source: require('../assets/icons/Lunch.png') }
-        ]
     }
     onPress() {
 
     }
-    _renderMenuItem = (item, i) => {
+    _renderMenuItem = item => {
         const { navigate } = this.props.navigation;
         return (
-            <TouchableOpacity onPress={() => navigate('Suggestion', { category: item.text })}>
+            <TouchableOpacity onPress={() => navigate('Picture', { category: item.text })}>
                 <View style={styles.item}>
                     <Image style={{height: 50, width: 50}} source={item.source}></Image>
                     <Text style={{ color: 'white' }}>{item.text}</Text>
@@ -36,11 +42,15 @@ class RestaurantScreen extends React.Component {
             </TouchableOpacity>
         );
     }
-    _renderTags = (tag, i) => {
+    _renderTags = tag => {
+        return <Text style={styles.tag}>{tag.text}</Text>;
+    }
+    _renderSection = title => {
         return (
-            <Text style={styles.tag}>
-                {tag.text}
-            </Text>
+            <React.Fragment>
+                <Divider style={{ backgroundColor: 'white', marginTop: 20 }} />
+                <Text style={[textStyles.whiteBoldMedium, { paddingVertical: 10 }]}>{title}</Text>
+            </React.Fragment>
         );
     }
     render () {
@@ -48,17 +58,14 @@ class RestaurantScreen extends React.Component {
         return (
             <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
                 <ScrollView style={styles.scrollViewContainer}>
+                    {/* Restaurant Image */}
                     <View style={styles.imageContainer}>
-                        <Image style={styles.restaurantImage}
-                            resizeMode={'cover'}
-                            source={require('../assets/backgrounds/surprise-me.png')} />
+                        <Image style={styles.restaurantImage} resizeMode={'cover'} source={require('../assets/backgrounds/surprise-me.png')} />
                     </View>
-                    <Text style={[textStyles.whiteLargeBold, { paddingTop: 10 }]}>
-                        Les 3 Brasseurs
-                    </Text>
-                    <Text style={[textStyles.whiteSmall, { fontStyle: 'italic'}]}>
-                        123 Street, City
-                    </Text>
+                    {/* Title & Address */}
+                    <Text style={[textStyles.whiteLargeBold, { paddingTop: 10 }]}>Les 3 Brasseurs</Text>
+                    <Text style={[textStyles.whiteSmall, { fontStyle: 'italic'}]}>123 Street, City</Text>
+                    {/* Rating, Features, Menu, Photos & Call to Order */}
                     <View style={styles.centered}>
                         <StarRating disabled
                             maxStars={5}
@@ -75,10 +82,8 @@ class RestaurantScreen extends React.Component {
                             <Text style={styles.buttonText}>Call To Order</Text>
                         </TouchableOpacity>
                     </View>
-                    <Divider style={{ backgroundColor: 'white', marginTop: 20 }} />
-                    <Text style={[textStyles.whiteBoldMedium, { paddingVertical: 10 }]}>
-                        Hours
-                    </Text>
+                    {/* Hours */}
+                    { this._renderSection('Hours') }
                     <View style={styles.widthsContainer}>
                         <View style={{ width: '50%', paddingRight: 5 }}>
                             <Text style={[textStyles.whiteSmallBold, {lineHeight: 25}]}>Current</Text>
@@ -101,21 +106,35 @@ class RestaurantScreen extends React.Component {
                             </View>
                         </View>
                     </View>
-                    <Divider style={{ backgroundColor: 'white', marginTop: 20 }} />
-                    <Text style={[textStyles.whiteBoldMedium, { paddingVertical: 10 }]}>
-                        Cuisines
-                    </Text>
+                    {/* Cuisines */}
+                    { this._renderSection('Cuisines') }
                     <View style={styles.centered}>
                         <GridView itemDimension={90}
-                            items={this.TAGS}
+                            items={TAGS}
                             spacing={5}
                             renderItem={this._renderTags}
-                            style={{paddingTop: 10, flex: 1}}/>
+                            style={{paddingTop: 10, flex: 1}} />
                     </View>
-                    <Divider style={{ backgroundColor: 'white', marginTop: 20 }} />
-                    <Text style={[textStyles.whiteBoldMedium, { paddingVertical: 10 }]}>
-                        Reviews
-                    </Text>
+                    {/* Reviews */}
+                    { this._renderSection('Reviews') }
+                    <View style={styles.reviewsContainer}>
+                        { REVIEWS.map((review, i) =>
+                            <View key={i} style={styles.reviewRow}>
+                                <Image style={{ height: 100, width: '30%' }} resizeMode={'cover'} source={review.image} />
+
+                                <View style={{ width: '70%', paddingLeft: 10 }}>
+                                    <Text style={styles.reviewTitle}>{review.name}</Text>
+                                    <Text style={styles.reviewContent}>{review.text}</Text>
+                                    <StarRating disabled
+                                        maxStars={5}
+                                        starSize={20}
+                                        rating={review.rating}
+                                        containerStyle={{ paddingVertical: 10, width: 150, paddingRight: 10 }}
+                                        fullStarColor={'#f1c40f'} />
+                                </View>
+                            </View>
+                        )}
+                    </View>
                 </ScrollView>
             </ImageBackground>
         );

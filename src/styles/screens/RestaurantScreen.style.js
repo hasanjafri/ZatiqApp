@@ -65,5 +65,27 @@ export default styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         backgroundColor: 'rgba(38, 170, 205, 0.5)'
+    },
+    reviewsContainer: {
+        borderLeftWidth: 5,
+        borderLeftColor: 'rgba(38, 170, 205, 1)',
+        marginLeft: 10
+    },
+    reviewRow: {
+        flexDirection: 'row',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: 'white'
+    },
+    reviewTitle: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        paddingBottom: 10
+    },
+    reviewContent: {
+        color: 'white',
+        fontSize: 12
     }
 });

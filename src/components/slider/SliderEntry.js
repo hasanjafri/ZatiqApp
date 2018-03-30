@@ -20,7 +20,7 @@ export default class SliderEntry extends Component {
     };
 
     get image () {
-        const { data: { illustration }, parallax, parallaxProps, even } = this.props;
+        const { data: { illustration }, parallax, parallaxProps, even, type } = this.props;
 
         return parallax ? (
             <ParallaxImage source={{ uri: illustration }}
@@ -71,7 +71,7 @@ export default class SliderEntry extends Component {
                             rating={rating}
                             containerStyle={{ paddingVertical: 10, width: 150 }}
                             fullStarColor={'#f1c40f'} />
-                        <Text style={[styles.open, { backgroundColor: isOpen ? 'green' : 'red', right: 0, position: 'absolute' }]}>
+                        <Text style={[styles.open, { backgroundColor: isOpen ? 'green' : 'red' }]}>
                             { isOpen ? 'Open now' : 'Closed' }
                         </Text>
                     </View>
@@ -89,8 +89,18 @@ export default class SliderEntry extends Component {
             </View>
         );
     }
+    _renderImageEntry() {
+        return (
+            <View style={styles.slideInnerContainer}>
+                <View style={styles.shadow} />
+                <View style={styles.imageContainer}>
+                    { this.image }
+                    <View style={styles.radiusMask} />
+                </View>
+            </View>
+        );
+    }
     render () {
-        const entry = this.props.type === 'Suggestion' ? this._renderSuggestionEntry() : null
-        return entry;
+        return this.props.type === 'Suggestion' ? this._renderSuggestionEntry() : this._renderImageEntry()
     }
 }
