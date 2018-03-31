@@ -21,7 +21,7 @@ class Drawer extends React.Component {
     render() {
         const drawerItems = this.items.map((item, i) => {
             return (
-                <TouchableOpacity activeOpacity={1} style={styles.itemContainer} key={i}>
+                <TouchableOpacity activeOpacity={1} style={styles.itemContainer} key={i} onPress={() => this.props.navigation.navigate('FindRestaurant')}>
                     <Text style={[textStyles.medium, { color: 'black' }]}>{item}</Text>
                 </TouchableOpacity>
             );

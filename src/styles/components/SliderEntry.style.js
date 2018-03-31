@@ -26,15 +26,15 @@ export default StyleSheet.create({
         paddingBottom: 18 // needed for shadow
     },
     shadow: {
-        position: 'absolute',
-        top: 0,
-        left: itemHorizontalMargin,
-        right: itemHorizontalMargin,
-        bottom: 18,
-        shadowColor: colors.black,
-        shadowOpacity: 0.25,
-        shadowOffset: { width: 0, height: 10 },
-        shadowRadius: 10,
+        // position: 'absolute',
+        // top: 0,
+        // left: itemHorizontalMargin,
+        // right: itemHorizontalMargin,
+        // bottom: 18,
+        // shadowColor: colors.black,
+        // shadowOpacity: 0.25,
+        // shadowOffset: { width: 0, height: 10 },
+        // shadowRadius: 10,
         // borderRadius: entryBorderRadius
     },
     imageContainer: {
@@ -45,7 +45,14 @@ export default StyleSheet.create({
         // borderTopRightRadius: entryBorderRadius
     },
     imageContainerEven: {
-        backgroundColor: colors.black
+        // backgroundColor: colors.black
+    },
+    imagePlaceholder: {
+        resizeMode: 'cover',
+        // width: 150,
+        backgroundColor: colors.lightGrey,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     image: {
         ...StyleSheet.absoluteFillObject,
@@ -56,15 +63,15 @@ export default StyleSheet.create({
     },
     // image's border radius is buggy on iOS; let's hack it!
     radiusMask: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: entryBorderRadius,
-        backgroundColor: 'transparent'
+        // position: 'absolute',
+        // bottom: 0,
+        // left: 0,
+        // right: 0,
+        // height: entryBorderRadius,
+        // backgroundColor: 'transparent'
     },
     radiusMaskEven: {
-        backgroundColor: 'transparent'
+        // backgroundColor: 'transparent'
     },
     contentContainer: {
         justifyContent: 'center',

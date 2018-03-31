@@ -8,6 +8,13 @@ export default styles = StyleSheet.create({
         lineHeight: 30,
         fontFamily: 'nunito'
     },
+    miniItalic: {
+        fontSize: 10,
+        color: 'white',
+        textAlign: 'center',
+        // lineHeight: 30,
+        fontFamily: 'nunito-italic'
+    },
     tiny: {
         fontSize: 14,
         color: 'white',

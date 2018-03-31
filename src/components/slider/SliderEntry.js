@@ -22,7 +22,10 @@ export default class SliderEntry extends Component {
 
     get image () {
         const { data: { illustration }, parallax, parallaxProps, even, type } = this.props;
-
+        if (!illustration) {
+            // return <Image source={require('../../assets/backgrounds/placeholder.png')} style={styles.imagePlaceholder} />
+            return <Image style={styles.imagePlaceholder} />
+        }
         return parallax ? (
             <ParallaxImage source={{ uri: illustration }}
                 containerStyle={[styles.imageContainer, even ? styles.imageContainerEven : {}]}

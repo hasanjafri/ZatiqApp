@@ -78,15 +78,13 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 10,
         paddingHorizontal: 10,
-        marginRight: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.lightGrey
+        marginRight: 20
     },
     reviewTitle: {
         color: 'white',
         fontSize: 16,
         fontFamily: 'nunito-bold',
-        paddingBottom: 10
+        paddingBottom: 5
     },
     reviewContent: {
         color: 'white',

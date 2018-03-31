@@ -117,17 +117,20 @@ class RestaurantScreen extends React.Component {
                         <View style={styles.reviewsContainer}>
                             { REVIEWS.map((review, i) =>
                                 <View key={i} style={styles.reviewRow}>
-                                    <Image style={{ height: 100, width: '30%' }} resizeMode={'cover'} source={review.image} />
+                                    <Image style={{ height: 100, width: '30%', borderRadius: 20 }} resizeMode={'cover'} source={review.image} />
 
                                     <View style={{ width: '70%', paddingLeft: 10 }}>
                                         <Text style={styles.reviewTitle}>{review.name}</Text>
+                                        <View style={{ flexDirection: 'row'}}>
+                                            <StarRating disabled
+                                                maxStars={5}
+                                                starSize={10}
+                                                rating={review.rating}
+                                                containerStyle={{ paddingBottom: 10, width: 60, paddingRight: 2 }}
+                                                fullStarColor={'#f1c40f'} />
+                                            <Text style={[textStyles.miniItalic, {marginLeft: 10, marginTop: -3}]}>2 min ago</Text>
+                                        </View>
                                         <Text style={styles.reviewContent}>{review.text}</Text>
-                                        <StarRating disabled
-                                            maxStars={5}
-                                            starSize={20}
-                                            rating={review.rating}
-                                            containerStyle={{ paddingVertical: 10, width: 150, paddingRight: 10 }}
-                                            fullStarColor={'#f1c40f'} />
                                     </View>
                                 </View>
                             )}

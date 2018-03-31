@@ -6,6 +6,7 @@ import FeelingScreen from './screens/FeelingScreen';
 import SuggestionScreen from './screens/SuggestionScreen';
 import RestaurantScreen from './screens/RestaurantScreen';
 import PictureScreen from './screens/PictureScreen';
+import FindRestaurantScreen from './screens/FindRestaurantScreen';
 import LoginScreen from './screens/LoginScreen';
 import BusinessSignUpScreen from './screens/BusinessSignUpScreen';
 import BusinessLoginScreen from './screens/BusinessLoginScreen';
@@ -44,7 +45,15 @@ const mainApplication = StackNavigator({
 });
 
 const ApplicationIn = DrawerNavigator({
-    Application: { screen: mainApplication }
+    Application: {
+        screen: mainApplication
+    },
+    FindRestaurant: {
+        screen: FindRestaurantScreen,
+        navigationOptions: {
+            header: (props) => <ImageHeader showDrawerOpen {...props} />
+        }
+    }
 }, {
     contentComponent: (props) => <Drawer {...props} />,
     drawerOpenRoute: 'DrawerOpen',
