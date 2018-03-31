@@ -2,13 +2,32 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Button, SocialIcon } from 'react-native-elements';
 import { Video } from 'expo';
-import  Icon  from 'react-native-vector-icons';
-import styles from '../styles/screens/LoginScreen.style';
 import { NavigationActions } from 'react-navigation'
+import  Icon  from 'react-native-vector-icons';
+
+// Actions
+import { onSignIn } from '../../src/actions/auth';
+
+// Custom imports
+import styles from '../styles/screens/LoginScreen.style';
 
 class LoginScreen extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    onSignIn = async (type) => {
+        if (type === 'facebook') {
+            // FB login
+        } else if (type === 'google') {
+            // Google login
+        }
+        await onSignIn();
+
+        const { navigate } = this.props.navigation;
+        navigate('SwitchIn');
+    }
     render() {
-        const { navigate, dispatch } = this.props.navigation;
+        const { navigate } = this.props.navigation;
         return (
             <View style={styles.view}>
                 <Video source={require('../assets/backgrounds/Zatiq.mp4')}
@@ -25,17 +44,12 @@ class LoginScreen extends React.Component {
                         button
                         type="facebook"
                         style={styles.signInButtons}
-                        onPress={() => dispatch(NavigationActions.reset({
-                            index: 0,
-                            actions: [
-                                NavigationActions.navigate({ routeName: 'Feeling' })
-                            ]
-                        }))}/>
+                        onPress={() => this.onSignIn('facebook')}/>
                     <SocialIcon title="Sign in with Google"
                         button
                         type="google-plus-official"
                         style={styles.signInButtons}
-                        onPress={() => navigate('Feeling')}/>
+                        onPress={() => this.onSignIn('google')}/>
                     <SocialIcon title="Are you a business? Click Here"
                         button
                         light

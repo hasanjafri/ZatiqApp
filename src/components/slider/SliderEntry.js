@@ -32,8 +32,7 @@ export default class SliderEntry extends Component {
                 spinnerColor={even ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.25)'}
                 {...parallaxProps} />
         ) : (
-            <Image source={{ uri: illustration }}
-              style={styles.image} />
+            <Image source={{ uri: illustration }} style={styles.image} />
         );
     }
     
@@ -53,19 +52,9 @@ export default class SliderEntry extends Component {
                     <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
                 </View>
                 <View style={[styles.contentContainer, even ? styles.contentContainerEven : {}]}>
-                    <Text style={[textStyles.title, { fontSize: 16 }]}
-                        numberOfLines={2} >
-                        { title }
-                        
-                    </Text>
-                    <Text style={[textStyles.title, { marginTop: 6 }]}
-                        numberOfLines={2} >
-                        { restaurantName }
-                    </Text>
-                    <Text style={textStyles.subtitle}
-                        numberOfLines={2} >
-                        { subtitle }
-                    </Text>
+                    <Text style={[textStyles.title, { fontSize: 16 }]} numberOfLines={2} >{ title }</Text>
+                    <Text style={[textStyles.title, { marginTop: 6 }]} numberOfLines={2} >{ restaurantName }</Text>
+                    <Text style={textStyles.subtitle} numberOfLines={2} >{ subtitle }</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <StarRating disabled
                             maxStars={5}
@@ -80,11 +69,11 @@ export default class SliderEntry extends Component {
                     <View style={styles.buttonBar}>
                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={this.onPress}>
                             <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'call'} color={'white'} />
-                            <Text style={[textStyles.whiteSmall, styles.buttonText]}>Call To Order</Text>
+                            <Text style={[textStyles.small, styles.buttonText]}>Call To Order</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => this.props.navigateTo('Restaurant')}>
                             <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'import-contacts'} color={'white'} />
-                            <Text style={[textStyles.whiteSmall, styles.buttonText]}>View Restaurant</Text>
+                            <Text style={[textStyles.small, styles.buttonText]}>View Restaurant</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

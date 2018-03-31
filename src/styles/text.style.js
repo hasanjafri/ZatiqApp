@@ -1,53 +1,53 @@
 import { StyleSheet } from 'react-native';
 
 export default styles = StyleSheet.create({
-    whiteSmall: {
+    small: {
         fontSize: 16,
         color: 'white',
         textAlign: 'center',
         lineHeight: 30,
         fontFamily: 'nunito'
     },
-    whiteTinySmall: {
+    tiny: {
         fontSize: 14,
         color: 'white',
         textAlign: 'center',
         lineHeight: 30,
         fontFamily: 'nunito'
     },
-    whiteSmallBold: {
+    smallBold: {
         fontSize: 16,
         color: 'white',
         textAlign: 'center',
         fontFamily: 'nunito-bold'
     },
-    whiteBoldMedium: {
+    mediumBold: {
         fontSize: 18,
         color: 'white',
         textAlign: 'center',
         lineHeight: 30,
         fontFamily: 'nunito-bold'
     },
-    whiteMedium: {
+    medium: {
         fontSize: 18,
         color: 'white',
         textAlign: 'center',
         lineHeight: 30,
         fontFamily: 'nunito'
     },
-    whiteLarge: {
+    large: {
         fontSize: 22,
         color: 'white',
         textAlign: 'center',
         fontFamily: 'nunito'
     },
-    whiteLargeBold: {
+    largeBold: {
         fontSize: 22,
         color: 'white',
         textAlign: 'center',
         fontFamily: 'nunito-bold'
     },
-    yellowHugeBold: {
+    hugeBold: {
         fontSize: 34,
         color: 'yellow',
         textAlign: 'center',

@@ -1,133 +1,37 @@
 import React from 'react';
-import { View, Text, Button, AsyncStorage, Image, ImageBackground, StyleSheet, TouchableHighlight } from 'react-native';
-import { StackNavigator, NavigationActions } from 'react-navigation';
-import { Icon } from 'react-native-elements';
 import { Font } from 'expo';
+import { AsyncStorage } from 'react-native';
 
-import FeelingScreen from './src/screens/FeelingScreen';
-import SuggestionScreen from './src/screens/SuggestionScreen';
-import RestaurantScreen from './src/screens/RestaurantScreen';
-import PictureScreen from './src/screens/PictureScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import BusinessSignUpScreen from './src/screens/BusinessSignUpScreen';
-import BusinessLoginScreen from './src/screens/BusinessLoginScreen';
-import BusinessProfileScreen from './src/screens/BusinessProfileScreen';
+// Custom imports
+import { isSignedIn } from './src/actions/auth';
+import createRootNavigator from './src/routes';
 
-const Header = props => {
-    return (
-        <View style={styles.headerContainer}>
-            { props.showBack ?
-                <TouchableHighlight underlayColor={'transparent'} style={styles.headerBackContainer} onPress={() => props.navigation.dispatch(NavigationActions.back())}>
-                    <Icon name='clear' color={'#FFF'} />
-                </TouchableHighlight> : null
-            }
-            <Image style={styles.headerLogo} source={require('./src/assets/logos/logo.png')}/>
-        </View>
-    );
-};
-
-const ImageHeader = props => {
-    return (
-        <View style={{ backgroundColor: '#eee' }}>
-            <Image style={StyleSheet.absoluteFill} source={require('./src/assets/backgrounds/header.png')} />
-            <Header {...props} style={styles.header}/>
-        </View>
-    );
-};
-
-const Application = StackNavigator({
-    Login: {
-        screen: LoginScreen,
-        navigationOptions: {
-            header: false
-        }
-    },
-    Feeling: {
-        screen: FeelingScreen,
-        navigationOptions: {
-            header: (props) => <ImageHeader {...props} />
-        }
-    },
-    Suggestion: {
-        screen: SuggestionScreen,
-        navigationOptions: {
-            header: (props) => <ImageHeader showBack {...props} />
-        }
-    },
-    Restaurant: {
-        screen: RestaurantScreen,
-        navigationOptions: {
-            header: (props) => <ImageHeader showBack {...props} />
-        }
-    },
-    Picture: {
-        screen: PictureScreen,
-        navigationOptions: {
-            header: (props) => <ImageHeader showBack {...props} />
-        }
-    },
-    BusinessSignUp: {
-        screen: BusinessSignUpScreen,
-        navigationOptions: {
-            header: false
-        }
-    },
-    BusinessLogin: {
-        screen: BusinessLoginScreen,
-        navigationOptions: {
-            header: false
-        }
-    },
-    BusinessProfile: {
-        screen: BusinessProfileScreen,
-        navigationOptions: {
-            header: false
-        }
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: true,
+            user: null
+        };
     }
-});
-
-export default class App extends React.Component {
-    componentDidMount() {
-        this.clearLoginData().done();
-        Font.loadAsync({
-            'nunito': require('./src/assets/fonts/Nunito-Regular.ttf'),
-            'nunito-bold': require('./src/assets/fonts/Nunito-Bold.ttf'),
-            'nunito-italic': require('./src/assets/fonts/Nunito-Italic.ttf')
-        });
+    async componentWillMount() {
+        let [user] = await Promise.all([
+            isSignedIn(),
+            AsyncStorage.removeItem('businessName'),
+            Font.loadAsync({
+                'nunito': require('./src/assets/fonts/Nunito-Regular.ttf'),
+                'nunito-bold': require('./src/assets/fonts/Nunito-Bold.ttf'),
+                'nunito-italic': require('./src/assets/fonts/Nunito-Italic.ttf')
+            })
+        ]);
+        this.setState({ isLoading: false, user });
     }
-
-    clearLoginData = async () => {
-        var value = AsyncStorage.removeItem('businessName');
-    }
-
     render() {
+        const Layout = createRootNavigator(this.state.user);
         return (
-            <Application />
+            !this.state.isLoading ? <Layout /> : null
         );
     }
 }
 
-const styles = StyleSheet.create({
-    // Header
-    header: {
-        backgroundColor: 'transparent',
-        width: '100%'
-    },
-    headerContainer: {
-        height: 70,
-        width: '100%',
-        marginTop: 20,
-        flexDirection: 'row'
-    },
-    headerBackContainer: {
-        zIndex: 2,
-        justifyContent: 'center',
-        paddingHorizontal: 10
-    },
-    headerLogo: {
-        position: 'absolute',
-        width: '100%',
-        height: 70,
-        resizeMode: 'contain'
-    }
-});
+export default App;

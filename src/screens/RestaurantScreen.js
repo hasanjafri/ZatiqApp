@@ -46,11 +46,11 @@ class RestaurantScreen extends React.Component {
         );
     }
     _renderTags = tag => {
-        return <Text style={[textStyles.whiteSmall, styles.tag]}>{tag.text}</Text>;
+        return <Text style={[textStyles.small, styles.tag]}>{tag.text}</Text>;
     }
     _renderSection = title => {
         return (
-            <Text style={[textStyles.whiteBoldMedium, { paddingVertical: 10, marginTop: 20, borderTopWidth: 1, borderTopColor: 'white', width: '90%' }]}>{title}</Text>
+            <Text style={[textStyles.mediumBold, styles.sectionTitle]}>{title}</Text>
         );
     }
     render () {
@@ -64,8 +64,8 @@ class RestaurantScreen extends React.Component {
                     </View>
                     <View style={styles.centered}>
                         {/* Title & Address */}
-                        <Text style={[textStyles.whiteLargeBold, { paddingTop: 10 }]}>Les 3 Brasseurs</Text>
-                        <Text style={[textStyles.whiteSmall, { fontFamily: 'nunito-italic'}]}>123 Street, City</Text>
+                        <Text style={[textStyles.largeBold, { paddingTop: 10 }]}>Les 3 Brasseurs</Text>
+                        <Text style={[textStyles.small, { fontFamily: 'nunito-italic'}]}>123 Street, City</Text>
                         {/* Rating, Features, Menu, Photos & Call to Order */}
                         <StarRating disabled
                             maxStars={5}
@@ -79,16 +79,16 @@ class RestaurantScreen extends React.Component {
                             style={{paddingTop: 10, flex: 1}}/>
                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={this.onPress}>
                             <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'call'} color={'white'} />
-                            <Text style={[textStyles.whiteSmall, styles.buttonText]}>Call To Order</Text>
+                            <Text style={[textStyles.small, styles.buttonText]}>Call To Order</Text>
                         </TouchableOpacity>
                         {/* Hours */}
                         { this._renderSection('Hours') }
                         <View style={styles.widthsContainer}>
                             <View style={{ width: '50%', paddingRight: 5 }}>
-                                <Text style={[textStyles.whiteSmall, {lineHeight: 25}]}>Current</Text>
-                                <Text style={[textStyles.whiteSmall, {lineHeight: 25}]}>Monday - Friday</Text>
-                                <Text style={[textStyles.whiteSmall, {lineHeight: 25}]}>Staturday</Text>
-                                <Text style={[textStyles.whiteSmall, {lineHeight: 25}]}>Sunday</Text>
+                                <Text style={[textStyles.small, {lineHeight: 25}]}>Current</Text>
+                                <Text style={[textStyles.small, {lineHeight: 25}]}>Monday - Friday</Text>
+                                <Text style={[textStyles.small, {lineHeight: 25}]}>Staturday</Text>
+                                <Text style={[textStyles.small, {lineHeight: 25}]}>Sunday</Text>
                             </View>
                             <View style={{ width: '50%', paddingLeft: 5 }}>
                                 <View style={styles.centered}>
@@ -96,8 +96,8 @@ class RestaurantScreen extends React.Component {
                                         { isOpen ? 'Open now' : 'Closed' }
                                     </Text>
                                 </View>
-                                <Text style={[textStyles.whiteSmall, {lineHeight: 25}]}>9:00 am - 5:00 pm</Text>
-                                <Text style={[textStyles.whiteSmall, {lineHeight: 25}]}>11:00 am - 8:00 pm</Text>
+                                <Text style={[textStyles.small, {lineHeight: 25}]}>9:00 am - 5:00 pm</Text>
+                                <Text style={[textStyles.small, {lineHeight: 25}]}>11:00 am - 8:00 pm</Text>
                                 <View style={styles.centered}>
                                     <Text style={[styles.open, { backgroundColor: isOpen ? 'green' : 'red' }]}>
                                         { isOpen ? 'Open now' : 'Closed' }

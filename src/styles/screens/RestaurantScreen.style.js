@@ -50,6 +50,13 @@ export default styles = StyleSheet.create({
     widthsContainer: {
         flexDirection: 'row'
     },
+    sectionTitle: {
+        paddingVertical: 10,
+        marginTop: 20,
+        borderTopWidth: 1,
+        borderTopColor: colors.lightGrey,
+        width: '90%'
+    },
     open: {
         paddingHorizontal: 5,
         height: 25,
@@ -71,8 +78,9 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 10,
         paddingHorizontal: 10,
+        marginRight: 20,
         borderBottomWidth: 1,
-        borderBottomColor: 'white'
+        borderBottomColor: colors.lightGrey
     },
     reviewTitle: {
         color: 'white',

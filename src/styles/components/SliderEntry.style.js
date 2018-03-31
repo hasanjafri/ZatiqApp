@@ -94,6 +94,7 @@ export default StyleSheet.create({
         position: 'absolute'
     },
     buttonBar: {
+        marginTop: 10
     },
     buttonCall: {
         backgroundColor: colors.primary,
