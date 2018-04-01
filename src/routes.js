@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { StackNavigator, DrawerNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
 
 // Custom imports
@@ -8,36 +9,45 @@ import RestaurantScreen from './screens/application/RestaurantScreen';
 import PictureScreen from './screens/PictureScreen';
 import FindRestaurantScreen from './screens/application/FindRestaurantScreen';
 import LoginScreen from './screens/LoginScreen';
-import BusinessSignUpScreen from './screens/business/BusinessSignUpScreen';
 import BusinessLoginScreen from './screens/business/BusinessLoginScreen';
+import BusinessSignUpScreen from './screens/business/BusinessSignUpScreen';
 import BusinessProfileScreen from './screens/business/BusinessProfileScreen';
 
-import ImageHeader from './components/header/Header';
+import { ImageHeader, HeaderLogo, MenuLogo } from './components/header/Header';
 import Drawer from './components/drawer/Drawer';
 
+const backHeader = {
+    headerBackground: <ImageHeader />,
+    headerTintColor: 'white'
+}
 const mainApplication = StackNavigator({
     Feeling: {
         screen: FeelingScreen,
-        navigationOptions: {
-            header: (props) => <ImageHeader showDrawerOpen {...props} />
+        navigationOptions: ({ navigation }) => {
+            return {
+                headerBackground: <ImageHeader />,
+                headerTitle: <HeaderLogo />,
+                headerLeft: <MenuLogo navigation={navigation} />,
+                headerRight: (<View></View>)
+            }
         }
     },
     Suggestion: {
         screen: SuggestionScreen,
         navigationOptions: {
-            header: (props) => <ImageHeader showBack {...props} />
+            ...backHeader
         }
     },
     Restaurant: {
         screen: RestaurantScreen,
         navigationOptions: {
-            header: (props) => <ImageHeader showBack {...props} />
+            ...backHeader
         }
     },
     Picture: {
         screen: PictureScreen,
         navigationOptions: {
-            header: (props) => <ImageHeader showBack {...props} />
+            ...backHeader
         }
     }
 }, {
@@ -50,8 +60,13 @@ const ApplicationIn = DrawerNavigator({
     },
     FindRestaurant: {
         screen: FindRestaurantScreen,
-        navigationOptions: {
-            header: (props) => <ImageHeader showDrawerOpen {...props} />
+        navigationOptions: ({ navigation }) => {
+            return {
+                headerBackground: <ImageHeader />,
+                headerTitle: <HeaderLogo />,
+                headerLeft: <MenuLogo navigation={navigation} />,
+                headerRight: (<View></View>)
+            }
         }
     }
 }, {
@@ -68,14 +83,14 @@ const ApplicationOut = StackNavigator({
             header: false
         }
     },
-    BusinessSignUp: {
-        screen: BusinessSignUpScreen,
+    BusinessLogin: {
+        screen: BusinessLoginScreen,
         navigationOptions: {
             header: false
         }
     },
-    BusinessLogin: {
-        screen: BusinessLoginScreen,
+    BusinessSignUp: {
+        screen: BusinessSignUpScreen,
         navigationOptions: {
             header: false
         }

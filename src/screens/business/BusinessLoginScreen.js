@@ -23,39 +23,33 @@ class BusinessLoginScreen extends React.Component {
         }
     }
 
-    updateStorage = async () => {
-        await AsyncStorage.setItem('businessName', this.state.loggedBusiness);
-        await AsyncStorage.setItem('hasSetInformation', this.state.hasSetInformation);
-    }
-
-    login = () => {
+    login = async () => {
         //fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/', {
-        fetch('http://192.168.2.13:3000/businesses/', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                businessEmail: this.state.businessEmail,
-                businessPassword: this.state.businessPassword
-            })
-        })
-        .then((response) => response.json())
-        .then((res) => {
+        try {
+            const response = await fetch('http://192.168.2.13:3000/businesses/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    businessEmail: this.state.businessEmail,
+                    businessPassword: this.state.businessPassword
+                })
+            });
+            const res = await response.json();
 
             if (res.success === true) {
-                this.setState({
-                    loggedBusiness: res.business,
-                    hasSetInformation: res.hasSetInformation
-                });
-                this.updateStorage();
+                await AsyncStorage.setItem('businessName', res.business);
+                await AsyncStorage.setItem('hasSetInformation', res.hasSetInformation);
                 this.props.navigation.navigate('BusinessProfile');
             } else {
                 alert(res.message);
             }
-        })
-        .done();
+        } catch(e) {
+            console.log(e);
+            // TODO: error handling
+        }
     }
 
     render() {

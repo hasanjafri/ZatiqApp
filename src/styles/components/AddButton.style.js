@@ -9,7 +9,7 @@ export default StyleSheet.create({
     },
     fixedContainer: {
         position: 'absolute',
-        left: (width / 2) - 43,
+        left: (width / 2) - 36,
         bottom: 30,
     },
     relativeContainer: {

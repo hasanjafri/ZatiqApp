@@ -18,6 +18,7 @@ class App extends React.Component {
         let [user] = await Promise.all([
             isSignedIn(),
             AsyncStorage.removeItem('businessName'),
+            
             Font.loadAsync({
                 'nunito': require('./src/assets/fonts/Nunito-Regular.ttf'),
                 'nunito-bold': require('./src/assets/fonts/Nunito-Bold.ttf'),

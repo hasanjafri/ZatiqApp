@@ -2,17 +2,16 @@ import { StyleSheet } from 'react-native';
 
 export default styles = StyleSheet.create({
     view: {
+        flex: 1,
         height: '100%',
-        width: '100%',
-        flex: 1
+        width: '100%'
     },
 
     // Question Container
     questionView: {
         borderBottomColor: 'white',
         borderBottomWidth: 1,
-        marginTop: 11,
-        marginBottom: 11
+        marginVertical: 10,
     },
 
     // Top picks

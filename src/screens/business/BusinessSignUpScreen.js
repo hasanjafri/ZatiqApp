@@ -13,31 +13,32 @@ class BusinessSignUpScreen extends React.Component {
         }
     }
 
-    businessRegister = () => {
-        //fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/register', {
-        fetch('http://192.168.2.13:3000/businesses/register', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                businessName: this.state.businessName,
-                businessEmail: this.state.businessEmail,
-                businessPassword: this.state.businessPassword
-            })
-        })
-        .then((response) => response.json())
-        .then((res) => {
+    businessRegister = async () => {
+        //fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/', {
+        try {
+            const response = await fetch('http://192.168.2.13:3000/businesses/register', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    businessName: this.state.businessName,
+                    businessEmail: this.state.businessEmail,
+                    businessPassword: this.state.businessPassword
+                })
+            });
+            const res = await response.json();
+
             if (res.success === true) {
                 alert(res.message);
             } else {
                 alert(res.message);
             }
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        } catch(e) {
+            console.log(e);
+            // TODO: error handling
+        }
     }
 
     render() {
@@ -53,7 +54,7 @@ class BusinessSignUpScreen extends React.Component {
                         <TouchableOpacity style={styles.button} onPress={this.businessRegister}>
                             <Text>SIGN UP</Text>
                         </TouchableOpacity>
-                        <SocialIcon title="Already registered? Login here!" button light style={styles.buttons2} onPress={() => this.props.navigation.navigate('BusinessLogin')}/>
+                        <SocialIcon title="Already registered? Login here!" button light style={styles.buttons2} onPress={() => this.props.switchSreen('signUp')}/>
                         <SocialIcon title="Not a business?" button light style={styles.buttons2} onPress={() => this.props.navigation.navigate('Login')}/>
                     </View>
                 </KeyboardAvoidingView>
