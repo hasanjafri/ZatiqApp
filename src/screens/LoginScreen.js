@@ -16,12 +16,7 @@ class LoginScreen extends React.Component {
         super(props);
     }
     onSignIn = async (type) => {
-        if (type === 'facebook') {
-            // FB login
-        } else if (type === 'google') {
-            // Google login
-        }
-        await onSignIn();
+        await onSignIn(type);
 
         const { navigate } = this.props.navigation;
         navigate('SwitchIn');
