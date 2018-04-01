@@ -5,19 +5,19 @@ import GridView from 'react-native-super-grid';
 import StarRating from 'react-native-star-rating';
 
 // Custom imports
-import styles from '../styles/screens/RestaurantScreen.style';
-import textStyles from '../styles/text.style';
-import AddButton from '../components/add/AddButton';
+import styles from '../../styles/screens/application/RestaurantScreen.style';
+import textStyles from '../../styles/text.style';
+import AddButton from '../../components/add/AddButton';
 
 const TAGS = [
-    { text: 'Features', source: require('../assets/icons/Breakfast.png') },
-    { text: 'Menu', source: require('../assets/icons/Brunch.png') },
-    { text: 'Photos', source: require('../assets/icons/Lunch.png') }
+    { text: 'Features', source: require('../../assets/icons/Breakfast.png') },
+    { text: 'Menu', source: require('../../assets/icons/Brunch.png') },
+    { text: 'Photos', source: require('../../assets/icons/Lunch.png') }
 ];
 const REVIEWS = [
-    { text: 'This was the best food ever!jsdfasoidufoasudfoiasudfoiasudfoasufoasudofiasudogiabhfiuhiuiobhdfiogbhdfiobhfigbhfighbiuh', image: require('../assets/backgrounds/surprise-me.png'), name: 'Angelica C.', rating: 4 },
-    { text: 'Disgusting', image: require('../assets/backgrounds/surprise-me.png'), name: 'Angelica C.asdfsdf', rating: 3 },
-    { text: 'Ver long and random text, 1289347194h1i24hehdfoiguaosjodfgjodifjsdpofgsdpfgisdpfgsgisdpfigpsdfigpfipsdofigpfigpsdofigpsdofigosdpfigpsdofigsdpofgispdofigpsdfoigdfgfpodfpgispdfigpsdog', image: require('../assets/icons/Lunch.png'), name: 'Angelica C.asdfsdf', rating: 2 }
+    { text: 'This was the best food ever!jsdfasoidufoasudfoiasudfoiasudfoasufoasudofiasudogiabhfiuhiuiobhdfiogbhdfiobhfigbhfighbiuh', image: require('../../assets/backgrounds/surprise-me.png'), name: 'Angelica C.', rating: 4 },
+    { text: 'Disgusting', image: require('../../assets/backgrounds/surprise-me.png'), name: 'Angelica C.asdfsdf', rating: 3 },
+    { text: 'Ver long and random text, 1289347194h1i24hehdfoiguaosjodfgjodifjsdpofgsdpfgisdpfgsgisdpfigpsdfigpfipsdofigpfigpsdofigpsdofigosdpfigpsdofigsdpofgispdofigpsdfoigdfgfpodfpgispdfigpsdog', image: require('../../assets/icons/Lunch.png'), name: 'Angelica C.asdfsdf', rating: 2 }
 ];
 
 class RestaurantScreen extends React.Component {
@@ -26,9 +26,9 @@ class RestaurantScreen extends React.Component {
         this.state = {
         }
         this.ITEMS = [
-            { text: 'Features', source: require('../assets/icons/Breakfast.png') },
-            { text: 'Menu', source: require('../assets/icons/Brunch.png') },
-            { text: 'Photos', source: require('../assets/icons/Lunch.png') }
+            { text: 'Features', source: require('../../assets/icons/Breakfast.png') },
+            { text: 'Menu', source: require('../../assets/icons/Brunch.png') },
+            { text: 'Photos', source: require('../../assets/icons/Lunch.png') }
         ];
     }
     onPress() {
@@ -56,11 +56,11 @@ class RestaurantScreen extends React.Component {
     render () {
         const isOpen = false;
         return (
-            <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
+            <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <ScrollView style={styles.scrollViewContainer}>
                     {/* Restaurant Image */}
                     <View style={styles.imageContainer}>
-                        <Image style={styles.restaurantImage} resizeMode={'cover'} source={require('../assets/backgrounds/surprise-me.png')} />
+                        <Image style={styles.restaurantImage} resizeMode={'cover'} source={require('../../assets/backgrounds/surprise-me.png')} />
                     </View>
                     <View style={styles.centered}>
                         {/* Title & Address */}

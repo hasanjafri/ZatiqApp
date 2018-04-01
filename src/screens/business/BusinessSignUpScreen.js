@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, Text, StyleSheet, View, ImageBackground, KeyboardAvoidingView, TouchableOpacity, AsyncStorage } from 'react-native';
 import { SocialIcon } from 'react-native-elements';
-import styles from '../styles/screens/BuisnessSignUpScreen.style';
+import styles from '../../styles/screens/business/BuisnessSignUpScreen.style';
 
 class BusinessSignUpScreen extends React.Component {
     constructor(props) {

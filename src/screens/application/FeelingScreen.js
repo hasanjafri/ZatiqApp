@@ -4,10 +4,10 @@ import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
 // Custom imports
-import AddButton from '../components/add/AddButton';
-import styles from '../styles/screens/FeelingScreen.style';
-import textStyles from '../styles/text.style';
-import categories from '../data/categories';
+import AddButton from '../../components/add/AddButton';
+import styles from '../../styles/screens/application/FeelingScreen.style';
+import textStyles from '../../styles/text.style';
+import categories from '../../data/categories';
 
 class FeelingScreen extends React.Component {
     constructor(props) {
@@ -37,7 +37,7 @@ class FeelingScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
+            <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <View style={styles.questionView}>
                     <Text style={textStyles.mediumBold}>Hey Jace,</Text>
                     <Text style={textStyles.small}>HUNGRY? Let's find you something to eat</Text>
@@ -45,7 +45,7 @@ class FeelingScreen extends React.Component {
                 </View>
                 <ScrollView style={styles.scrollViewContainer}>
                     <TouchableOpacity style={styles.topPickView} onPress={() => navigate('Suggestion', { category: 'Top Pick' })}>
-                        <ImageBackground style={styles.topPickImage} source={require('../assets/backgrounds/top-picks.png')}>
+                        <ImageBackground style={styles.topPickImage} source={require('../../assets/backgrounds/top-picks.png')}>
                             <View style={styles.topPickImageOverlay}>
                                 <Text style={textStyles.large}>OUR</Text>
                                 <Text style={textStyles.hugeBold}>TOP</Text>
@@ -55,15 +55,15 @@ class FeelingScreen extends React.Component {
                     </TouchableOpacity>
                     <View style={styles.equalWidthsContainer}>
                         <TouchableOpacity style={[styles.equalWitdhView, { paddingRight: 5 }]} onPress={() => navigate('Suggestion', { category: 'Surprise Me' })}>
-                            {this._renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'SURPRISE ME')}
+                            {this._renderTextWithBackground(require('../../assets/backgrounds/surprise-me.png'), 'SURPRISE ME')}
                         </TouchableOpacity>
                         <View style={[styles.equalWitdhView, { paddingLeft: 5 }]}>
                             <View style={styles.equalHeightContainer}>
                                 <TouchableOpacity style={[styles.equalHeightView, { paddingBottom: 5 }]} onPress={() => navigate('Suggestion', { category: 'Popular' })}>
-                                    {this._renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'POPULAR')}
+                                    {this._renderTextWithBackground(require('../../assets/backgrounds/surprise-me.png'), 'POPULAR')}
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.equalHeightView, { paddingTop: 5 }]} onPress={() => navigate('Suggestion', { category: 'Newest' })}>
-                                    {this._renderTextWithBackground(require('../assets/backgrounds/surprise-me.png'), 'NEWEST')}
+                                    {this._renderTextWithBackground(require('../../assets/backgrounds/surprise-me.png'), 'NEWEST')}
                                 </TouchableOpacity>
                             </View>
                         </View>

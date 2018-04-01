@@ -8,6 +8,7 @@ const GOOGLE_IOS_ID = '1013702018515-ajvv6fh1d6usglha3qpgoeicac4o0dt3.apps.googl
 const GOOGLE_ANDROID_ID = '1013702018515-5t8kr0mpf3k1vsbr3am9klm7qorqu8rc.apps.googleusercontent.com';
 
 export const onSignIn = async (type) => {
+    let parsedResult;
     if (type === 'facebook') {
         // FB login
         let type, token;
@@ -18,9 +19,7 @@ export const onSignIn = async (type) => {
             if (type === 'success' && token) {
                 const response = await fetch(`https://graph.facebook.com/me?fields=name,email&access_token=${token}`);
                 const responseJson = await response.json();
-                await AsyncStorage.setItem(USER_KEY, {...responseJson, accessToken: token});
-                console.log(responseJson);
-                return responseJson;
+                parsedResult = { ...responseJson, accessToken: token };
             } else {
                 return null;
             }
@@ -36,16 +35,13 @@ export const onSignIn = async (type) => {
                 iosClientId: GOOGLE_IOS_ID,
                 scopes: ['profile', 'email'],
             });
-            console.log(result);
-            const parsedResult = {
-                accessToken: result.accessToken,
-                id: result.user.id,
-                name: result.user.name,
-                email: result.user.email
-            };
             if (result.type === 'success') {
-                await AsyncStorage.setItem(USER_KEY, parsedResult);
-                return parsedResult;
+                parsedResult = {
+                    accessToken: result.accessToken,
+                    id: result.user.id,
+                    name: result.user.name,
+                    email: result.user.email
+                };
             } else {
                 return null;
             }
@@ -54,6 +50,9 @@ export const onSignIn = async (type) => {
             return null;
         }
     }
+    console.log(parsedResult);
+    // Here we have the parsed result, store it in the async storage
+    await AsyncStorage.setItem(USER_KEY, JSON.stringify(parsedResult));
 };
 
 export const onSignOut = () => {

@@ -2,15 +2,15 @@ import React from 'react';
 import { StackNavigator, DrawerNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
 
 // Custom imports
-import FeelingScreen from './screens/FeelingScreen';
-import SuggestionScreen from './screens/SuggestionScreen';
-import RestaurantScreen from './screens/RestaurantScreen';
+import FeelingScreen from './screens/application/FeelingScreen';
+import SuggestionScreen from './screens/application/SuggestionScreen';
+import RestaurantScreen from './screens/application/RestaurantScreen';
 import PictureScreen from './screens/PictureScreen';
-import FindRestaurantScreen from './screens/FindRestaurantScreen';
+import FindRestaurantScreen from './screens/application/FindRestaurantScreen';
 import LoginScreen from './screens/LoginScreen';
-import BusinessSignUpScreen from './screens/BusinessSignUpScreen';
-import BusinessLoginScreen from './screens/BusinessLoginScreen';
-import BusinessProfileScreen from './screens/BusinessProfileScreen';
+import BusinessSignUpScreen from './screens/business/BusinessSignUpScreen';
+import BusinessLoginScreen from './screens/business/BusinessLoginScreen';
+import BusinessProfileScreen from './screens/business/BusinessProfileScreen';
 
 import ImageHeader from './components/header/Header';
 import Drawer from './components/drawer/Drawer';

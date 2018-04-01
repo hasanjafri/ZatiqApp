@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import styles from '../styles/screens/BuisnessProfileScreen.style';
+import styles from '../../styles/screens/business/BuisnessProfileScreen.style';
 
 class BusinessProfileScreen extends React.Component {
     constructor(props) {

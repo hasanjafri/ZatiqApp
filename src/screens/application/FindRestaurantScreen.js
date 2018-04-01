@@ -6,10 +6,10 @@ import { NavigationActions } from 'react-navigation'
 import  Icon  from 'react-native-vector-icons';
 
 // Actions
-import { onSignIn } from '../../src/actions/auth';
+import { onSignIn } from '../../../src/actions/auth';
 
 // Custom imports
-import styles from '../styles/screens/LoginScreen.style';
+import styles from '../../styles/screens/LoginScreen.style';
 
 class FindRestaurant extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class FindRestaurant extends React.Component {
     render() {
         return (
             <View style={styles.view}>
-                <Video source={require('../assets/backgrounds/Zatiq.mp4')}
+                <Video source={require('../../assets/backgrounds/Zatiq.mp4')}
                     rate={1.0}
                     isMuted
                     resizeMode="cover"

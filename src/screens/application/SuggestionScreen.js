@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageBackground } from 'react-native';
-import styles from '../styles/screens/SuggestionScreen.style';
-import Slider from '../components/slider/Slider';
+import styles from '../../styles/screens/application/SuggestionScreen.style';
+import Slider from '../../components/slider/Slider';
 
 const ENTRIES1 = [
     {
@@ -66,7 +66,7 @@ class SuggestionScreen extends React.Component {
     }
     render () {
         return (
-            <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
+            <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <Slider type={'Suggestion'} navigateTo={this.navigateTo} data={ENTRIES1} />
             </ImageBackground>
         );
