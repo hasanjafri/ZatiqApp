@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableOpacity, AsyncStorage } from 'react-native';
-import { SocialIcon } from 'react-native-elements';
+import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage } from 'react-native';
+import { SocialIcon, Button } from 'react-native-elements';
 import styles from '../../styles/screens/business/BuisnessLoginScreen.style';
 
 class BusinessLoginScreen extends React.Component {
@@ -59,10 +59,37 @@ class BusinessLoginScreen extends React.Component {
                     <Text style={styles.header}>- BUSINESS LOGIN -</Text>
                     <TextInput style={styles.textInput} placeholder="enter your business e-mail" onChangeText={(businessEmail) => this.setState({businessEmail})} underlineColorAndroid='transparent'/>
                     <TextInput style={styles.textInput} placeholder="enter your password" onChangeText={(businessPassword) => this.setState({businessPassword})} underlineColorAndroid='transparent' secureTextEntry/>
-                    <TouchableOpacity style={styles.button} onPress={this.login}>
-                        <Text>Log In</Text>
-                    </TouchableOpacity>
-                    <SocialIcon title="Not registered yet? Sign up here!" button light style={styles.buttons2} onPress={() => this.props.navigation.navigate('BusinessSignUp')}/>
+
+                    <Button title="Log In"
+                        titleStyle={{ textAlign: 'center', fontFamily: 'nunito' }}
+                        buttonStyle={{
+                            backgroundColor: "rgba(0, 193, 138, 1)",
+                            width: 300,
+                            height: 50,
+                            borderColor: 'transparent',
+                            borderWidth: 0,
+                            borderRadius: 25
+                        }}
+                        clear
+                        onPress={this.login}
+                        containerStyle={{ marginVertical: 15, backgroundColor: 'transparent' }} />
+                    <Button
+                        title="Not registered yet? Sign up here!"
+                        titleStyle={{ textAlign: 'center', fontFamily: 'nunito', color: 'black', fontSize: 14 }}
+                        buttonStyle={{
+                            backgroundColor: 'white',
+                            width: 300,
+                            height: 50,
+                            borderColor: 'transparent',
+                            borderWidth: 0,
+                            borderRadius: 25,
+                            marginBottom: 20
+                        }}
+                        clear
+                        onPress={() => this.props.navigation.navigate('BusinessSignUp')} />
+                    <TouchableHighlight onPress={() => this.props.navigation.navigate('Login')}>
+                        <Text style={{ color: 'white' }}>Not a business?</Text>
+                    </TouchableHighlight>
                 </View>
             </KeyboardAvoidingView>
         );

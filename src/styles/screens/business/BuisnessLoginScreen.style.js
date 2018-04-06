@@ -9,8 +9,7 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#2896d3',
-        paddingLeft: 40,
-        paddingRight: 40
+        paddingHorizontal: 40
     },
     header: {
         fontSize: 24,
@@ -31,8 +30,8 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10
     },
-    buttons2: {
-        borderRadius: 10,
+    buttons: {
+        borderRadius: 20,
         padding: 20,
         alignSelf: 'stretch'
     }

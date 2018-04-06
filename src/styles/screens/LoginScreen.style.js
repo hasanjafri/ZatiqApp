@@ -24,6 +24,6 @@ export default styles = StyleSheet.create({
         height: 300
     },
     signInButtons: {
-        borderRadius: 10
+        borderRadius: 25
     }
 });

@@ -35,6 +35,7 @@ export const onSignIn = async (type) => {
                 iosClientId: GOOGLE_IOS_ID,
                 scopes: ['profile', 'email'],
             });
+            console.log(result);
             if (result.type === 'success') {
                 parsedResult = {
                     accessToken: result.accessToken,

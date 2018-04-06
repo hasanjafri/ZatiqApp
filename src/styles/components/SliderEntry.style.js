@@ -22,30 +22,16 @@ export default StyleSheet.create({
     slideInnerContainer: {
         width: itemWidth,
         height: slideHeight,
-        paddingHorizontal: itemHorizontalMargin,
-        paddingBottom: 18 // needed for shadow
+        paddingHorizontal: itemHorizontalMargin
     },
     shadow: {
-        // position: 'absolute',
-        // top: 0,
-        // left: itemHorizontalMargin,
-        // right: itemHorizontalMargin,
-        // bottom: 18,
-        // shadowColor: colors.black,
-        // shadowOpacity: 0.25,
-        // shadowOffset: { width: 0, height: 10 },
-        // shadowRadius: 10,
-        // borderRadius: entryBorderRadius
     },
     imageContainer: {
         flex: 1,
-        marginBottom: IS_IOS ? 0 : -1, // Prevent a random Android rendering issue
-        backgroundColor: 'white',
-        // borderTopLeftRadius: entryBorderRadius,
-        // borderTopRightRadius: entryBorderRadius
+        marginBottom: IS_IOS ? 0 : -1, 
+        backgroundColor: 'white'
     },
     imageContainerEven: {
-        // backgroundColor: colors.black
     },
     imagePlaceholder: {
         resizeMode: 'cover',
@@ -56,31 +42,18 @@ export default StyleSheet.create({
     },
     image: {
         ...StyleSheet.absoluteFillObject,
-        resizeMode: 'cover',
-        // borderRadius: IS_IOS ? entryBorderRadius : 0,
-        // borderTopLeftRadius: entryBorderRadius,
-        // borderTopRightRadius: entryBorderRadius
+        resizeMode: 'cover'
     },
-    // image's border radius is buggy on iOS; let's hack it!
     radiusMask: {
-        // position: 'absolute',
-        // bottom: 0,
-        // left: 0,
-        // right: 0,
-        // height: entryBorderRadius,
-        // backgroundColor: 'transparent'
     },
     radiusMaskEven: {
-        // backgroundColor: 'transparent'
     },
     contentContainer: {
         justifyContent: 'center',
         paddingTop: 20 - entryBorderRadius,
         paddingBottom: 20,
         paddingHorizontal: 16,
-        backgroundColor: 'white',
-        // borderBottomLeftRadius: entryBorderRadius,
-        // borderBottomRightRadius: entryBorderRadius
+        backgroundColor: 'white'
     },
     contentContainerEven: {
         backgroundColor: 'white'

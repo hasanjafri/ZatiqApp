@@ -9,23 +9,23 @@ export default styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#2896d3',
-        paddingLeft: 40,
-        paddingRight: 40
-    },
-    header: {
-        fontSize: 24,
-        marginBottom: 60,
-        color: '#fff',
-        fontWeight: 'bold',
-        borderBottomColor: '#f8f8f8',
-        borderBottomWidth: 1
+        paddingHorizontal: 40
     },
     textInput: {
-        alignSelf: 'stretch',
-        padding: 16,
         marginBottom: 20,
-        backgroundColor: '#fff',
+        borderWidth: 1,
+        height: 50,
+        borderColor: 'white',
+        borderRadius: 25
+    },
+    inputContainer: {
+
+    },
+    iconContainer: {
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 50
     },
     button: {
         alignSelf: 'stretch',
@@ -34,7 +34,7 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10
     },
-    buttons2: {
+    buttons: {
         borderRadius: 10,
         padding: 20,
         alignSelf: 'stretch'

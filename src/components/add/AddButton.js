@@ -15,7 +15,7 @@ class AddButton extends React.Component {
         const { showOverlay } = this.state;
         return (
             <React.Fragment>
-                <AddOverlay showOverlay={this.state.showOverlay} />
+                <AddOverlay showOverlay={this.state.showOverlay} onClose={() => { this.setState({ showOverlay: false })}}/>
                 { !showOverlay ?
                     <Icon reverse raised
                         iconStyle={styles.icon}

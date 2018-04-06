@@ -98,7 +98,7 @@ const ApplicationOut = StackNavigator({
     BusinessProfile: {
         screen: BusinessProfileScreen,
         navigationOptions: {
-            header: false
+            ...backHeader
         }
     }
 });
