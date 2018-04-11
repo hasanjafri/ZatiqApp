@@ -4,7 +4,7 @@ import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
 // Custom imports
-import AddButton from '../../components/add/AddButton';
+import AddReviewOverlay from '../../components/addReview/AddReviewOverlay';
 import styles from '../../styles/screens/application/FeelingScreen.style';
 import textStyles from '../../styles/text.style';
 import categories from '../../data/categories';
@@ -70,7 +70,7 @@ class FeelingScreen extends React.Component {
                     </View>
                     <GridView itemDimension={130} items={categories} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
                 </ScrollView>
-                <AddButton fixed/>
+                <AddReviewOverlay fixed/>
             </ImageBackground>
         );
     }

@@ -12,7 +12,7 @@ export default {
     'FineFood': 'Fine Food',
     'GlutenFree': 'Gluten Free',
     'Greek': 'Greek',
-    'Halal': 'Halal',
+    // 'Halal': 'Halal',
     'Healthy': 'Healthy',
     'Indian': 'Indian',
     'Italian': 'Italian',

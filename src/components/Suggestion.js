@@ -81,6 +81,9 @@ export default class CustomMultiPicker extends Component {
                 { this.state.searchText.length > 0 ?
                     <ScrollView style={[{ maxHeight: this.props.scrollViewHeight }, this.props.scrollViewStyle]} >
                         { labels.map((label, index) => {
+                            if (index >= 3) {
+                                return;
+                            }
                             const itemKey = returnValue == "label" ? label : values[index]
                             return (
                                 <TouchableOpacity

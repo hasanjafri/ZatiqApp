@@ -2,46 +2,37 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage } from 'react-native';
 import { SocialIcon, Button } from 'react-native-elements';
 import styles from '../../styles/screens/business/BuisnessLoginScreen.style';
+import urls from '../../libs/urls';
 
 class BusinessLoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            businessPassword: '',
-            businessEmail: ''
-        }
+            password: '',
+            email: ''
+        };
+        this.businessLogin = this.businessLogin.bind(this);
     }
 
-    componentDidMount() {
-        this.loadInitialState().done();
-    }
-
-    loadInitialState = async () => {
-        var value = await AsyncStorage.getItem('businessName');
-        if (value !== null) {
-            this.props.navigation.navigate('BusinessProfile');
-        }
-    }
-
-    login = async () => {
-        //fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/', {
+    businessLogin = async () => {
         try {
-            const response = await fetch('http://192.168.2.13:3000/businesses/', {
+            const response = await fetch(urls.businessLogin, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    businessEmail: this.state.businessEmail,
-                    businessPassword: this.state.businessPassword
+                    email: this.state.email,
+                    password: this.state.password
                 })
             });
+            console.log(response);
             const res = await response.json();
 
             if (res.success === true) {
-                await AsyncStorage.setItem('businessName', res.business);
-                await AsyncStorage.setItem('hasSetInformation', res.hasSetInformation);
+                // await AsyncStorage.setItem('businessName', res.business);
+                // await AsyncStorage.setItem('hasSetInformation', res.hasSetInformation);
                 this.props.navigation.navigate('BusinessProfile');
             } else {
                 alert(res.message);
@@ -57,8 +48,8 @@ class BusinessLoginScreen extends React.Component {
             <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
                 <View style={styles.container}>
                     <Text style={styles.header}>- BUSINESS LOGIN -</Text>
-                    <TextInput style={styles.textInput} placeholder="enter your business e-mail" onChangeText={(businessEmail) => this.setState({businessEmail})} underlineColorAndroid='transparent'/>
-                    <TextInput style={styles.textInput} placeholder="enter your password" onChangeText={(businessPassword) => this.setState({businessPassword})} underlineColorAndroid='transparent' secureTextEntry/>
+                    <TextInput style={styles.textInput} placeholder="enter your business e-mail" onChangeText={(email) => this.setState({email})} underlineColorAndroid='transparent'/>
+                    <TextInput style={styles.textInput} placeholder="enter your password" onChangeText={(password) => this.setState({password})} underlineColorAndroid='transparent' secureTextEntry/>
 
                     <Button title="Log In"
                         titleStyle={{ textAlign: 'center', fontFamily: 'nunito' }}

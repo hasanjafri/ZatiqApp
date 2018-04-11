@@ -17,7 +17,7 @@ export default [
     { text: 'Mexican', source: require('../assets/icons/Mexican.png') },
     { text: 'Spicy', source: require('../assets/icons/Spicy.png') },
     { text: 'Fine Food', source: require('../assets/icons/FineFood.png') },
-    { text: 'Halal', source: require('../assets/icons/Halal.png') },
+    // { text: 'Halal', source: require('../assets/icons/Halal.png') },
     { text: 'Kosher', source: require('../assets/icons/Kosher.png') },
     { text: 'Healthy', source: require('../assets/icons/Healthy.png') },
     { text: 'Vegan', source: require('../assets/icons/Vegan.png') },

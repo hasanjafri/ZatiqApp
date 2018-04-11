@@ -1,10 +1,10 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
-import styles from '../../styles/components/AddButton.style';
+import styles from '../../styles/components/addReview/AddReviewOverlay.style';
 import colors from '../../styles/colors.style';
-import AddOverlay from './AddOverlay';
+import AddReviewOverlay from './AddReviewOverlay';
 
-class AddButton extends React.Component {
+class AddReviewButton extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +15,7 @@ class AddButton extends React.Component {
         const { showOverlay } = this.state;
         return (
             <React.Fragment>
-                <AddOverlay showOverlay={this.state.showOverlay} onClose={() => { this.setState({ showOverlay: false })}}/>
+                <AddReviewOverlay showOverlay={this.state.showOverlay} onClose={() => { this.setState({ showOverlay: false })}}/>
                 { !showOverlay ?
                     <Icon reverse raised
                         iconStyle={styles.icon}
@@ -31,4 +31,4 @@ class AddButton extends React.Component {
     }
 }
 
-export default AddButton;
+export default AddReviewButton;

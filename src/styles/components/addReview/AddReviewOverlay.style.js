@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import colors from '../colors.style';
+import colors from '../../colors.style';
 
 export default StyleSheet.create({
     wrapper: {
@@ -11,14 +11,12 @@ export default StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        marginBottom: 30,
-        borderBottomWidth: 1,
+        marginBottom: 15,
         paddingVertical: 20,
         borderColor: colors.lightgrey
     },
     body: {
-        paddingHorizontal: 20,
-        paddingVertical: 20
+        paddingHorizontal: 20
     },
     labelText: {
         color: colors.lightgrey,
@@ -30,9 +28,28 @@ export default StyleSheet.create({
         color: colors.black,
         fontFamily: 'nunito'
     },
+
+    textAreaContainer: {
+        borderWidth: 1,
+        borderColor: colors.lightergrey,
+        borderRadius: 5,
+        padding: 10
+    },
     textArea: {
         color: colors.black,
-        fontFamily: 'nunito',
-        height: 100
+        fontFamily: 'nunito'
+    },
+
+    searchContainer: {
+        backgroundColor: 'white',
+        borderTopWidth: 0,
+        borderBottomWidth: 0,
+        marginHorizontal: 10
+    },
+    searchInput: {
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: colors.lightergrey
     }
 });

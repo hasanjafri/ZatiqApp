@@ -6,7 +6,7 @@ import colors from '../../../styles/colors.style';
 import styles from '../../../styles/screens/business/Pages.style';
 import textStyles from '../../../styles/text.style';
 
-class ThirdPage extends React.Component {
+class FeaturesPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,14 +34,14 @@ class ThirdPage extends React.Component {
                     <Icon onPress={() => this.toggleFeature(value)} size={35} color={colors.blue} type='font-awesome' name='check-circle'/> :
                     <Icon onPress={() => this.toggleFeature(value)} size={35} color={colors.lightgrey} type='font-awesome' name='circle-thin'/>
                 }
-                <Text style={[textStyles.large, { color: 'black', textAlign: 'left', marginLeft: 20, lineHeight: 50, height: 50 }]}>{text}</Text>
+                <Text style={[textStyles.medium, { color: 'black', textAlign: 'left', marginLeft: 20, lineHeight: 40, height: 40 }]}>{text}</Text>
             </View>
         );
     }
     render() {
         return (
             <ScrollView style={styles.wrapper}>
-                <Text style={[textStyles.large, { color: 'black', textAlign: 'left', marginVertical: 20 }]}>Features</Text>
+                <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left', marginVertical: 20 }]}>Features</Text>
                 
                 { this._renderFeature({ text: 'Delivery', value: 'delivery'}) }
                 { this._renderFeature({ text: 'Takeout', value: 'takeout'}) }
@@ -53,7 +53,7 @@ class ThirdPage extends React.Component {
                     buttonStyle={{
                         backgroundColor: colors.primary,
                         width: 300,
-                        height: 50,
+                        height: 40,
                         borderColor: 'transparent',
                         borderWidth: 0,
                         borderRadius: 25
@@ -66,4 +66,4 @@ class ThirdPage extends React.Component {
     }
 }
 
-export default ThirdPage;
+export default FeaturesPage;

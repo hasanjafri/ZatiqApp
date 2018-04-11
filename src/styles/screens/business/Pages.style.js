@@ -4,16 +4,19 @@ import colors from '../../colors.style';
 
 export default styles = StyleSheet.create({
     wrapper: {
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingVertical: 20
+        paddingHorizontal: 20
+    },
+    overlayContainer: {
+        position: 'absolute',
+        top: 10,
+        bottom: 10
     },
     input: {
         color: colors.black,
         fontFamily: 'nunito'
     },
     headerText: {
-        color: colors.lightgrey,
+        color: colors.gray,
         fontWeight: 'bold',
         textAlign: 'left',
         marginTop: 10
@@ -33,16 +36,15 @@ export default styles = StyleSheet.create({
         height: 35,
         backgroundColor: 'lightgrey'
     },
-    uploadButtonsContainer: {
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start'
-    },
-    uploadButtonContainer: {
-        flexDirection: 'row',
-        marginBottom: 20
+
+    listContainer: {
+        backgroundColor: '#eef0f3',
+        paddingHorizontal: 20
     },
     uploadButton: {
-        width: 200
+        width: 200,
+        marginTop: 20,
+        marginBottom: 40
     },
 
     equalWidthContainer: {
@@ -55,7 +57,7 @@ export default styles = StyleSheet.create({
     
     feature: {
         flexDirection: 'row',
-        height: 50,
+        height: 40,
         marginVertical: 10 
     }
 });

@@ -1,5 +1,6 @@
 
 import { StyleSheet } from 'react-native';
+import colors from '../../colors.style';
 
 export default styles = StyleSheet.create({
     wrapper: {
@@ -15,13 +16,15 @@ export default styles = StyleSheet.create({
         height: '100%'
     },
     paginationContainer: {
-        paddingVertical: 8,
-        marginBottom: 10
+        paddingVertical: 20,
+        width: '100%',
+        borderTopWidth: 2,
+        borderColor: colors.primary
     },
     paginationDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
+        width: 10,
+        height: 10,
+        borderRadius: 5,
         marginHorizontal: 8
     }
 });

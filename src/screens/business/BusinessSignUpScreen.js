@@ -3,41 +3,43 @@ import { Text, StyleSheet, View, Image, ImageBackground, TouchableOpacity, Touch
 import { SocialIcon, Input, Icon, Button } from 'react-native-elements';
 import styles from '../../styles/screens/business/BuisnessSignUpScreen.style';
 import colors from '../../styles/colors.style';
+import urls from '../../libs/urls';
 
 class BusinessSignUpScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            businessName: '',
-            businessEmail: '',
-            businessPassword: ''
-        }
+            email: '',
+            password: '',
+        };
+        this.businessRegister = this.businessRegister.bind(this);
     }
 
     businessRegister = async () => {
-        //fetch('http://review-testserver.smk8prhzy8.us-west-2.elasticbeanstalk.com/businesses/', {
         try {
-            const response = await fetch('http://192.168.2.13:3000/businesses/register', {
+            const response = await fetch(urls.businessRegister, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    businessName: this.state.businessName,
-                    businessEmail: this.state.businessEmail,
-                    businessPassword: this.state.businessPassword
+                    email: this.state.email,
+                    password: this.state.password
                 })
             });
+            console.log(response);
             const res = await response.json();
-
+            console.log(res);
             if (res.success === true) {
-                alert(res.message);
+                // console.log(res);
+                this.props.navigation.navigate('BusinessProfile');
             } else {
-                alert(res.message);
+                // console.log(res);
             }
         } catch(e) {
             console.log(e);
+            this.props.navigation.navigate('BusinessProfile');
             // TODO: error handling
         }
     }
@@ -63,9 +65,8 @@ class BusinessSignUpScreen extends React.Component {
                             </ImageBackground>
                         </TouchableOpacity>
 
-                        <Input leftIconContainerStyle={styles.iconContainer} inputContainerStyle={styles.inputContainer} containerStyle={styles.textInput} placeholder='Business Name' leftIcon={<Icon type='font-awesome' name='user-circle-o' size={25} color='white' />} onChangeText={(businessEmail) => this.setState({businessEmail})}/>
-                        <Input leftIconContainerStyle={styles.iconContainer} inputContainerStyle={styles.inputContainer} containerStyle={styles.textInput} placeholder='E-mail' leftIcon={<Icon type='font-awesome' name='user-circle-o' size={25} color='white' />} onChangeText={(businessName) => this.setState({businessName})} />
-                        <Input leftIconContainerStyle={styles.iconContainer} inputContainerStyle={styles.inputContainer} containerStyle={styles.textInput} placeholder='Password' leftIcon={<Icon type='font-awesome' name='lock' size={25} color='white' secureTextEntry />} onChangeText={(businessPassword) => this.setState({businessPassword})} />
+                        <Input leftIconContainerStyle={styles.iconContainer} inputContainerStyle={styles.inputContainer} containerStyle={styles.textInput} placeholder='Business E-mail' leftIcon={<Icon type='font-awesome' name='user-circle-o' size={25} color='white' />} onChangeText={(email) => this.setState({email})}/>
+                        <Input leftIconContainerStyle={styles.iconContainer} inputContainerStyle={styles.inputContainer} containerStyle={styles.textInput} placeholder='Password' leftIcon={<Icon type='font-awesome' name='lock' size={25} color='white' secureTextEntry />} onChangeText={(password) => this.setState({password})} />
 
                         <TouchableHighlight onPress={() => this.props.navigation.goBack()}>
                             <Text style={{ color: 'white', paddingBottom: 15 }}>Terms and Conditions</Text>
@@ -82,7 +83,7 @@ class BusinessSignUpScreen extends React.Component {
                                 borderWidth: 0
                             }}
                             clear
-                            onPress={() => this.props.navigation.navigate('BusinessProfile')} />
+                            onPress={() => this.businessRegister()} />
                         <TouchableHighlight onPress={() => this.props.navigation.goBack()}>
                             <Text style={{ color: 'white', marginVertical: 15 }}>Already registered? Login here!</Text>
                         </TouchableHighlight>
