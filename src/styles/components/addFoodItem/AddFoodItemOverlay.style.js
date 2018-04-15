@@ -19,7 +19,7 @@ export default StyleSheet.create({
         color: colors.gray,
         fontWeight: 'bold',
         textAlign: 'left',
-        marginTop: 10
+        marginVertical: 10
     },
     body: {
         paddingHorizontal: 20

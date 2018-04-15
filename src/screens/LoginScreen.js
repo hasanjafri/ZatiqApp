@@ -6,7 +6,7 @@ import { NavigationActions } from 'react-navigation'
 import  Icon  from 'react-native-vector-icons';
 
 // Actions
-import { onSignIn } from '../../src/actions/auth';
+import { onSignIn } from '../../src/actions/UserAction';
 
 // Custom imports
 import styles from '../styles/screens/LoginScreen.style';

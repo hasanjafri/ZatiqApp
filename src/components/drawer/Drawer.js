@@ -3,7 +3,7 @@ import { View, Text, Button, Image, ImageBackground, StyleSheet, TouchableOpacit
 import { Icon } from 'react-native-elements';
 
 // Actions
-import { onSignOut } from '../../actions/auth';
+import appState from '../../appState';
 
 import textStyles from '../../styles/text.style';
 import colors from '../../styles/colors.style';
@@ -11,20 +11,44 @@ import colors from '../../styles/colors.style';
 class Drawer extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            selected: 'Home'
+        }
+        const changeRoute = (route, currentSelected) => {
+            this.setState({ selected: currentSelected });
+            this.props.navigation.navigate(route);
+        }
         this.items = [
-            'Find Restaurant',
-            'Find Food',
-            // 'Notifications',
-            // 'Profile Settings'
+            { text: 'Home', action: () => changeRoute('Application', 'Home')},
+            { text: 'Find Restaurant', action: () => changeRoute('FindRestaurant', 'Find Restaurant')},
+            { text: 'Find Food', action: () => changeRoute('FindRestaurant', 'Find Food')}
         ];
+        const state = appState.getInstance();
+        this.user = state.getUser();
+        if (this.user.type === 'business') {
+            this.items.push({ section: 'BUSINESS SECTION' });
+            this.items.push({ text: 'Update Profile', action: () => changeRoute('BusinessUpload', 'Update Profile')});
+            this.items.push({ text: 'Upload New Content', action: () => changeRoute('BusinessUpload', 'Upload New Content')});
+        }
     }
     render() {
         const drawerItems = this.items.map((item, i) => {
-            return (
-                <TouchableOpacity activeOpacity={1} style={styles.itemContainer} key={i} onPress={() => this.props.navigation.navigate('FindRestaurant')}>
-                    <Text style={[textStyles.medium, { color: 'black' }]}>{item}</Text>
-                </TouchableOpacity>
-            );
+            let drawerItem;
+            if (item.section) {
+                drawerItem = (
+                    <View style={styles.itemSection} key={i}>
+                        <Text style={[textStyles.small, { color: colors.lightgrey }]}>{item.section}</Text>
+                    </View>
+                )
+            } else {
+                const selected = this.state.selected === item.text;
+                drawerItem = (
+                    <TouchableOpacity activeOpacity={1} style={styles.itemContainer} key={i} onPress={() => item.action()}>
+                        <Text style={[textStyles.medium, { color: selected ? colors.primary : 'black' }]}>{item.text}</Text>
+                    </TouchableOpacity>
+                );
+            }
+            return drawerItem;
         });
         return (
             <SafeAreaView style={{ marginTop: 90, flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
@@ -34,7 +58,8 @@ class Drawer extends React.Component {
                 </View>
                 { drawerItems }
                 <TouchableOpacity activeOpacity={1} style={styles.buttonContainer} onPress={async () => {
-                        await onSignOut();
+                        const state = appState.getInstance();
+                        await state.onSignOut();
                         const { navigate } = this.props.navigation;
                         navigate('SwitchOut');
                     }}>
@@ -62,6 +87,13 @@ const styles = StyleSheet.create({
         lineHeight: 40,
         borderRadius: 20 ,
         marginTop: 10
+    },
+    itemSection: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        paddingTop: 40,
+        paddingBottom: 10,
     },
     itemContainer: {
        alignItems: 'center',

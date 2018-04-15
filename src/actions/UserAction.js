@@ -1,7 +1,10 @@
 import { AsyncStorage } from 'react-native';
 import Expo from 'expo';
+import keys from '../libs/keys';
 
-export const USER_KEY = 'USER_KEY';
+import appState from '../appState';
+
+const state = appState.getInstance();
 
 const FB_APP_ID = '1277509129016312';
 const GOOGLE_IOS_ID = '1013702018515-ajvv6fh1d6usglha3qpgoeicac4o0dt3.apps.googleusercontent.com';
@@ -51,21 +54,6 @@ export const onSignIn = async (type) => {
             return null;
         }
     }
-    console.log(parsedResult);
     // Here we have the parsed result, store it in the async storage
-    await AsyncStorage.setItem(USER_KEY, JSON.stringify(parsedResult));
-};
-
-export const onSignOut = () => {
-    AsyncStorage.removeItem(USER_KEY)
-};
-
-export const isSignedIn = async () => {
-    let user;
-    try {
-        user = await AsyncStorage.getItem(USER_KEY);
-    } catch(e) {
-        // TODO: Error handling
-    }
-    return user;
+    await state.setUser({ data: parsedResult, type: 'user' });
 };

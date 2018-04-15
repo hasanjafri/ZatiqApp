@@ -15,10 +15,15 @@ export default styles = StyleSheet.create({
         color: colors.black,
         fontFamily: 'nunito'
     },
+    header: {
+       borderBottomWidth: 1,
+       paddingBottom: 10,
+       borderColor: colors.lightergrey 
+    },
     headerText: {
         color: colors.gray,
-        fontWeight: 'bold',
         textAlign: 'left',
+        fontWeight: 'normal',
         marginTop: 10
     },
     priceButtonWrapper: {
@@ -44,6 +49,7 @@ export default styles = StyleSheet.create({
     uploadButton: {
         width: 200,
         marginTop: 20,
+        height: 50,
         marginBottom: 40
     },
 

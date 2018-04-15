@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, TextInput, Dimensions } from 'react-native';
-import { Overlay, Input, SearchBar, Icon, Button, ButtonGroup, Avatar } from 'react-native-elements';
+import { Overlay, Input, SearchBar, Icon, Button, ButtonGroup, Avatar, List, ListItem } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 
 import CustomMultiPicker from '../../components/Suggestion';
@@ -9,28 +9,48 @@ import textStyles from '../../styles/text.style';
 import colors from '../../styles/colors.style';
 import styles from '../../styles/screens/business/Pages.style';
 
+import BusinessAction from '../../actions/BusinessAction';
+const BusinessInstance = BusinessAction.getInstance();
+
 class AddFoodItemOverlay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: false,
             picture: null,
             name: '',
-            foodType: 0,
-            features: {}
+            description: '',
+            price: '',
+            meal: 'breakfast',
+            features: {
+                spicy: false,
+                halal: false,
+                vegan: false,
+                lactose: false,
+                nuts: false,
+                pork: false,
+                seafood: false
+            }
         };
-    }
-    _renderFeature = feature => {
-        const { text, value } = feature;
-        const isActive = this.state.features[value];
-        return (
-            <View style={styles.feature}>
-                { isActive ?
-                    <Icon onPress={() => this.toggleFeature(value)} size={35} color={colors.blue} type='font-awesome' name='check-circle'/> :
-                    <Icon onPress={() => this.toggleFeature(value)} size={35} color={colors.lightgrey} type='font-awesome' name='circle-thin'/>
-                }
-                <Text style={[textStyles.medium, { color: 'black', textAlign: 'left', marginLeft: 20, lineHeight: 40, height: 40 }]}>{text}</Text>
-            </View>
-        );
+        this.mapIndexToMeal = {
+            0: 'breakfast',
+            1: 'lunch',
+            2: 'dinner'
+        };
+        this.mapMealToIndex = {
+            breakfast: 0,
+            lunch: 1,
+            dinner: 2
+        };
+        this.features = [
+            { text: 'Spicy', value: 'spicy'},
+            { text: 'Halal', value: 'halal'},
+            { text: 'Vegan Friendly', value: 'vegan'},
+            { text: 'Contains Lactose', value: 'lactose'},
+            { text: 'Contains Nuts', value: 'nuts'},
+            { text: 'Contains Pork', value: 'pork'},
+            { text: 'Contains Seafood', value: 'seafood'}
+        ];
     }
     uploadPicture = async (type) => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -42,10 +62,21 @@ class AddFoodItemOverlay extends React.Component {
 
         if (!result.cancelled) {
             this.setState({ picture: {
-                aspectRatio: result.width / result.height,
+                ratio: result.width / result.height,
                 base64: result.base64
             }});
         }
+    }
+    toggleFeature = value => {
+        const { features } = this.state;
+        const newFeatures = { ...features };
+        newFeatures[value] = !features[value];
+        this.setState({ features: newFeatures });
+    }
+    saveItem = () => {
+        this.setState({ isLoading: true });
+        this.setState({ isLoading: false });
+        this.props.saveItem(this.state);
     }
     render() {
         const width = Dimensions.get('window').width;
@@ -54,13 +85,14 @@ class AddFoodItemOverlay extends React.Component {
         return (
             <Overlay isVisible={this.props.showOverlay}
                 width={width - 20}
-                height={height - 150}
+                height={height - 100}
+                containerStyle={{ padding: 0 }}
                 overlayStyle={styles.overlayContainer}>
+                <View style={styles.header}>
+                    <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Add Food Item</Text>
+                    <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
+                </View>
                 <ScrollView style={styles.wrapper}>
-                    <View style={styles.header}>
-                        <Text style={[textStyles.large, {color: 'black', fontWeight: 'bold', textAlign: 'left' }]}>Add A Food Item</Text>
-                        <Icon size={30} containerStyle={{ position: 'absolute', top: 5, right: 5}} name='clear' onPress={this.props.onClose} />
-                    </View>
                     <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
                         { image ?
                             <Avatar xlarge rounded
@@ -70,26 +102,19 @@ class AddFoodItemOverlay extends React.Component {
                             <Avatar xlarge rounded
                                 icon={{ name: 'restaurant' }}
                                 onPress={() => this.uploadPicture()}
-                                activeOpacity={0.7} />  
+                                activeOpacity={0.7} />
                         }
                     </View>
-                    <Text style={[textStyles.tiny, styles.headerText, { marginBottom: 10 }]}>Food Name</Text>
+                    <Text style={[textStyles.tiny, styles.headerText]}>Food Name</Text>
                     <Input onChangeText={text => this.setState({ name: text })}/>
 
-                    <Text style={[textStyles.tiny, styles.headerText, { marginBottom: 10 }]}>Food Description</Text>
-                    <Input />
+                    <Text style={[textStyles.tiny, styles.headerText]}>Food Description</Text>
+                    <Input multiline numberOfLines={4} onChangeText={text => this.setState({ description: text })} />
 
-                    <Text style={[textStyles.tiny, styles.headerText, { marginBottom: 10 }]}>Food Price</Text>
-                    <Input />
+                    <Text style={[textStyles.tiny, styles.headerText]}>Food Price</Text>
+                    <Input keyboardType={'numeric'} onChangeText={text => this.setState({ price: text })} />
 
-                    <Text style={[textStyles.tiny, styles.headerText, { marginBottom: 10 }]}>Meal</Text>
-                    <ButtonGroup
-                        onPress={selectedIndex => this.setState({ foodType: selectedIndex })}
-                        selectedIndex={this.state.foodType}
-                        buttons={['Breakfast', 'Lunch', 'Dinner']}
-                        containerStyle={{ height: 35 }} />
-                    
-                    <Text style={[textStyles.tiny, styles.headerText, { marginBottom: 10 }]}>Cuisines</Text>
+                    <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30, marginBottom: 10 }]}>Cuisine Types</Text>
                     <CustomMultiPicker
                         options={categoryList}
                         search
@@ -97,32 +122,48 @@ class AddFoodItemOverlay extends React.Component {
                         placeholder={'Enter cuisine...'}
                         placeholderTextColor={'#757575'}
                         returnValue={'label'}
-                        callback={(res) => { this.setState({ cuisines: res }) }}
+                        callback={cuisines => { this.setState({ cuisines }) }}
+                         // selected={[1,2]}
                         rowBackgroundColor={'#eee'}
                         rowHeight={40}
                         rowRadius={5}
                         iconColor={'#00a2dd'}
                         iconSize={30}
                         selectedIconName={'ios-checkmark-circle-outline'}
-                        scrollViewHeight={140}
-                        // selected={[1,2]}
-                        />
+                        scrollViewHeight={140} />
 
-                    <Text style={[textStyles.tiny, styles.headerText, { marginBottom: 10 }]}>Select All That Applies</Text>
-                    { this._renderFeature({ text: 'Spicy', value: 'delivery'}) }
-                    { this._renderFeature({ text: 'Halal', value: 'delivery'}) }
-                    { this._renderFeature({ text: 'Dessert', value: 'takeout'}) }
-                    { this._renderFeature({ text: 'Vegan Friendly', value: 'reservation'}) }
-                    { this._renderFeature({ text: 'Beverage', value: 'patio'}) }
-                    { this._renderFeature({ text: 'Contains Lactose', value: 'wheelChair'}) }
-                    { this._renderFeature({ text: 'Contains Nuts', value: 'wheelChair'}) }
-                    { this._renderFeature({ text: 'Contains Pork', value: 'wheelChair'}) }
-                    { this._renderFeature({ text: 'Contains Seafood', value: 'wheelChair'}) }
+                    <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meal</Text>
+                    <ButtonGroup
+                        onPress={selectedIndex => this.setState({ meal: this.mapIndexToMeal[selectedIndex] })}
+                        selectedIndex={this.mapMealToIndex[this.state.meal]}
+                        buttons={['Breakfast', 'Lunch', 'Dinner']}
+                        containerStyle={{ height: 35 }} />
+
+                    <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
+                    <List>
+                        { this.features.map((feature, i) => {
+                            const { text, value } = feature;
+                            const isActive = this.state.features[value];
+                            return (
+                                <ListItem key={i}
+                                    rightIcon={
+                                        isActive ?
+                                        <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
+                                        <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
+                                    }
+                                    titleStyle={{ fontFamily: 'nunito' }}
+                                    onPress={() => this.toggleFeature(value)}
+                                    title={text}
+                                />
+                            );
+                        })}
+                    </List>
                     <Button title='Save'
-                        icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
+                        loading={this.state.isLoading}
                         titleStyle={[textStyles.medium, { height: 50 }]}
-                        buttonStyle={styles.uploadButton}
-                        onPress={() => this.props.saveItem(this.state)} />
+                        buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                        loading={this.state.isLoading}
+                        onPress={() => this.saveItem()} />
                 </ScrollView>
             </Overlay>
         );

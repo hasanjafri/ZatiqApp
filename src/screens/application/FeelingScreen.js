@@ -3,8 +3,9 @@ import { Text, View, ImageBackground, ScrollView, TouchableOpacity, StyleSheet, 
 import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
+import appState from '../../appState';
 // Custom imports
-import AddReviewOverlay from '../../components/addReview/AddReviewOverlay';
+import AddReviewButton from '../../components/addReview/AddReviewButton';
 import styles from '../../styles/screens/application/FeelingScreen.style';
 import textStyles from '../../styles/text.style';
 import categories from '../../data/categories';
@@ -12,6 +13,8 @@ import categories from '../../data/categories';
 class FeelingScreen extends React.Component {
     constructor(props) {
         super(props);
+        const state = appState.getInstance();
+        this.user = state.getUser();
         this.state = {
             showOverlay: false
         }
@@ -39,7 +42,7 @@ class FeelingScreen extends React.Component {
         return (
             <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <View style={styles.questionView}>
-                    <Text style={textStyles.mediumBold}>Hey Jace,</Text>
+                    <Text style={textStyles.mediumBold}>Hey {this.user.data.name},</Text>
                     <Text style={textStyles.small}>HUNGRY? Let's find you something to eat</Text>
                     <Text style={[textStyles.smallBold, { paddingTop: 10, paddingBottom: 10 }]}>What are you in the mood for?</Text>
                 </View>
@@ -70,7 +73,7 @@ class FeelingScreen extends React.Component {
                     </View>
                     <GridView itemDimension={130} items={categories} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
                 </ScrollView>
-                <AddReviewOverlay fixed/>
+                <AddReviewButton fixed />
             </ImageBackground>
         );
     }

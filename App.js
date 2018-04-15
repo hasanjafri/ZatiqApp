@@ -1,9 +1,10 @@
 import React from 'react';
 import { Font } from 'expo';
 import { AsyncStorage } from 'react-native';
+import keys from './src/libs/keys';
+import appState from './src/appState';
 
 // Custom imports
-import { isSignedIn } from './src/actions/auth';
 import createRootNavigator from './src/routes';
 
 class App extends React.Component {
@@ -15,16 +16,16 @@ class App extends React.Component {
         };
     }
     async componentWillMount() {
-        let [user] = await Promise.all([
-            isSignedIn(),
-            AsyncStorage.removeItem('businessName'),
-            
+        const state = appState.getInstance();
+        await Promise.all([
+            state.loadAll(),
             Font.loadAsync({
                 'nunito': require('./src/assets/fonts/Nunito-Regular.ttf'),
                 'nunito-bold': require('./src/assets/fonts/Nunito-Bold.ttf'),
                 'nunito-italic': require('./src/assets/fonts/Nunito-Italic.ttf')
             })
         ]);
+        const user = state.getUser();
         this.setState({ isLoading: false, user });
     }
     render() {

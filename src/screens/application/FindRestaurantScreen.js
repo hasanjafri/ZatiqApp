@@ -5,9 +5,6 @@ import { Video } from 'expo';
 import { NavigationActions } from 'react-navigation'
 import  Icon  from 'react-native-vector-icons';
 
-// Actions
-import { onSignIn } from '../../../src/actions/auth';
-
 // Custom imports
 import styles from '../../styles/screens/LoginScreen.style';
 

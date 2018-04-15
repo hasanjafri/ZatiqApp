@@ -7,7 +7,7 @@ import StarRating from 'react-native-star-rating';
 // Custom imports
 import styles from '../../styles/screens/application/RestaurantScreen.style';
 import textStyles from '../../styles/text.style';
-import AddReviewOverlay from '../../components/addReview/AddReviewOverlay';
+import AddReviewButton from '../../components/addReview/AddReviewButton';
 
 const TAGS = [
     { text: 'Features', source: require('../../assets/icons/Breakfast.png') },
@@ -135,7 +135,7 @@ class RestaurantScreen extends React.Component {
                                 </View>
                             )}
                         </View>
-                        <AddReviewOverlay onPress={() => this.setState({ })}/>
+                        <AddReviewButton />
                     </View>
                 </ScrollView>
             </ImageBackground>

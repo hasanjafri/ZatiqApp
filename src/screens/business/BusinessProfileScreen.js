@@ -6,9 +6,8 @@ import styles from '../../styles/screens/business/BuisnessProfileScreen.style';
 import colors from '../../styles/colors.style';
 
 import BusinessInfoPage from './pages/BusinessInfoPage';
-import FeaturesPage from './pages/FeaturesPage';
-import PicturesPage from './pages/PicturesPage';
-import FoodItemsPage from './pages/FoodItemsPage';
+import BusinessHoursPage from './pages/BusinessHoursPage';
+import BusinessFeaturesPage from './pages/BusinessFeaturesPage';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('screen');
 
@@ -38,12 +37,10 @@ class BusinessProfileScreen extends React.Component {
         if (page === 1) {
             renderPage = <BusinessInfoPage />
         } else if (page === 2) {
-            renderPage = <PicturesPage />
+            renderPage = <BusinessHoursPage />
         } else if (page === 3) {
-            renderPage = <FoodItemsPage />
-        } else {
-            renderPage = <FeaturesPage />
-        }
+            renderPage = <BusinessFeaturesPage nextAction={() => this.props.navigation.navigate('BusinessUpload')} />
+        } 
         return (
             <View style={[styles.page, { width: viewportWidth }]}>
                 { renderPage }
@@ -56,12 +53,12 @@ class BusinessProfileScreen extends React.Component {
             return (
                 <View style={styles.container}>
                     <Carousel ref={(c) => { this.slider = c; }}
-                        data={[{ page: 1 }, { page: 2 }, { page: 3 }, { page: 4 }]}
+                        data={[{ page: 1 }, { page: 2 }, { page: 3 }]}
                         renderItem={this._renderPage}
                         sliderWidth={viewportWidth}
                         itemWidth={viewportWidth}
                         onSnapToItem={index => this.setState({ activeItem: index }) } />
-                    <Pagination dotsLength={4}
+                    <Pagination dotsLength={3}
                         activeDotIndex={this.state.activeItem}
                         containerStyle={styles.paginationContainer}
                         dotColor={colors.blue}

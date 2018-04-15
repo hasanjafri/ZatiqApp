@@ -1,13 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage } from 'react-native';
 import { SocialIcon, Button } from 'react-native-elements';
+
 import styles from '../../styles/screens/business/BuisnessLoginScreen.style';
 import urls from '../../libs/urls';
+
+import BusinessAction from '../../actions/BusinessAction';
+const BusinessInstance = BusinessAction.getInstance();
 
 class BusinessLoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: false,
             password: '',
             email: ''
         };
@@ -15,31 +20,16 @@ class BusinessLoginScreen extends React.Component {
     }
 
     businessLogin = async () => {
-        try {
-            const response = await fetch(urls.businessLogin, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: this.state.email,
-                    password: this.state.password
-                })
-            });
-            console.log(response);
-            const res = await response.json();
+        this.setState({ isLoading: true });
 
-            if (res.success === true) {
-                // await AsyncStorage.setItem('businessName', res.business);
-                // await AsyncStorage.setItem('hasSetInformation', res.hasSetInformation);
-                this.props.navigation.navigate('BusinessProfile');
-            } else {
-                alert(res.message);
-            }
-        } catch(e) {
-            console.log(e);
-            // TODO: error handling
+        const err = await BusinessInstance.login({ email: this.state.email, password: this.state.password });
+        this.setState({ isLoading: false });
+
+        if (err) {
+            alert(err);
+        } else {
+            const { navigate } = this.props.navigation;
+            navigate('SwitchIn');
         }
     }
 
@@ -48,7 +38,7 @@ class BusinessLoginScreen extends React.Component {
             <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
                 <View style={styles.container}>
                     <Text style={styles.header}>- BUSINESS LOGIN -</Text>
-                    <TextInput style={styles.textInput} placeholder="enter your business e-mail" onChangeText={(email) => this.setState({email})} underlineColorAndroid='transparent'/>
+                <TextInput style={styles.textInput} placeholder="enter your business e-mail" onChangeText={(email) => this.setState({email})} underlineColorAndroid='transparent'/>
                     <TextInput style={styles.textInput} placeholder="enter your password" onChangeText={(password) => this.setState({password})} underlineColorAndroid='transparent' secureTextEntry/>
 
                     <Button title="Log In"
@@ -62,8 +52,9 @@ class BusinessLoginScreen extends React.Component {
                             borderRadius: 25
                         }}
                         clear
-                        onPress={this.login}
-                        containerStyle={{ marginVertical: 15, backgroundColor: 'transparent' }} />
+                        loading={this.state.isLoading}
+                        onPress={() => this.businessLogin()}
+                        containerStyle={{ marginVertical: 15 }} />
                     <Button
                         title="Not registered yet? Sign up here!"
                         titleStyle={{ textAlign: 'center', fontFamily: 'nunito', color: 'black', fontSize: 14 }}
