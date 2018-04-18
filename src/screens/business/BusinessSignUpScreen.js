@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text, StyleSheet, View, Image, ImageBackground, TouchableOpacity, TouchableHighlight, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import { Text, StyleSheet, View, ImageBackground, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 import { SocialIcon, Input, Icon, Button } from 'react-native-elements';
-import { ImagePicker } from 'expo';
 
-import styles from '../../styles/screens/business/BuisnessSignUpScreen.style';
+import styles from '../../styles/screens/business/BusinessSignUpScreen.style';
 import colors from '../../styles/colors.style';
 
 import BusinessAction from '../../actions/BusinessAction';
+import textStyle from '../../styles/text.style';
 const BusinessInstance = BusinessAction.getInstance();
 
 class BusinessSignUpScreen extends React.Component {
@@ -16,10 +16,6 @@ class BusinessSignUpScreen extends React.Component {
             email: '',
             password: '',
             repeatPassword: '',
-            image: {
-                base64: null,
-                ratio: null
-            },
             error: null
         };
         this.businessRegister = this.businessRegister.bind(this);
@@ -28,7 +24,7 @@ class BusinessSignUpScreen extends React.Component {
     businessRegister = () => {
         // Validate
         const validate = false;
-        const { email, password, repeatPassword, image } = this.state;
+        const { email, password, repeatPassword } = this.state;
         let error = null;
         if (!email) {
             error = 'You need to enter an e-mail address';
@@ -38,14 +34,11 @@ class BusinessSignUpScreen extends React.Component {
             error = 'You need to confirm your password';
         } else if (repeatPassword !== password) {
             error = 'Your passwords do not match';
-        } else if (!image.base64) {
-            error = 'You need to upload a picture';
         }
         if (!validate || !error) {
             BusinessInstance.setRegisterForm({
                 email: this.state.email,
-                password: this.state.password,
-                image: this.state.image
+                password: this.state.password
             });
             this.props.navigation.navigate('BusinessProfile');
         } else {
@@ -53,52 +46,22 @@ class BusinessSignUpScreen extends React.Component {
         }
     }
 
-    uploadPicture = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            aspect: [4, 3],
-            base64: true,
-            quality: 0.5
-        });
-
-        if (!result.cancelled) {
-            this.setState({ image: {
-                base64: result.base64,
-                ratio: (result.width / result.height).toString()
-            }});
-        }
-    }
     render() {
         const { navigate } = this.props.navigation;
-        const imageUrl = this.state.image.base64 ? 'data:image/png;base64,' + this.state.image.base64 : null;
         return (
             <View style={styles.wrapper}>
                 <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
                     <ImageBackground style={styles.container} source={require('../../assets/backgrounds/businessBackground.png')}>
 
-                        <TouchableOpacity style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: 200,
-                            height: 200,
-                            marginBottom: 40 }}
-                            onPress={() => this.uploadPicture()}>
-                            { imageUrl ?
-                                <Image style={{ width: 150, height: '100%', resizeMode: 'contain', borderRadius: 75 }} source={{ uri: imageUrl }} />:
-                                <ImageBackground style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', }} source={require('../../assets/backgrounds/backgroundCircle.png')}>
-                                    <Image style={{ width: 150, height: '100%', resizeMode: 'contain' }} source={require('../../assets/logos/businessLogo.png')} />
-                                    <View style={{ position:'absolute', right: 0, bottom: 0 }}>
-                                        <Image style={{ width: 50, height: 50, resizeMode: 'contain', alignSelf: 'center' }} source={require('../../assets/logos/plusLogo.png')} />
-                                    </View>
-                                </ImageBackground>
-                            }
-                            
-                        </TouchableOpacity>
+                        <View style={{ width: '100%' }}>
+                            <Text style={styles.header}>- BUSINESS SIGN UP -</Text>
+                        </View>
 
                         <Input leftIconContainerStyle={styles.iconContainer}
                             inputContainerStyle={styles.inputContainer}
                             containerStyle={styles.textInput} placeholder='Business E-mail'
                             inputStyle={{ color: 'white', fontFamily: 'nunito' }}
+                            keyboardType={'email-address'}
                             leftIcon={<Icon type='font-awesome' name='user-circle-o' size={25} color='white' />}
                             onChangeText={text => this.setState({ email: text })}/>
                         <Input leftIconContainerStyle={styles.iconContainer}

@@ -27,7 +27,7 @@ class Drawer extends React.Component {
         this.user = state.getUser();
         if (this.user.type === 'business') {
             this.items.push({ section: 'BUSINESS SECTION' });
-            this.items.push({ text: 'Update Profile', action: () => changeRoute('BusinessUpload', 'Update Profile')});
+            this.items.push({ text: 'Update Profile', action: () => changeRoute('BusinessProfile', 'Update Profile')});
             this.items.push({ text: 'Upload New Content', action: () => changeRoute('BusinessUpload', 'Upload New Content')});
         }
     }

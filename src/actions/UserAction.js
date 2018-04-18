@@ -1,8 +1,10 @@
 import { AsyncStorage } from 'react-native';
 import Expo from 'expo';
 import keys from '../libs/keys';
+import urls from '../libs/urls';
 
 import appState from '../appState';
+import { ACTION_TRUSTED_CREDENTIALS_USER } from 'expo/src/IntentLauncherAndroid';
 
 const state = appState.getInstance();
 
@@ -24,11 +26,11 @@ export const onSignIn = async (type) => {
                 const responseJson = await response.json();
                 parsedResult = { ...responseJson, accessToken: token };
             } else {
-                return null;
+                return { success: false, message: 'Something went wrong' } ;
             }
         } catch(e) {
             console.log(e);
-            return null;
+            return { success: false, message: 'Something went wrong' };
         }
     } else if (type === 'google') {
         // Google login
@@ -38,7 +40,7 @@ export const onSignIn = async (type) => {
                 iosClientId: GOOGLE_IOS_ID,
                 scopes: ['profile', 'email'],
             });
-            console.log(result);
+
             if (result.type === 'success') {
                 parsedResult = {
                     accessToken: result.accessToken,
@@ -47,13 +49,85 @@ export const onSignIn = async (type) => {
                     email: result.user.email
                 };
             } else {
-                return null;
+                return { success: false, message: 'Something went wrong' };
             }
         } catch(e) {
             console.log(e);
-            return null;
+            return { success: false, message: 'Something went wrong' };
         }
     }
-    // Here we have the parsed result, store it in the async storage
-    await state.setUser({ data: parsedResult, type: 'user' });
+    try {
+        const response = await fetch(urls.userLogin, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ accessToken: parsedResult.accessToken, method: type })
+        });
+        const userInfo = await response.json();
+        
+        if (response.status !== 200) {
+            return { success: false, message: 'Something went wrong' };
+        }
+        await state.setUser({ data: userInfo, type: 'user' });
+        return { success: true };
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
 };
+
+export const getUserProfile = async () => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+        const response = await fetch(urls.userProfile, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+export const setUserProfile = async (preferences) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+        const response = await fetch(urls.userPreferences, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token, preferences })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}

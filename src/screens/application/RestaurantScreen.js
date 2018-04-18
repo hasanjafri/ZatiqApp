@@ -27,8 +27,8 @@ class RestaurantScreen extends React.Component {
         }
         this.ITEMS = [
             { text: 'Features', source: require('../../assets/icons/Breakfast.png') },
-            { text: 'Menu', source: require('../../assets/icons/Brunch.png') },
-            { text: 'Photos', source: require('../../assets/icons/Lunch.png') }
+            { text: 'Menu', source: require('../../assets/icons/Lunch.png') },
+            { text: 'Photos', source: require('../../assets/icons/Brunch.png') }
         ];
     }
     onPress() {
@@ -128,7 +128,7 @@ class RestaurantScreen extends React.Component {
                                                 rating={review.rating}
                                                 containerStyle={{ paddingBottom: 10, width: 60, paddingRight: 2 }}
                                                 fullStarColor={'#f1c40f'} />
-                                            <Text style={[textStyles.miniItalic, {marginLeft: 10, marginTop: -3}]}>2 min ago</Text>
+                                            <Text style={[textStyles.miniItalic, {color: 'black', marginLeft: 10, marginTop: -3}]}>2 min ago</Text>
                                         </View>
                                         <Text style={styles.reviewContent}>{review.text}</Text>
                                     </View>

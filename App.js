@@ -26,6 +26,7 @@ class App extends React.Component {
             })
         ]);
         const user = state.getUser();
+        console.log(user);
         this.setState({ isLoading: false, user });
     }
     render() {

@@ -16,7 +16,7 @@ class AddReviewButton extends React.Component {
         return (
             <React.Fragment>
                 <AddReviewOverlay showOverlay={showOverlay} onClose={() => this.setState({ showOverlay: false })}/>
-                { !showOverlay ?
+                { !showOverlay && !this.props.hide ?
                     <Icon reverse raised
                         iconStyle={styles.icon}
                         containerStyle={this.props.fixed ? styles.fixedContainer : styles.relativeContainer}

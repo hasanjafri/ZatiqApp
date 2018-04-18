@@ -65,5 +65,21 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         height: 40,
         marginVertical: 10 
-    }
+    },
+
+    // review overlay
+    textAreaContainer: {
+        borderWidth: 1,
+        borderColor: colors.lightergrey,
+        borderRadius: 5,
+        padding: 10
+    },
+    textArea: {
+        color: colors.black,
+        fontFamily: 'nunito'
+    },
+    centered: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 });

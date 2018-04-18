@@ -15,7 +15,7 @@ import BusinessSignUpScreen from './screens/business/BusinessSignUpScreen';
 import BusinessProfileScreen from './screens/business/BusinessProfileScreen';
 import BusinessUploadScreen from './screens/business/BusinessUploadScreen';
 
-import { ImageHeader, HeaderLogo, MenuLogo } from './components/header/Header';
+import { ImageHeader, HeaderLogo, MenuLogo, SkipButton, SettingsButton } from './components/header/Header';
 import Drawer from './components/drawer/Drawer';
 
 const backHeader = {
@@ -27,11 +27,12 @@ const mainApplication = StackNavigator({
     Feeling: {
         screen: FeelingScreen,
         navigationOptions: ({ navigation }) => {
+            const { params = {} } = navigation.state;
             return {
                 headerBackground: <ImageHeader />,
                 headerTitle: <HeaderLogo />,
                 headerLeft: <MenuLogo navigation={navigation} />,
-                headerRight: (<View></View>)
+                headerRight:  <SettingsButton navigation={navigation} onPress={params.togglePreferenceModal} />
             }
         }
     },
@@ -86,6 +87,20 @@ const ApplicationIn = DrawerNavigator({
                 }
             }
         })
+    },
+    BusinessProfile: {
+        screen: StackNavigator({
+            screen: BusinessProfileScreen,
+        }, {
+            navigationOptions: ({ navigation }) => {
+                return {
+                    headerBackground: <ImageHeader />,
+                    headerTitle: <HeaderLogo />,
+                    headerLeft: <MenuLogo navigation={navigation} />,
+                    headerRight: (<View></View>)
+                }
+            }
+        })
     }
 }, {
     contentComponent: (props) => <Drawer {...props} />,
@@ -114,15 +129,20 @@ const ApplicationOut = StackNavigator({
         }
     },
     BusinessProfile: {
-        screen: BusinessProfileScreen,
+        screen: props => <BusinessProfileScreen {...props} registration />,
         navigationOptions: {
             ...backHeader
         }
     },
     BusinessUpload: {
-        screen: BusinessUploadScreen,
-        navigationOptions: {
-            ...backHeader
+        screen: props => <BusinessUploadScreen {...props} registration />,
+        navigationOptions: ({ navigation }) => {
+            return {
+                headerBackground: <ImageHeader />,
+                headerTintColor: 'white',
+                headerLeft: (<View></View>),
+                headerRight: <SkipButton navigation={navigation} screen={'SwitchIn'}/>
+            }
         }
     }
 }, {

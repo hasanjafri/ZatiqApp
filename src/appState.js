@@ -26,16 +26,6 @@ export default class AppState {
     }
     onSignOut = async () => {
         try {
-            const url = this.user.type === 'business' ? urls.businessLogout : urls.userLogout;
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify({ api_token: this.user.data.api_token })
-            });
-            const parsedResult = await response.json();
             await AsyncStorage.removeItem(keys.USER_KEY);
             this.user = null;
         } catch(err) {

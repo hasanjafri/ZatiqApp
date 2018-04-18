@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, KeyboardAvoidingView, ScrollView, Image } from 'react-native';
+import { View, Text, KeyboardAvoidingView, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { Icon, Button, List, ListItem } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 
@@ -9,22 +9,40 @@ import textStyles from '../../styles/text.style';
 import colors from '../../styles/colors.style';
 
 import BusinessAction from '../../actions/BusinessAction';
+import appState from '../../appState';
 const BusinessInstance = BusinessAction.getInstance();
+const state = appState.getInstance();
 
 class BusinessUploadScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: !props.registration,
             menuPictures: [],
-            pictures: [],
+            restaurantPictures: [],
             foodItems: [],
+            selectedFoodItem: null,
             showAddFoodOverlay: false
         };
         this.showAddFoodOverlay = this.showAddFoodOverlay.bind(this);
     }
 
     async componentDidMount() {
-        const all = await BusinessInstance.getUploadList();
+        if (!this.props.registration) {
+            const result = await BusinessInstance.getUploadList();
+            console.log(result.data);
+            if (result.success) {
+                this.setState({
+                    menuPictures: result.data.menuPictures,
+                    restaurantPictures: result.data.restaurantPictures,
+                    foodItems: result.data.foodItems,
+                    isLoading: false
+                })
+            } else {
+                this.setState({ isLoading: false });
+                alert(result.message);
+            }
+        }
     }
 
     showAddFoodOverlay() {
@@ -40,119 +58,144 @@ class BusinessUploadScreen extends React.Component {
         });
 
         if (!result.cancelled) {
-            const newPictures = type === 'menuPictures' ? this.state.menuPictures : this.state.pictures;
-            const picture = {
-                ratio: (result.width / result.height).toString(),
+            this.setState({ isLoading: true });
+            const newImages = this.state[type];
+            const image = {
+                image_aspect_ratio: (result.width / result.height).toString(),
                 base64: result.base64
             };
-            const res = await BusinessInstance.uploadPicture({ type, picture });
+            const res = await BusinessInstance.uploadPicture({ type, image });
             if (res.success) {
-                console.log(res);
-                picture.imageId = res.data.image_id;
-                newPictures.push(picture);
-                if (type === 'menuPictures') {
-                    this.setState({ menuPictures: newPictures });
-                } else {
-                    this.setState({ pictures: newPictures });
-                }
+                newImages.push({ image, image_id: res.data.image_id });
+                this.setState({ [type]: newImages, isLoading: false });
             } else {
+                this.setState({ isLoading: false });
                 alert(res.message);
             }
         }
     }
-    saveFoodItem = item => {
-        this.state.foodItems.push(item);
+    saveFoodItem = ({ form, type }) => {
+        if (type === 'create') {
+            this.state.foodItems.push(form);
+        } else {
+            const index = this.state.foodItems.findIndex(item => item.food_item_id === form.food_item_id);
+            this.state.foodItems.splice(index, 1, form);
+        }
+        
         this.setState({
             showAddFoodOverlay: false,
             foodItems: this.state.foodItems
         });
     }
-    deleteRow = async (type, index, picture) => {
+    showFoodItem = (item) => {
+        this.setState({
+            selectedFoodItem: item,
+            showAddFoodOverlay: true
+        });
+    }
+    deleteRow = async ({ type, index, item }) => {
+        this.setState({ isLoading: true });
+        
+        let result;
         if (type === 'menuPictures') {
-            const result = await BusinessInstance.deletePicture({ type, imageId: picture.imageId });
-            if (result.success) {
-                this.state.menuPictures.splice(index, 1)
-                this.setState({ menuPictures: this.state.menuPictures });
-            } else {
-                alert(result.message);
-            }
+            result = await BusinessInstance.deletePicture({ type, imageId: item.image_id });
         } else if (type === 'restaurantPictures') {
-            const result = await BusinessInstance.deletePicture({ type, imageId: picture.imageId });
-            if (result.success) {
-                this.state.pictures.splice(index, 1);
-                this.setState({ pictures: this.state.pictures });
-            } else {
-                alert(result.message);
-            }
+            result = await BusinessInstance.deletePicture({ type, imageId: item.image_id });
         } else {
-            this.state.foodItems.splice(index, 1);
-            this.setState({ foodItems: this.state.foodItems });
+            result = await BusinessInstance.deleteFoodItem({ food_item_id: item.food_item_id });
         }
+
+        if (result.success) {
+            this.state[type].splice(index, 1);
+            this.setState({ [type]: this.state[type], isLoading: false });
+        } else {
+            this.setState({ isLoading: false });
+            
+            alert(result.message);
+        }
+
     }
     render() {
-        const { menuPictures, pictures } = this.state;
+        const { menuPictures, restaurantPictures } = this.state;
         const menuItems = menuPictures.map((item, i) => {
-            const image = 'data:image/png;base64,' + item.base64;
+            const image = 'data:image/png;base64,' + item.image.base64;
             return (
                 <ListItem key={i}
                     leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: image}}/></View>}
-                    rightIcon={<Icon name='clear' onPress={() => this.deleteRow('menuPictures', i, item)}/>}
+                    rightIcon={<Icon name='clear' onPress={() => this.deleteRow({ type: 'menuPictures', index: i, item })}/>}
                     title={`Menu picture page ${i}`} />
             )
         });
-        const pictureItems = pictures.map((item, i) => {
-            const image = 'data:image/png;base64,' + item.base64;
+        const pictureItems = restaurantPictures.map((item, i) => {
+            const image = 'data:image/png;base64,' + item.image.base64;
             return (
                 <ListItem key={i}
                     leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: image}}/></View>}
-                    rightIcon={<Icon name='clear' onPress={() => this.deleteRow('restaurantPictures', i, item)}/>}
+                    rightIcon={<Icon name='clear' onPress={() => this.deleteRow({ type: 'restaurantPictures', index: i, item })}/>}
                     title={`Picture page ${i}`} />
             )
         });
         const foodItems = this.state.foodItems.map((item, i) => {
-            const image = 'data:image/png;base64,' + item.picture.base64;
+            const image = 'data:image/png;base64,' + item.image.base64;
             return (
                 <ListItem key={i}
                     leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: image}}/></View>}
-                    subtitle={item.description}
-                    title={item.name} />
+                    onPress={() => this.showFoodItem(item)}
+                    rightIcon={<Icon name='clear' onPress={() => this.deleteRow({ type: 'foodItems', index: i, item })}/>}
+                    subtitle={item.overview}
+                    title={item.item_name} />
             );
         });
         return (
-            <React.Fragment>
-                <ScrollView style={styles.listContainer}>
-                    <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left', paddingTop: 20 }]}>Upload Menu Pictures</Text>
-                    { menuItems.length > 0 ? 
-                        <List>{menuItems}</List> : null }
-                    <Button title='Add'
-                        icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
-                        titleStyle={[textStyles.medium, { height: 50 }]}
-                        buttonStyle={styles.uploadButton}
-                        onPress={() => this.uploadMenu('menuPictures')}/>
+            this.props.registration || !this.state.isLoading ?
+                <React.Fragment>
+                    <ScrollView style={styles.listContainer}>
+                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left', paddingTop: 20 }]}>Upload Menu Pictures</Text>
+                        { menuItems.length > 0 ? 
+                            <List>{menuItems}</List> : null }
+                        <Button title='Add'
+                            icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
+                            titleStyle={[textStyles.medium, { height: 50 }]}
+                            buttonStyle={styles.uploadButton}
+                            onPress={() => this.uploadMenu('menuPictures')}/>
 
-                    <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Upload Restaurant Interior Pictures</Text>
-                    { pictureItems.length > 0 ?
-                        <List>{pictureItems}</List> : null }
-                    <Button title='Add'
-                        icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
-                        titleStyle={[textStyles.medium, { height: 50 }]}
-                        buttonStyle={styles.uploadButton}
-                        onPress={() => this.uploadMenu('restaurantPictures')}/>
+                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Upload Restaurant Interior Pictures</Text>
+                        { pictureItems.length > 0 ?
+                            <List>{pictureItems}</List> : null }
+                        <Button title='Add'
+                            icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
+                            titleStyle={[textStyles.medium, { height: 50 }]}
+                            buttonStyle={styles.uploadButton}
+                            onPress={() => this.uploadMenu('restaurantPictures')}/>
 
-                    <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Add Food Items</Text>
-                    { foodItems.length > 0 ? 
-                        <List>{foodItems}</List> : null }
-                    
-                    <Button title='Add'
-                        icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
-                        titleStyle={[textStyles.medium, { height: 50 }]}
-                        buttonStyle={styles.uploadButton}
-                        onPress={() => this.showAddFoodOverlay()}/>
-                </ScrollView>
-                <AddFoodItemOverlay showOverlay={this.state.showAddFoodOverlay}
-                    saveItem={this.saveFoodItem}
-                    onClose={() => this.setState({ showAddFoodOverlay: false })}/>
-            </React.Fragment>
+                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Add Food Items</Text>
+                        { foodItems.length > 0 ? 
+                            <List>{foodItems}</List> : null }
+                        
+                        <Button title='Add'
+                            icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
+                            titleStyle={[textStyles.medium, { height: 50 }]}
+                            buttonStyle={styles.uploadButton}
+                            onPress={() => this.showAddFoodOverlay()}/>
+                    </ScrollView>
+                    <AddFoodItemOverlay showOverlay={this.state.showAddFoodOverlay}
+                        saveFoodItem={this.saveFoodItem}
+                        selectedFoodItem={this.state.selectedFoodItem}
+                        onClose={() => this.setState({ showAddFoodOverlay: false })}/>
+                </React.Fragment> :
+                <View style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    opacity: 0.2,
+                    backgroundColor: 'black',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <ActivityIndicator size='large' />
+                </View>
         );
     }
 }

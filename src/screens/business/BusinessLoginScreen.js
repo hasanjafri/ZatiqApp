@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage } from 'react-native';
 import { SocialIcon, Button } from 'react-native-elements';
 
-import styles from '../../styles/screens/business/BuisnessLoginScreen.style';
+import styles from '../../styles/screens/business/BusinessLoginScreen.style';
 import urls from '../../libs/urls';
 
 import BusinessAction from '../../actions/BusinessAction';
@@ -37,8 +37,10 @@ class BusinessLoginScreen extends React.Component {
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
                 <View style={styles.container}>
-                    <Text style={styles.header}>- BUSINESS LOGIN -</Text>
-                <TextInput style={styles.textInput} placeholder="enter your business e-mail" onChangeText={(email) => this.setState({email})} underlineColorAndroid='transparent'/>
+                    <View style={{ width: '100%'}}>
+                        <Text style={styles.header}>- BUSINESS LOGIN -</Text>
+                    </View>
+                    <TextInput style={styles.textInput} keyboardType={'email-address'} placeholder="enter your business e-mail" onChangeText={(email) => this.setState({email})} underlineColorAndroid='transparent'/>
                     <TextInput style={styles.textInput} placeholder="enter your password" onChangeText={(password) => this.setState({password})} underlineColorAndroid='transparent' secureTextEntry/>
 
                     <Button title="Log In"
@@ -47,9 +49,9 @@ class BusinessLoginScreen extends React.Component {
                             backgroundColor: "rgba(0, 193, 138, 1)",
                             width: 300,
                             height: 50,
+                            borderRadius: 25,
                             borderColor: 'transparent',
-                            borderWidth: 0,
-                            borderRadius: 25
+                            borderWidth: 0
                         }}
                         clear
                         loading={this.state.isLoading}

@@ -8,7 +8,9 @@ import styles from '../../../styles/screens/business/Pages.style';
 import textStyles from '../../../styles/text.style';
 
 import BusinessAction from '../../../actions/BusinessAction';
+import appState from '../../../appState';
 const BusinessInstance = BusinessAction.getInstance();
+const state = appState.getInstance();
 
 class BusinessHoursPage extends React.Component {
     constructor(props) {
@@ -36,8 +38,17 @@ class BusinessHoursPage extends React.Component {
             }
         };
         BusinessInstance.setRegisterForm({ date: this.state.date });
+        this.user = state.user;
         this.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     }
+    componentDidMount() {
+        if (this.props.data) {
+            const { hours } = this.props.data;
+            BusinessInstance.setRegisterForm({ date: hours });
+            this.setState({ date: hours }); 
+        }
+    }
+    
     onDateChange = (type, day, time) => {
         this.state.date[type][day.toLowerCase()] = time;
     
@@ -74,8 +85,8 @@ class BusinessHoursPage extends React.Component {
             );
         };
         return (
-            <View key={day}>
-                <Text style={[textStyles.small, { color: colors.gray, marginTop: 20 }]}>{day}</Text>
+            <View style={{ marginBottom: 20, marginTop: 10 }} key={day}>
+                <Text style={[textStyles.small, { color: colors.gray }]}>{day}</Text>
                 <View style={[styles.equalWidthContainer, { marginBottom: day === 'Sunday' ? 40 : 0 }]}>
                     <View style={[styles.equalWidthView, { marginRight: 5 }]}>
                         <Text style={[textStyles.tiny, styles.headerText, { color: colors.black }]}>From</Text>
@@ -92,7 +103,7 @@ class BusinessHoursPage extends React.Component {
     render() {
         return (
             <ScrollView style={styles.wrapper}>
-                <Text style={[textStyles.medium, styles.headerText, { paddingVertical: 20 }]}>Next, we need your opening hours.</Text>
+                { !this.user ? <Text style={[textStyles.medium, styles.headerText, { paddingVertical: 20 }]}>Next, we need your opening hours.</Text> : null }
                 { this.days.map(day => this._dateRenderer(day)) }
             </ScrollView>
         );

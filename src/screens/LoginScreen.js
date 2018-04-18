@@ -16,10 +16,13 @@ class LoginScreen extends React.Component {
         super(props);
     }
     onSignIn = async (type) => {
-        await onSignIn(type);
-
-        const { navigate } = this.props.navigation;
-        navigate('SwitchIn');
+        const result = await onSignIn(type);
+        if (result.success) {
+            const { navigate } = this.props.navigation;
+            navigate('SwitchIn');
+        } else {
+            alert(result.message);
+        }
     }
     render() {
         const { navigate } = this.props.navigation;

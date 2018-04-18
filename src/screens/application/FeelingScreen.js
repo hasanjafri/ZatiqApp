@@ -3,12 +3,14 @@ import { Text, View, ImageBackground, ScrollView, TouchableOpacity, StyleSheet, 
 import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
-import appState from '../../appState';
 // Custom imports
 import AddReviewButton from '../../components/addReview/AddReviewButton';
 import styles from '../../styles/screens/application/FeelingScreen.style';
 import textStyles from '../../styles/text.style';
 import categories from '../../data/categories';
+import PreferenceOverlay from '../../components/preference/PreferenceOverlay';
+
+import appState from '../../appState';
 
 class FeelingScreen extends React.Component {
     constructor(props) {
@@ -16,8 +18,14 @@ class FeelingScreen extends React.Component {
         const state = appState.getInstance();
         this.user = state.getUser();
         this.state = {
-            showOverlay: false
+            showPreferenceOverlay: false
         }
+    }
+    componentDidMount() {
+        this.props.navigation.setParams({ togglePreferenceModal: this.togglePreferenceModalModal });
+    }
+    togglePreferenceModalModal = () => {
+        this.setState({ showPreferenceOverlay: !this.state.showPreferenceOverlay });
     }
     _renderCategoryItem = (item, i) => {
         const { navigate } = this.props.navigation;
@@ -73,7 +81,8 @@ class FeelingScreen extends React.Component {
                     </View>
                     <GridView itemDimension={130} items={categories} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
                 </ScrollView>
-                <AddReviewButton fixed />
+                <AddReviewButton fixed hide={this.state.showPreferenceOverlay}/>
+                <PreferenceOverlay showOverlay={this.state.showPreferenceOverlay} onClose={() => this.setState({ showPreferenceOverlay: false })} />
             </ImageBackground>
         );
     }

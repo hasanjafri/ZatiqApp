@@ -70,9 +70,10 @@ export default styles = StyleSheet.create({
         backgroundColor: colors.primaryHalfOpacity
     },
     reviewsContainer: {
+        backgroundColor: 'white',
         borderLeftWidth: 5,
         borderLeftColor: colors.primary,
-        marginLeft: 10
+        marginHorizontal: 10
     },
     reviewRow: {
         flexDirection: 'row',
@@ -81,13 +82,13 @@ export default styles = StyleSheet.create({
         marginRight: 20
     },
     reviewTitle: {
-        color: 'white',
+        color: 'black',
         fontSize: 16,
         fontFamily: 'nunito-bold',
         paddingBottom: 5
     },
     reviewContent: {
-        color: 'white',
+        color: 'black',
         fontFamily: 'nunito',
         fontSize: 12
     }

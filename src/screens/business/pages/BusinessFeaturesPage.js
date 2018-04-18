@@ -8,6 +8,8 @@ import textStyles from '../../../styles/text.style';
 
 import BusinessAction from '../../../actions/BusinessAction';
 const BusinessInstance = BusinessAction.getInstance();
+import appState from '../../../appState';
+const state = appState.getInstance();
 
 class BusinessFeaturesPage extends React.Component {
     constructor(props) {
@@ -24,6 +26,7 @@ class BusinessFeaturesPage extends React.Component {
         };
         BusinessInstance.setRegisterForm({ features: this.state.features });
 
+        this.user = state.user;
         this.features = [
             { text: 'Delivery', value: 'delivery'},
             { text: 'Takeout', value: 'takeout'},
@@ -32,6 +35,19 @@ class BusinessFeaturesPage extends React.Component {
             { text: 'Wheel Chair Accessible', value: 'wheelChair'}
         ];
     }
+    componentDidMount() {
+        if (this.props.data) {
+            const { patio, reservation, takeout, wheelchair_accessible, delivery } = this.props.data;
+            this.setState({ features: {
+                patio,
+                reservation,
+                takeout,
+                wheelChair: wheelchair_accessible,
+                delivery
+            }});
+        }
+    }
+
     toggleFeature = value => {
         const { features } = this.state;
         const newFeatures = { ...features };
@@ -44,19 +60,24 @@ class BusinessFeaturesPage extends React.Component {
     businessRegister = async () => {
         this.setState({ isLoading: true });
 
-        const err = await BusinessInstance.register();
+        const result = await BusinessInstance.register({ type: this.props.registration ? 'register' : 'edit' });
         this.setState({ isLoading: false });
-        if (err) {
-            alert(err)
+        if (!result.success) {
+            alert(result.message)
         } else {
-            this.props.nextAction();
+            if (this.props.registration) {
+                this.props.nextAction();
+            } else {
+                alert('Updated profile!')
+            }
         }
     }
     render() {
         return (
             <React.Fragment>
                 <ScrollView style={styles.wrapper}>
-                    <Text style={[textStyles.medium, styles.headerText, { paddingVertical: 20 }]}>Select as many features that apply to your restaurant.</Text>
+                    { !this.user ?  <Text style={[textStyles.medium, styles.headerText, { paddingVertical: 20 }]}>Select as many features that apply to your restaurant.</Text> : null }
+                    <Text style={[textStyles.small, styles.headerText]}>Features</Text>
                     <List>
                         { this.features.map((feature, i) => {
                             const { text, value } = feature;
