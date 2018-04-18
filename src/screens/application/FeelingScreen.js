@@ -50,7 +50,7 @@ class FeelingScreen extends React.Component {
         return (
             <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <View style={styles.questionView}>
-                    <Text style={textStyles.mediumBold}>Hey {this.user.data.name},</Text>
+                    <Text style={textStyles.mediumBold}>Hey {this.user ? this.user.data.name : 'friend'},</Text>
                     <Text style={textStyles.small}>HUNGRY? Let's find you something to eat</Text>
                     <Text style={[textStyles.smallBold, { paddingTop: 10, paddingBottom: 10 }]}>What are you in the mood for?</Text>
                 </View>
