@@ -4,6 +4,7 @@ import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
 // Custom imports
+import { searchCusine } from '../../actions/UserAction';
 import AddReviewButton from '../../components/addReview/AddReviewButton';
 import styles from '../../styles/screens/application/FeelingScreen.style';
 import textStyles from '../../styles/text.style';
@@ -27,10 +28,15 @@ class FeelingScreen extends React.Component {
     togglePreferenceModalModal = () => {
         this.setState({ showPreferenceOverlay: !this.state.showPreferenceOverlay });
     }
-    _renderCategoryItem = (item, i) => {
+    onSearchCuisine = async (cuisine) => {
+        const result = await searchCusine(cuisine);
         const { navigate } = this.props.navigation;
+        navigate('Suggestion', { category: cuisine })
+    }
+    _renderCategoryItem = (item, i) => {
+        const value = item.value;
         return (
-            <TouchableOpacity activeOpacity={0.5} onPress={() => navigate('Suggestion', { category: item.text })}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => this.onSearchCuisine(value)}>
                 <View style={styles.item}>
                     <Image style={{ height: 60, alignItems: 'center' }} resizeMode="contain" source={item.source}></Image>
                     <Text style={[textStyles.tiny, { marginTop: 10 }]}>{item.text.toUpperCase()}</Text>

@@ -77,16 +77,40 @@ class BusinessInfoPage extends React.Component {
                     </View>
                     
                     <Text style={[textStyles.small, styles.headerText]}>Business Name</Text>
-                    <Input value={this.state.name} containerStyle={{ width: '100%' }} inputStyle={styles.input} onChangeText={text => this.onTextChange(text, 'name')}/>
+                    <Input value={this.state.name}
+                        containerStyle={{ width: '100%' }}
+                        inputStyle={styles.input}
+                        onSubmitEditing={() => { this.address_input.focus(); }}
+                        // blurOnSubmit={false}
+                        onChangeText={text => this.onTextChange(text, 'name')}/>
                     
                     <Text style={[textStyles.small, styles.headerText]}>Address</Text>
-                    <Input value={this.state.address} containerStyle={{ width: '100%' }} dataDetectorTypes={'address'} inputStyle={styles.input} onChangeText={text => this.onTextChange(text, 'address')}/>
+                    <Input value={this.state.address}
+                        ref={(input) => { this.address_input = input; }}
+                        onSubmitEditing={() => { this.number_input.focus(); }}
+                        // blurOnSubmit={false}
+                        containerStyle={{ width: '100%' }}
+                        dataDetectorTypes={'address'}
+                        inputStyle={styles.input}
+                        onChangeText={text => this.onTextChange(text, 'address')}/>
 
                     <Text style={[textStyles.small, styles.headerText]}>Phone Number</Text>
-                    <Input value={this.state.number} containerStyle={{ width: '100%' }} keyboardType={'phone-pad'} dataDetectorTypes={'phoneNumber'} inputStyle={styles.input} onChangeText={text => this.onTextChange(text, 'number')}/>
+                    <Input value={this.state.number}
+                        ref={(input) => { this.number_input = input; }}
+                        onSubmitEditing={() => { this.website_input.focus(); }}
+                        // blurOnSubmit={false}
+                        containerStyle={{ width: '100%' }}
+                        keyboardType={'phone-pad'}
+                        dataDetectorTypes={'phoneNumber'}
+                        inputStyle={styles.input}
+                        onChangeText={text => this.onTextChange(text, 'number')}/>
 
                     <Text style={[textStyles.small, styles.headerText]}>Website</Text>
-                    <Input value={this.state.website} containerStyle={{ width: '100%', marginBottom: 40 }} inputStyle={styles.input} onChangeText={text => this.onTextChange(text, 'website')}/>
+                    <Input value={this.state.website}
+                        ref={(input) => { this.website_input = input; }}
+                        containerStyle={{ width: '100%', marginBottom: 40 }}
+                        inputStyle={styles.input}
+                        onChangeText={text => this.onTextChange(text, 'website')}/>
                 </ScrollView>
             </KeyboardAvoidingView>
         );

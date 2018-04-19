@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage } from 'react-native';
-import { SocialIcon, Button } from 'react-native-elements';
+import { Text, View, KeyboardAvoidingView, ImageBackground, TouchableHighlight } from 'react-native';
+import { Button, Input, Icon } from 'react-native-elements';
 
-import styles from '../../styles/screens/business/BusinessLoginScreen.style';
+import colors from '../../styles/colors.style';
+import styles from '../../styles/screens/business/BusinessSignUpScreen.style';
 import urls from '../../libs/urls';
 
 import BusinessAction from '../../actions/BusinessAction';
@@ -20,13 +21,17 @@ class BusinessLoginScreen extends React.Component {
     }
 
     businessLogin = async () => {
+        // Validation
+        const {email, password} = this.state;
+        if (!password || !email) {
+            return alert('You need to enter an e-mail and a password.');
+        }
         this.setState({ isLoading: true });
-
-        const err = await BusinessInstance.login({ email: this.state.email, password: this.state.password });
+        const result = await BusinessInstance.login({ email: this.state.email, password: this.state.password });
+        
         this.setState({ isLoading: false });
-
-        if (err) {
-            alert(err);
+        if (!result.success) {
+            alert(result.message);
         } else {
             const { navigate } = this.props.navigation;
             navigate('SwitchIn');
@@ -36,23 +41,34 @@ class BusinessLoginScreen extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
-                <View style={styles.container}>
+                <ImageBackground style={styles.container} source={require('../../assets/backgrounds/businessBackground.png')}>
                     <View style={{ width: '100%'}}>
                         <Text style={styles.header}>- BUSINESS LOGIN -</Text>
                     </View>
-                    <TextInput style={styles.textInput} keyboardType={'email-address'} placeholder="enter your business e-mail" onChangeText={(email) => this.setState({email})} underlineColorAndroid='transparent'/>
-                    <TextInput style={styles.textInput} placeholder="enter your password" onChangeText={(password) => this.setState({password})} underlineColorAndroid='transparent' secureTextEntry/>
+
+                    <Input leftIconContainerStyle={styles.iconContainer}
+                        containerStyle={styles.inputContainer}
+                        inputStyle={styles.input}
+                        keyboardType={'email-address'}
+                        onSubmitEditing={() => { this.password_input.focus(); }}
+                        blurOnSubmit={false}
+                        placeholder='Business E-mail'
+                        leftIcon={<Icon type='font-awesome' name='user-circle-o' size={25} color='white' />}
+                        onChangeText={(email) => this.setState({email})}
+                        underlineColorAndroid='transparent'/>
+                    <Input leftIconContainerStyle={styles.iconContainer}
+                        containerStyle={styles.inputContainer}
+                        inputStyle={styles.input}
+                        placeholder='Password'
+                        ref={(input) => { this.password_input = input; }}
+                        onChangeText={(password) => this.setState({password})}
+                        underlineColorAndroid='transparent'
+                        leftIcon={<Icon type='font-awesome' name='lock' size={25} color='white' />}
+                        secureTextEntry />
 
                     <Button title="Log In"
                         titleStyle={{ textAlign: 'center', fontFamily: 'nunito' }}
-                        buttonStyle={{
-                            backgroundColor: "rgba(0, 193, 138, 1)",
-                            width: 300,
-                            height: 50,
-                            borderRadius: 25,
-                            borderColor: 'transparent',
-                            borderWidth: 0
-                        }}
+                        buttonStyle={styles.primaryButton}
                         clear
                         loading={this.state.isLoading}
                         onPress={() => this.businessLogin()}
@@ -74,7 +90,7 @@ class BusinessLoginScreen extends React.Component {
                     <TouchableHighlight onPress={() => this.props.navigation.navigate('Login')}>
                         <Text style={{ color: 'white' }}>Not a business?</Text>
                     </TouchableHighlight>
-                </View>
+                </ ImageBackground>
             </KeyboardAvoidingView>
         );
     }

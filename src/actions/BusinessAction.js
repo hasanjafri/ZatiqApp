@@ -43,15 +43,17 @@ export default class BusinessAction {
                 body: JSON.stringify(form)
             });
             const parsedResult = await response.json();
+            console.log(parsedResult);
             if (response.status === 200) {
                 await state.setUser({ data: parsedResult, type: 'business' });
-                return null;
+                return { success: true };
             } else {
-                return 'Something went wrong';
+                const message = parsedResult && parsedResult.response ? parsedResult.response : 'Something went wrong';
+                return { success: false, message };
             }
         } catch(err) {
             console.log(err);
-            return 'Something went wrong';
+            return { success: false, message: 'Something went wrong' };
         }
     }
     async register({ type }) {

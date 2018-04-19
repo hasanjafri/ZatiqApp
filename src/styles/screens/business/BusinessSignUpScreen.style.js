@@ -1,5 +1,5 @@
-
 import { StyleSheet } from 'react-native';
+import colors from '../../colors.style';
 
 export default styles = StyleSheet.create({
     wrapper: {
@@ -18,15 +18,16 @@ export default styles = StyleSheet.create({
         fontFamily: 'nunito',
         fontWeight: 'bold'
     },
-    textInput: {
+    inputContainer: {
         marginBottom: 20,
         borderWidth: 1,
         height: 50,
         borderColor: 'white',
         borderRadius: 25
     },
-    inputContainer: {
-
+    input: {
+        color: 'white',
+        fontFamily: 'nunito'
     },
     iconContainer: {
         alignSelf: 'center',
@@ -40,6 +41,14 @@ export default styles = StyleSheet.create({
         padding: 20,
         alignItems: 'center',
         borderRadius: 10
+    },
+    primaryButton: {
+        backgroundColor: colors.primary,
+        width: 300,
+        height: 50,
+        borderRadius: 25,
+        borderColor: 'transparent',
+        borderWidth: 0
     },
     buttons: {
         borderRadius: 10,

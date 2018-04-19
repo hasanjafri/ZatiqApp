@@ -131,3 +131,32 @@ export const setUserProfile = async (preferences) => {
         return { success: false, message: 'Something went wrong' };
     }
 }
+
+export const searchCusine = async (cuisine) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        const type = user ? user.type : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+        const response = await fetch(urls.searchCuisine.replace(':cuisine', cuisine), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token, type })
+        });
+        const parsedResult = await response.json();
+        console.log(parsedResult);
+        if (response.status === 200) {
+            return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}

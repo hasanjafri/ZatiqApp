@@ -4,6 +4,8 @@ const urls = {
     uploadImage: hostname + '/image/business/',
     userLogin: hostname + '/user/login/',
     userProfile: hostname + '/user/profile/',
+
+    searchCuisine: hostname + '/search/:cuisine/',
     userPreferences: hostname + '/user/preferences/',
     
     businessesList:  hostname + '/businesses/list/',

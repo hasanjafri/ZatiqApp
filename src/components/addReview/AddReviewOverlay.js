@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, TextInput, Dimensions } from 'react-native';
+import { Text, View, ScrollView, Dimensions } from 'react-native';
 import { Overlay, Input, SearchBar, Icon, Button, Avatar } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 import { ImagePicker } from 'expo';
@@ -89,14 +89,10 @@ class AddReviewOverlay extends React.Component {
                         onClear={() => this.setState({ searchValue: '' })}
                         placeholder={'Find Restaurant'} />
                     <Text style={[textStyles.tiny, styles.headerText]}>Dish</Text>
-                    <View style={styles.textAreaContainer}>
-                        <TextInput style={styles.textArea} />
-                    </View>
+                    <Input style={styles.input} />
 
                     <Text style={[textStyles.tiny, styles.headerText]}>Review</Text>
-                    <View style={styles.textAreaContainer}>
-                        <TextInput multiline numberOfLines = {4} style={styles.textArea} />
-                    </View>
+                    <Input style={styles.input} multiline numberOfLines={4} />
                     
                     <Text style={[textStyles.tiny, styles.headerText]}>Rating</Text>
                     <View style={styles.centered}>

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, ScrollView, TextInput, Dimensions } from 'react-native';
+import { Text, View, ScrollView, Dimensions } from 'react-native';
 import { Overlay, Input, SearchBar, Icon, Button, ButtonGroup, Avatar, List, ListItem } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 
+import lists from './foodItems';
 import textStyles from '../../styles/text.style';
 import colors from '../../styles/colors.style';
 import styles from '../../styles/screens/business/Pages.style';
@@ -10,28 +11,22 @@ import styles from '../../styles/screens/business/Pages.style';
 import BusinessAction from '../../actions/BusinessAction';
 const BusinessInstance = BusinessAction.getInstance();
 
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
+
 class AddFoodItemOverlay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoading: false,
-            image: null,
-            item_name: '',
-            overview: '',
-            item_price: '',
-            meal: [0, 1]
+            image: null
         };
-        this.mapIndexToMeal = {
-            0: 'breakfast',
-            1: 'lunch',
-            2: 'dinner'
-        };
-        this.mapMealToIndex = {
-            breakfast: 0,
-            lunch: 1,
-            dinner: 2
-        };
-        this.tagsState = {
+
+        this.item_name = '';
+        this.overview = '';
+        this.item_price = '';
+        this.meal_type = [0];
+        this.tags = {
             is_beverage: false,
             burger: false,
             canadian : false,
@@ -63,7 +58,7 @@ class AddFoodItemOverlay extends React.Component {
             vegetarian : false,
             vietnamese : false
         };
-        this.meatState = {
+        this.meat = {
             bacon: false,
             bear: false,
             beef: false,
@@ -92,7 +87,7 @@ class AddFoodItemOverlay extends React.Component {
             turtle: false,
             veal: false
         };
-        this.seafoodState = {
+        this.seafood = {
             alaska_pollack: false,
             catfish: false,
             clam: false,
@@ -109,113 +104,36 @@ class AddFoodItemOverlay extends React.Component {
             trout: false,
             tuna: false
         };
-        this.tags = [
-            { value: 'is_beverage', text: 'Beverage' },
-            { value: 'burger', text: 'Burger' },
-            { value: 'canadian', text: 'Canadian' },
-            { value: 'caribbean', text: 'Caribbean' },
-            { value: 'cheap', text: 'Cheap' },
-            { value: 'chinese', text: 'Chinese' },
-            { value: 'dessert', text: 'Dessert' },
-            { value: 'fast_food', text: 'Fast Food' },
-            { value: 'fine_food', text: 'Fine Food' },
-            { value: 'gluten_free', text: 'Gluten Free' },
-            { value: 'greek', text: 'Greek' },
-            { value: 'halal', text: 'Halal' },
-            { value: 'has_nuts', text: 'Has Nuts' },
-            { value: 'healthy', text: 'Healthy' },
-            { value: 'indian', text: 'Indian' },
-            { value: 'italian', text: 'Italian' },
-            { value: 'japanese', text: 'Japanese' },
-            { value: 'korean', text: 'Korean' },
-            { value: 'kosher', text: 'Kosher' },
-            { value: 'lactose_free', text: 'Lactose Free' },
-            { value: 'mexican', text: 'Mexican' },
-            { value: 'middle_eastern', text: 'Middle Eastern' },
-            { value: 'pizza', text: 'Pizza' },
-            { value: 'snack', text: 'Snack' },
-            { value: 'spicy', text: 'Spicy' },
-            { value: 'sushi', text: 'Sushi' },
-            { value: 'thai', text: 'Thai' },
-            { value: 'vegan', text: 'Vegan' },
-            { value: 'vegetarian', text: 'Vegetarian' },
-            { value: 'vietnamese', text: 'Vietnamese' }
-        ];
-
-        this.meat = [
-            { value: 'bacon', text: 'Bacon' },
-            { value: 'bear', text: 'Bear' },
-            { value: 'beef', text: 'Beef' },
-            { value: 'buffalo', text: 'Buffalo' },
-            { value: 'calf', text: 'Calf' },
-            { value: 'caribou', text: 'Caribou' },
-            { value: 'chicken', text: 'Chicken' },
-            { value: 'duck', text: 'Duck' },
-            { value: 'goat', text: 'Goat' },
-            { value: 'goose', text: 'Goose' },
-            { value: 'ham', text: 'Ham' },
-            { value: 'hen', text: 'Hen' },
-            { value: 'horse', text: 'Horse' },
-            { value: 'kangaroo', text: 'Kangaroo' },
-            { value: 'lamb', text: 'Lamb' },
-            { value: 'moose', text: 'Moose' },
-            { value: 'mutton', text: 'Mutton' },
-            { value: 'opossum', text: 'Opossum' },
-            { value: 'ostrich', text: 'Ostrich' },
-            { value: 'pork', text: 'Pork' },
-            { value: 'quail', text: 'Quail' },
-            { value: 'rabbit', text: 'Rabbit' },
-            { value: 'snake', text: 'Snake' },
-            { value: 'squirrel', text: 'Squirrel' },
-            { value: 'turkey', text: 'Turkey' },
-            { value: 'turtle', text: 'Turtle' },
-            { value: 'veal', text: 'Veal' }
-        ];
-
-        this.seafood = [
-            { value: 'alaska_pollack', text: 'Alaska Pollack' },
-            { value: 'catfish', text: 'Catfish' },
-            { value: 'clam', text: 'Clam' },
-            { value: 'cod', text: 'Cod' },
-            { value: 'crab', text: 'Crab' },
-            { value: 'eel', text: 'Eel' },
-            { value: 'lobster', text: 'Lobster' },
-            { value: 'pangasius', text: 'Pangasius' },
-            { value: 'pike', text: 'Pike' },
-            { value: 'salmon', text: 'Salmon' },
-            { value: 'shark', text: 'Shark' },
-            { value: 'shrimp', text: 'Shrimp' },
-            { value: 'tilapia', text: 'Tilapia' },
-            { value: 'trout', text: 'Trout' },
-            { value: 'tuna', text: 'Tuna' }
-        ];
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectedFoodItem) {
             const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id } = nextProps.selectedFoodItem;
-            console.log('receive', food_item_id);
-            this.tagsState = tags;
-            this.seafoodState = seafood;
-            this.meatState = meat;
-            const meal = [];
+            this.tags = tags;
+            this.seafood = seafood;
+            this.meat = meat;
+            this.item_name = item_name;
+            this.overview = overview;
+            this.item_price = item_price;
+            const meal_indexes = [];
             if (meal_type.breakfast) {
-                meal.push(0);
+                meal_indexes.push(0);
+            }
+            if (meal_type.brunch) {
+                meal_indexes.push(1);
             }
             if (meal_type.lunch) {
-                meal.push(1);
+                meal_indexes.push(2);
             }
             if (meal_type.dinner) {
-                meal.push(2);
+                meal_indexes.push(3);
             }
-            this.setState({
-                image,
-                item_name,
-                overview,
-                item_price,
-                food_item_id,
-                meal
-            });
+            this.meal_type = meal_indexes;
+            this.setState({ image, food_item_id });
         }
+
+        this.setOverviewRef = this.setOverviewRef.bind(this);
+        this.setNameRef = this.setNameRef.bind(this);
+        this.setPriceRef = this.setPriceRef.bind(this);
     }
     uploadPicture = async (type) => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -232,16 +150,24 @@ class AddFoodItemOverlay extends React.Component {
             }});
         }
     }
+    onSubmitEditing = type => {
+        const inputName = `${type}_input`;
+        if (type === 'item_name') {
+            this.overview_input.focus();
+        } else if (type === 'overview') {
+            this.item_price_input.focus();
+        }
+        // console.log(this[inputName])
+    }
     toggleItem = (type, value, status) => {
-        const stateName = `${type}State`;
-        this[stateName][value] = status;
+        this[type][value] = status;
     }
     saveFoodItem = async () => {
         // Validation
         let message;
-        if (!this.state.item_name) {
+        if (!this.item_name) {
             message = 'Please enter a name.';
-        } else if (!this.state.item_price) {
+        } else if (!this.item_price) {
             message = 'Please enter a price.';
         } else if (!this.state.image || !this.state.image.base64) {
             message = 'Please add an image.';
@@ -249,21 +175,22 @@ class AddFoodItemOverlay extends React.Component {
         if (message) {
             return alert(message);
         } else {
-            const { image, item_name, overview, item_price, meal, food_item_id  } = this.state;
-            const meal_type = {
-                breakfast: Boolean(meal.indexOf(0)),
-                lunch: Boolean(meal.indexOf(1)),
-                dinner: Boolean(meal.indexOf(2))
+            const { image, food_item_id  } = this.state;
+            const meal_indexes = {
+                breakfast: Boolean(this.meal_type.indexOf(0)),
+                brunch: Boolean(this.meal_type.indexOf(1)),
+                lunch: Boolean(this.meal_type.indexOf(2)),
+                dinner: Boolean(this.meal_type.indexOf(3))
             };
             const form = {
                 image,
-                item_name,
-                overview,
-                item_price,
-                meal_type,
-                tags: this.tagsState,
+                item_name: this.item_name,
+                overview: this.overview,
+                item_price: this.item_price,
+                meal_type: meal_indexes,
+                tags: this.tags,
                 meat: this.meatState,
-                seafood: this.seafoodState,
+                seafood: this.seafood,
             };
             let type = 'create';
             if (food_item_id) {
@@ -281,29 +208,51 @@ class AddFoodItemOverlay extends React.Component {
             }
         }
     }
+    setOverviewRef(input) {
+        this.overview_input = input;
+    }
+    setNameRef(input) {
+        this.item_name_input = input;
+    }
+    setPriceRef(input) {
+        this.item_price_input = input;
+    }
     render() {
-        const width = Dimensions.get('window').width;
-        const height = Dimensions.get('window').height;
         const image = this.state.image ? `data:image/png;base64,${this.state.image.base64}` : null;
-        const tagItems = this.tags.map((tag, i) => {
+        const tagItems = lists.tags.map((tag, i) => {
             const { text, value } = tag;
-            const isActive = this.tagsState[value];
+            const isActive = this.tags[value];
             return (
-                <FoodItem key={i} text={text} value={value} stateName={'tags'} isChecked={isActive} toggleItem={this.toggleItem} />
+                <FoodItem key={i}
+                    text={text}
+                    value={value}
+                    stateName={'tags'}
+                    isChecked={isActive}
+                    toggleItem={this.toggleItem} />
             );
         });
-        const meatItems = this.meat.map((meat, i) => {
+        const meatItems = lists.meat.map((meat, i) => {
             const { text, value } = meat;
-            const isActive = this.meatState[value];
+            const isActive = this.meat[value];
             return (
-                <FoodItem key={i} text={text} value={value} stateName={'meat'} isChecked={isActive} toggleItem={this.toggleItem} />
+                <FoodItem key={i}
+                    text={text}
+                    value={value}
+                    stateName={'meat'}
+                    isChecked={isActive}
+                    toggleItem={this.toggleItem} />
             );
         });
-        const seafoodItems = this.seafood.map((seafood, i) => {
+        const seafoodItems = lists.seafood.map((seafood, i) => {
             const { text, value } = seafood;
-            const isActive = this.seafoodState[value];
+            const isActive = this.seafood[value];
             return (
-                <FoodItem key={i} text={text} value={value} stateName={'seafood'} isChecked={isActive} toggleItem={this.toggleItem} />
+                <FoodItem key={i}
+                    text={text}
+                    value={value}
+                    stateName={'seafood'}
+                    isChecked={isActive}
+                    toggleItem={this.toggleItem} />
             );
         });
         return (
@@ -330,22 +279,29 @@ class AddFoodItemOverlay extends React.Component {
                         }
                     </View>
                     <Text style={[textStyles.tiny, styles.headerText]}>Food Name</Text>
-                    <Input value={this.state.item_name} onChangeText={text => this.setState({ item_name: text })}/>
+                    <InputHandler type='item_name'
+                        setRef={this.setNameRef}
+                        value={this.item_name}
+                        onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                        changeText={text => this.item_name = text} />
 
                     <Text style={[textStyles.tiny, styles.headerText]}>Food Description</Text>
-                    <View style={styles.textAreaContainer}>
-                        <TextInput value={this.state.overview} style={styles.textArea} multiline numberOfLines={4} onChangeText={text => this.setState({ overview: text })} />
-                    </View>
+                    <InputHandler type='overview'
+                        setRef={this.setOverviewRef}
+                        value={this.overview}
+                        onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                        changeText={text => this.overview = text} />
 
                     <Text style={[textStyles.tiny, styles.headerText]}>Food Price</Text>
-                    <Input value={this.state.item_price} keyboardType={'numeric'} onChangeText={text => this.setState({ item_price: text })} />
+                    <InputHandler type='item_price'
+                        setRef={this.setPriceRef}
+                        value={this.item_price}
+                        onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                        changeText={text => this.item_price = text} />
+              
                     <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meal</Text>
-                    <ButtonGroup
-                        selectMultiple
-                        onPress={selectedIndexes => this.setState({ meal: selectedIndexes })}
-                        selectedIndexes={this.state.meal}
-                        buttons={['Breakfast', 'Lunch', 'Dinner']}
-                        containerStyle={{ height: 35 }} />
+                    <ButtonGroupHandler onPress={selectedIndexes => this.meal_type = selectedIndexes} meal_type={this.meal_type} />
+
                     <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
                     <Text style={[textStyles.tiny, styles.headerText]}>Tags</Text>
                     <List>{ tagItems }</List>
@@ -365,6 +321,61 @@ class AddFoodItemOverlay extends React.Component {
     }
 }
 
+class ButtonGroupHandler extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            meal_type: props.meal_type
+        };
+    }
+    onPress(selectedIndexes) {
+        this.setState({ meal_type: selectedIndexes });
+        this.props.onPress(selectedIndexes);
+    }
+    render() {
+        return (
+            <ButtonGroup selectMultiple
+                onPress={selectedIndexes => this.onPress(selectedIndexes)}
+                selectedIndexes={this.state.meal_type}
+                buttons={['Breakfast', 'Brunch', 'Lunch', 'Dinner']}
+                containerStyle={{ height: 35 }} />
+        );
+    }
+}
+
+class InputHandler extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            input: props.value
+        }
+    }
+    changeText(text) {
+        this.setState({ input: text });
+        this.props.changeText(text);
+    }
+    onSubmitEditing() {
+        this.props.onSubmitEditing(this.props.type);
+    }
+    render() {
+        const { type, setRef } = this.props;
+        return (
+            type === 'overview' ?
+                <Input ref={setRef} value={this.state.input}
+                    multiline numberOfLines={4}
+                    style={styles.input}
+                    onSubmitEditing={() => this.onSubmitEditing()}
+                    blurOnSubmit={false}
+                    onChangeText={text => this.changeText(text)} /> :
+                <Input ref={setRef} value={this.state.input}
+                    style={styles.input}
+                    keyboardType={type === 'item_price' ? 'numeric' : 'default'}
+                    onSubmitEditing={() => this.onSubmitEditing()}
+                    blurOnSubmit={type === 'item_price'}
+                    onChangeText={text => this.changeText(text)} />
+        )
+    }
+}
 class FoodItem extends React.Component {
     constructor(props) {
         super(props);
