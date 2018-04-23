@@ -17,6 +17,7 @@ export default styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 20,
         borderLeftWidth: 5,
+        backgroundColor: 'white',
         borderLeftColor: colors.primary,
         borderBottomWidth: 2,
         borderBottomColor: colors.lightergrey,

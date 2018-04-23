@@ -58,6 +58,7 @@ class BusinessSignUpScreen extends React.Component {
                     <Input leftIconContainerStyle={styles.iconContainer}
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
+                        inputContainerStyle={styles.inputDirectContainer}
                         onSubmitEditing={() => { this.password_input.focus(); }}
                         blurOnSubmit={false}
                         placeholder='Business E-mail'
@@ -67,6 +68,7 @@ class BusinessSignUpScreen extends React.Component {
                     <Input leftIconContainerStyle={styles.iconContainer}
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
+                        inputContainerStyle={styles.inputDirectContainer}
                         ref={(input) => { this.password_input = input; }}
                         onSubmitEditing={() => { this.password_repeat_input.focus(); }}
                         blurOnSubmit={false}
@@ -77,6 +79,7 @@ class BusinessSignUpScreen extends React.Component {
                         onChangeText={text => this.setState({ password: text })} />
                     <Input leftIconContainerStyle={styles.iconContainer}
                         containerStyle={styles.inputContainer}
+                        inputContainerStyle={styles.inputDirectContainer}
                         ref={(input) => { this.password_repeat_input = input; }}
                         inputStyle={styles.input}
                         placeholder='Repeat Password'

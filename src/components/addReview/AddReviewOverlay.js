@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, Dimensions, Image } from 'react-native';
-import { Overlay, Input, SearchBar, Icon, Button, Avatar, List, ListItem } from 'react-native-elements';
+import { Overlay, Input, SearchBar, Icon, Button, Avatar, ListItem } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 import { ImagePicker } from 'expo';
 
@@ -111,12 +111,13 @@ class AddReviewOverlay extends React.Component {
                         containerStyle={{ width: 150, justifyContent: 'center', alignItems: 'center' }}
                         buttonStyle={{ padding: 10 }}
                         fullStarColor={'#f1c40f'} />
-
-                    <Button title='Submit'
-                        loading={this.state.submittingReview}
-                        titleStyle={[textStyles.medium, { height: 50 }]}
-                        buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                        onPress={() => this.submitReview()} />
+                    <View style={styles.centered}>
+                        <Button title='Submit'
+                            loading={this.state.submittingReview}
+                            titleStyle={[textStyles.medium, { height: 50 }]}
+                            buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                            onPress={() => this.submitReview()} />
+                    </View>
                 </View>
             </ScrollView>
         );
@@ -135,17 +136,15 @@ class AddReviewOverlay extends React.Component {
         }
         return (
             <ScrollView style={styles.wrapper}>
-                <List>
-                    { this.state.foodItems.map((item, i) => {
-                        return (
-                            <ListItem key={i}
-                                leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: 'data:image/png;base64,' + item.image.base64}}/></View>}
-                                onPress={() => this.goNextStep(item.food_item_id)}
-                                subtitle={item.overview}
-                                title={item.item_name} />
-                        );
-                    })}
-                </List>
+                { this.state.foodItems.map((item, i) => {
+                    return (
+                        <ListItem key={i}
+                            leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: 'data:image/png;base64,' + item.image.base64}}/></View>}
+                            onPress={() => this.goNextStep(item.food_item_id)}
+                            subtitle={item.overview}
+                            title={item.item_name} />
+                    );
+                })}
             </ScrollView>
         );
     }

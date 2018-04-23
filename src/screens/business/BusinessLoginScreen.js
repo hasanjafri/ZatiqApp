@@ -49,6 +49,7 @@ class BusinessLoginScreen extends React.Component {
                     <Input leftIconContainerStyle={styles.iconContainer}
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
+                        inputContainerStyle={styles.inputDirectContainer}
                         keyboardType={'email-address'}
                         onSubmitEditing={() => { this.password_input.focus(); }}
                         blurOnSubmit={false}
@@ -58,6 +59,7 @@ class BusinessLoginScreen extends React.Component {
                         underlineColorAndroid='transparent'/>
                     <Input leftIconContainerStyle={styles.iconContainer}
                         containerStyle={styles.inputContainer}
+                        inputContainerStyle={styles.inputDirectContainer}
                         inputStyle={styles.input}
                         placeholder='Password'
                         ref={(input) => { this.password_input = input; }}

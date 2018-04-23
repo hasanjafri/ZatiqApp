@@ -14,7 +14,7 @@ class Loader extends React.Component {
         return (
             show ?
                 <View style={[styles.loader, { backgroundColor: color }]}>
-                    <ActivityIndicator size={60} color={colors.primary} />
+                    <ActivityIndicator size={'large'} color={colors.primary} />
                 </View> : null
         );
     }

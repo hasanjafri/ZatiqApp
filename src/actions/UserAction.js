@@ -132,7 +132,7 @@ export const setUserProfile = async (preferences) => {
     }
 }
 
-export const searchCusine = async (cuisine) => {
+export const searchCuisine = async (cuisine) => {
     try {
         const user = state.getUser();
         const api_token = user ? user.data.api_token : null;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, Dimensions } from 'react-native';
-import { Overlay, Icon, Button, List, ListItem } from 'react-native-elements';
+import { Overlay, Icon, Button, ListItem } from 'react-native-elements';
 
 import textStyles from '../../styles/text.style';
 import styles from '../../styles/screens/business/Pages.style';
@@ -70,6 +70,23 @@ class PreferenceOverlay extends React.Component {
     render() {
         const width = Dimensions.get('window').width;
         const height = Dimensions.get('window').height;
+
+        const preferences = this.preferences.map((preference, i) => {
+            const { text, value } = preference;
+            const isActive = this.state.preferences[value];
+            return (
+                <ListItem key={i}
+                    rightIcon={
+                        isActive ?
+                        <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
+                        <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
+                    }
+                    titleStyle={{ fontFamily: 'nunito' }}
+                    onPress={() => this.togglePreference(value)}
+                    title={text}
+                />
+            );
+        });
         return (
                 <Overlay isVisible={this.props.showOverlay}
                     width={width - 20}
@@ -83,30 +100,15 @@ class PreferenceOverlay extends React.Component {
                         { !this.state.isLoading ?
                             <ScrollView style={styles.wrapper}>
                                 <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
-                                <List>
-                                    { this.preferences.map((preference, i) => {
-                                        const { text, value } = preference;
-                                        const isActive = this.state.preferences[value];
-                                        return (
-                                            <ListItem key={i}
-                                                rightIcon={
-                                                    isActive ?
-                                                    <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
-                                                    <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
-                                                }
-                                                titleStyle={{ fontFamily: 'nunito' }}
-                                                onPress={() => this.togglePreference(value)}
-                                                title={text}
-                                            />
-                                        );
-                                    })}
-                                </List>
-                                <Button title='Save'
-                                    loading={this.state.isLoading}
-                                    titleStyle={[textStyles.medium, { height: 50 }]}
-                                    buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                                    loading={this.state.isLoading}
-                                    onPress={() => this.saveItem()} />
+                                {preferences}
+                                <View style={styles.centered}>
+                                    <Button title='Save'
+                                        loading={this.state.isLoading}
+                                        titleStyle={[textStyles.medium, { height: 50 }]}
+                                        buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                                        loading={this.state.isLoading}
+                                        onPress={() => this.saveItem()} />
+                                </View>
                             </ScrollView> :
                             <View style={{ flex: 1, height: '100%', width: '100%' }}><Loader show clear/></View> }
                 </Overlay>

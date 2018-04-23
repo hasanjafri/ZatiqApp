@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, KeyboardAvoidingView, ScrollView, Image } from 'react-native';
-import { Icon, Button, List, ListItem } from 'react-native-elements';
+import { Icon, Button, ListItem } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 
 import Loader from '../../components/Loader';
@@ -153,31 +153,37 @@ class BusinessUploadScreen extends React.Component {
                     <ScrollView style={styles.listContainer}>
                         <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left', paddingTop: 20 }]}>Upload Menu Pictures</Text>
                         { menuItems.length > 0 ? 
-                            <List>{menuItems}</List> : null }
-                        <Button title='Add'
-                            icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
-                            titleStyle={[textStyles.medium, { height: 50 }]}
-                            buttonStyle={styles.uploadButton}
-                            onPress={() => this.uploadMenu('menuPictures')}/>
+                            menuItems : null }
+                        <View style={styles.centered}>
+                            <Button title='Add'
+                                icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
+                                titleStyle={[textStyles.medium, { height: 50 }]}
+                                buttonStyle={styles.uploadButton}
+                                onPress={() => this.uploadMenu('menuPictures')}/>
+                        </View>
 
                         <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Upload Restaurant Interior Pictures</Text>
                         { pictureItems.length > 0 ?
-                            <List>{pictureItems}</List> : null }
-                        <Button title='Add'
-                            icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
-                            titleStyle={[textStyles.medium, { height: 50 }]}
-                            buttonStyle={styles.uploadButton}
-                            onPress={() => this.uploadMenu('restaurantPictures')}/>
+                            pictureItems : null }
+                        <View style={styles.centered}>
+                            <Button title='Add'
+                                icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
+                                titleStyle={[textStyles.medium, { height: 50 }]}
+                                buttonStyle={styles.uploadButton}
+                                onPress={() => this.uploadMenu('restaurantPictures')}/>
+                        </View>
+                        
 
                         <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Add Food Items</Text>
                         { foodItems.length > 0 ? 
-                            <List>{foodItems}</List> : null }
-                        
-                        <Button title='Add'
-                            icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
-                            titleStyle={[textStyles.medium, { height: 50 }]}
-                            buttonStyle={styles.uploadButton}
-                            onPress={() => this.showAddFoodOverlay()}/>
+                            foodItems : null }
+                        <View style={styles.centered}>
+                            <Button title='Add'
+                                icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
+                                titleStyle={[textStyles.medium, { height: 50 }]}
+                                buttonStyle={styles.uploadButton}
+                                onPress={() => this.showAddFoodOverlay()}/>
+                        </View>
                     </ScrollView>
                     { this.state.showAddFoodOverlay ? 
                         <AddFoodItemOverlay showOverlay

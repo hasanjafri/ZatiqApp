@@ -4,7 +4,7 @@ import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
 // Custom imports
-import { searchCusine } from '../../actions/UserAction';
+import {searchCuisine} from '../../actions/UserAction';
 import AddReviewButton from '../../components/addReview/AddReviewButton';
 import styles from '../../styles/screens/application/FeelingScreen.style';
 import textStyles from '../../styles/text.style';
@@ -54,7 +54,7 @@ class FeelingScreen extends React.Component {
                 <ScrollView style={styles.scrollViewContainer}>
                     <Category type={'main'}
                         navigate={navigate}
-                        category={'Top Picks'} />
+                        category={'Promotions'} />
                     <View style={styles.equalWidthsContainer}>
                         <Category type={'special'}
                             navigate={navigate}
@@ -65,7 +65,7 @@ class FeelingScreen extends React.Component {
                             <View style={styles.equalHeightContainer}>
                                <Category type={'special'}
                                     navigate={navigate}
-                                    category={'Popular'}
+                                    category={'Top Picks'}
                                     style={[styles.equalHeightView, { paddingBottom: 5}]}
                                     src={require('../../assets/backgrounds/2.jpeg')} />
                                <Category type={'special'}
@@ -90,7 +90,7 @@ class Category extends React.Component {
     }
     onSearchCuisine = async (cuisine) => {
         this.setState({ isLoading:  true });
-        const result = await searchCusine(cuisine);
+        const result = await searchCuisine(cuisine);
         this.setState({ isLoading:  false });
         if (result.success) {
             const { navigate } = this.props;
@@ -119,9 +119,9 @@ class Category extends React.Component {
                 <TouchableOpacity style={styles.topPickView} onPress={() => this.onSearchCuisine(category)}>
                     <ImageBackground style={styles.topPickImage} source={require('../../assets/backgrounds/top-picks.png')}>
                         <View style={styles.topPickImageOverlay}>
-                            <Text style={textStyles.large}>OUR</Text>
-                            <Text style={textStyles.hugeBold}>TOP</Text>
-                            <Text style={textStyles.large}>PICKS</Text>
+                            <Text style={textStyles.largeBold}>ZATIQ'S</Text>
+                            <Text style={textStyles.hugeBold}>PROMOTIONS</Text>
+                            <Text style={textStyles.large}>OF THE DAY</Text>
                         </View>
                         <Loader light show={this.state.isLoading} />
                     </ImageBackground>

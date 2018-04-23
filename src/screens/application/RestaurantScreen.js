@@ -195,7 +195,7 @@ class GridItem extends React.Component {
             <TouchableOpacity onPress={() => this.onGridPress(item.type)}>
                 <View style={styles.item}>
                     <Image style={{ height: 50, width: 50 }} source={item.source}></Image>
-                    <Text style={{ color: 'white' }}>{item.text}</Text>
+                    <Text style={{ color: 'white', fontSize: 12, fontFamily: 'nunito' }}>{item.text}</Text>
                 </View>
                 <Loader light show={this.state.isLoading} />
             </TouchableOpacity>

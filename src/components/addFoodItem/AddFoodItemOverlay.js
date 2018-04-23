@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, Dimensions } from 'react-native';
-import { Overlay, Input, SearchBar, Icon, Button, ButtonGroup, Avatar, List, ListItem } from 'react-native-elements';
+import { Overlay, Input, SearchBar, Icon, Button, ButtonGroup, Avatar, ListItem } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 
 import lists from './foodItems';
@@ -108,9 +108,9 @@ class AddFoodItemOverlay extends React.Component {
     componentDidMount() {
         if (this.props.selectedFoodItem) {
             const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id } = this.props.selectedFoodItem;
-            this.tags = tags;
-            this.seafood = seafood;
-            this.meat = meat;
+            this.tags = {...tags};
+            this.seafood = {...seafood};
+            this.meat = {...meat};
             this.item_name = item_name;
             this.overview = overview;
             this.item_price = item_price;
@@ -306,17 +306,19 @@ class AddFoodItemOverlay extends React.Component {
 
                     <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
                     <Text style={[textStyles.tiny, styles.headerText]}>Tags</Text>
-                    <List>{ tagItems }</List>
+                    { tagItems }
                     <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meat Type</Text>
-                    <List>{ meatItems }</List>
+                    { meatItems }
                     <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Seafood Type</Text>
-                    <List>{ seafoodItems }</List>
-                    <Button title='Save'
+                    { seafoodItems }
+                    <View style={styles.centered}>
+                        <Button title='Save'
                         loading={this.state.isLoading}
                         titleStyle={[textStyles.medium, { height: 50 }]}
                         buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
                         loading={this.state.isLoading}
                         onPress={() => this.saveFoodItem()} />
+                    </View>
                 </ScrollView>
             </Overlay>
         );
@@ -384,6 +386,11 @@ class FoodItem extends React.Component {
         this.state = {
             checked: props.isChecked
         };
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            checked: nextProps.isChecked
+        })
     }
     toggleItem() {
         this.setState({ checked: !this.state.checked });

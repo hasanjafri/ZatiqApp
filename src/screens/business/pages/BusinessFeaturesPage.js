@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { Icon, Button, List, ListItem } from 'react-native-elements';
+import { Icon, Button, ListItem } from 'react-native-elements';
 
 import colors from '../../../styles/colors.style';
 import styles from '../../../styles/screens/business/Pages.style';
@@ -78,30 +78,30 @@ class BusinessFeaturesPage extends React.Component {
                 <ScrollView style={styles.wrapper}>
                     { !this.user ?  <Text style={[textStyles.medium, styles.headerText, { paddingVertical: 20 }]}>Select as many features that apply to your restaurant.</Text> : null }
                     <Text style={[textStyles.small, styles.headerText]}>Features</Text>
-                    <List>
-                        { this.features.map((feature, i) => {
-                            const { text, value } = feature;
-                            const isActive = this.state.features[value];
-                            return (
-                                <ListItem key={i}
-                                    rightIcon={
-                                        isActive ?
-                                        <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
-                                        <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
-                                    }
-                                    titleStyle={{ fontFamily: 'nunito' }}
-                                    onPress={() => this.toggleFeature(value)}
-                                    title={text}
-                                />
-                            );
-                        })}
-                    </List>
+                    { this.features.map((feature, i) => {
+                        const { text, value } = feature;
+                        const isActive = this.state.features[value];
+                        return (
+                            <ListItem key={i}
+                                rightIcon={
+                                    isActive ?
+                                    <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
+                                    <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
+                                }
+                                titleStyle={{ fontFamily: 'nunito' }}
+                                onPress={() => this.toggleFeature(value)}
+                                title={text}
+                            />
+                        );
+                    })}
                 </ScrollView>
-                <Button title='Submit'
-                    loading={this.state.isLoading}
-                    titleStyle={[textStyles.medium, { height: 50 }]}
-                    buttonStyle={styles.uploadButton}
-                    onPress={() => this.businessRegister()} />
+                <View style={styles.centered}>
+                    <Button title='Submit'
+                        loading={this.state.isLoading}
+                        titleStyle={[textStyles.medium, { height: 50 }]}
+                        buttonStyle={styles.uploadButton}
+                        onPress={() => this.businessRegister()} />
+                </View>
             </ React.Fragment>
         );
     }

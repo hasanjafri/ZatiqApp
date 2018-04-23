@@ -11,6 +11,9 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 40
     },
+    inputDirectContainer: {
+        borderBottomWidth: 0
+    },
     header: {
         fontSize: 24,
         marginBottom: 60,
@@ -27,7 +30,8 @@ export default styles = StyleSheet.create({
     },
     input: {
         color: 'white',
-        fontFamily: 'nunito'
+        fontFamily: 'nunito',
+        height: 50
     },
     iconContainer: {
         alignSelf: 'center',

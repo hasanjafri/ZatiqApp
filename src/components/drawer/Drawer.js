@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, Image, ImageBackground, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, Button, Image, ImageBackground, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 // Actions
@@ -38,6 +38,7 @@ class Drawer extends React.Component {
     render() {
         const drawerItems = this.items.map((item, i) => {
             let drawerItem;
+
             if (item.section) {
                 drawerItem = (
                     <View style={styles.itemSection} key={i}>
@@ -60,18 +61,20 @@ class Drawer extends React.Component {
                     <Text style={[textStyles.large, { color: 'black' }]}>Current Location</Text>
                     <Text style={[textStyles.medium, styles.locationText]}>Peterborough, Canada</Text>
                 </View>
-                { drawerItems }
-                <TouchableOpacity activeOpacity={1} style={styles.buttonContainer} onPress={async () => {
-                        const state = appState.getInstance();
-                        await state.onSignOut();
-                        const { navigate } = this.props.navigation;
-                        navigate('SwitchOut');
-                    }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Icon name='ios-log-out' type='ionicon'/>
-                        <Text style={[textStyles.medium, { color: 'black', marginLeft: 20 }]}>Logout</Text>
-                    </View>
-                </TouchableOpacity>
+                <ScrollView style={{ flex: 1 }}>
+                    { drawerItems }
+                    <TouchableOpacity activeOpacity={1} style={styles.itemSection} onPress={async () => {
+                            const state = appState.getInstance();
+                            await state.onSignOut();
+                            const { navigate } = this.props.navigation;
+                            navigate('SwitchOut');
+                        }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icon name='ios-log-out' type='ionicon'/>
+                            <Text style={[textStyles.medium, { color: 'black', marginLeft: 20 }]}>Logout</Text>
+                        </View>
+                    </TouchableOpacity>
+                </ScrollView>
             </SafeAreaView>
         );
     }

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
 import { NavigationActions  } from 'react-navigation';
-import { TouchableHighlight, Image, StyleSheet, Text } from 'react-native';
+import { TouchableHighlight, Image, StyleSheet, Text, View } from 'react-native';
 
-const ImageHeader = () => <Image resizeMode={'contain'} source={require('../../assets/backgrounds/header.png')} />;
+const ImageHeader = () => (
+    <Image style={{ width: '100%' , height: '100%'}} source={require('../../assets/backgrounds/header.png')} />
+);
 const HeaderLogo = () => <Image style={{
     height: '100%',
     width: '100%',
