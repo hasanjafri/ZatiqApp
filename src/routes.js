@@ -9,11 +9,18 @@ import SuggestionScreen from './screens/application/SuggestionScreen';
 import RestaurantScreen from './screens/application/RestaurantScreen';
 import PictureScreen from './screens/PictureScreen';
 import FindRestaurantScreen from './screens/application/FindRestaurantScreen';
+import FindFoodScreen from './screens/application/FindFoodScreen';
 import LoginScreen from './screens/LoginScreen';
+import ReviewsScreen from './screens/ReviewsScreen';
 import BusinessLoginScreen from './screens/business/BusinessLoginScreen';
 import BusinessSignUpScreen from './screens/business/BusinessSignUpScreen';
 import BusinessProfileScreen from './screens/business/BusinessProfileScreen';
 import BusinessUploadScreen from './screens/business/BusinessUploadScreen';
+
+import BusinessRestaurantScreen from './screens/business/BusinessRestaurantScreen';
+
+import appState from './appState';
+const state = appState.getInstance();
 
 import { ImageHeader, HeaderLogo, MenuLogo, SkipButton, SettingsButton } from './components/header/Header';
 import Drawer from './components/drawer/Drawer';
@@ -28,11 +35,16 @@ const mainApplication = StackNavigator({
         screen: FeelingScreen,
         navigationOptions: ({ navigation }) => {
             const { params = {} } = navigation.state;
+            const user = state.getUser();
+            let headerRight = (<View></View>);
+            if (user && user.type === 'user') {
+                headerRight =  <SettingsButton navigation={navigation} onPress={params.togglePreferenceModal} />;
+            }
             return {
                 headerBackground: <ImageHeader />,
                 headerTitle: <HeaderLogo />,
                 headerLeft: <MenuLogo navigation={navigation} />,
-                headerRight:  <SettingsButton navigation={navigation} onPress={params.togglePreferenceModal} />
+                headerRight
             }
         }
     },
@@ -64,15 +76,32 @@ const ApplicationIn = DrawerNavigator({
         screen: mainApplication
     },
     FindRestaurant: {
-        screen: FindRestaurantScreen,
-        navigationOptions: ({ navigation }) => {
-            return {
-                headerBackground: <ImageHeader />,
-                headerTitle: <HeaderLogo />,
-                headerLeft: <MenuLogo navigation={navigation} />,
-                headerRight: (<View></View>)
+        screen: StackNavigator({
+            screen: FindRestaurantScreen,
+        }, {
+            navigationOptions: ({ navigation }) => {
+                return {
+                    headerBackground: <ImageHeader />,
+                    headerTitle: <HeaderLogo />,
+                    headerLeft: <MenuLogo navigation={navigation} />,
+                    headerRight: (<View></View>)
+                }
             }
-        }
+        })
+    },
+    FindFood: {
+        screen: StackNavigator({
+            screen: FindFoodScreen,
+        }, {
+            navigationOptions: ({ navigation }) => {
+                return {
+                    headerBackground: <ImageHeader />,
+                    headerTitle: <HeaderLogo />,
+                    headerLeft: <MenuLogo navigation={navigation} />,
+                    headerRight: (<View></View>)
+                }
+            }
+        })
     },
     BusinessUpload: {
         screen: StackNavigator({
@@ -91,6 +120,34 @@ const ApplicationIn = DrawerNavigator({
     BusinessProfile: {
         screen: StackNavigator({
             screen: BusinessProfileScreen,
+        }, {
+            navigationOptions: ({ navigation }) => {
+                return {
+                    headerBackground: <ImageHeader />,
+                    headerTitle: <HeaderLogo />,
+                    headerLeft: <MenuLogo navigation={navigation} />,
+                    headerRight: (<View></View>)
+                }
+            }
+        })
+    },
+    Reviews: {
+        screen: StackNavigator({
+            screen: ReviewsScreen,
+        }, {
+            navigationOptions: ({ navigation }) => {
+                return {
+                    headerBackground: <ImageHeader />,
+                    headerTitle: <HeaderLogo />,
+                    headerLeft: <MenuLogo navigation={navigation} />,
+                    headerRight: (<View></View>)
+                }
+            }
+        })
+    },
+    BusinessRestaurant: {
+        screen: StackNavigator({
+            screen: BusinessRestaurantScreen,
         }, {
             navigationOptions: ({ navigation }) => {
                 return {

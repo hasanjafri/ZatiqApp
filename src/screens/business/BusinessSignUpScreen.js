@@ -23,7 +23,6 @@ class BusinessSignUpScreen extends React.Component {
 
     businessRegister = () => {
         // Validate
-        const validate = false;
         const { email, password, repeatPassword } = this.state;
         let error = null;
         if (!email) {
@@ -35,7 +34,7 @@ class BusinessSignUpScreen extends React.Component {
         } else if (repeatPassword !== password) {
             error = 'Your passwords do not match';
         }
-        if (!validate || !error) {
+        if (!error) {
             BusinessInstance.setRegisterForm({
                 email: this.state.email,
                 password: this.state.password

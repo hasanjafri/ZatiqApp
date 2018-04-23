@@ -63,7 +63,7 @@ export const onSignIn = async (type) => {
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ accessToken: parsedResult.accessToken, method: type })
+            body: JSON.stringify({ accessToken: parsedResult.accessToken, email: parsedResult.email, method: type })
         });
         const userInfo = await response.json();
         
@@ -149,9 +149,201 @@ export const searchCusine = async (cuisine) => {
             body: JSON.stringify({ api_token, type })
         });
         const parsedResult = await response.json();
-        console.log(parsedResult);
         if (response.status === 200) {
             return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+export const foodItemsByRestaurantId = async (restaurant_id) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        const type = user ? user.type : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+        const response = await fetch(urls.businessFoodItems, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token, type, restaurant_id })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+export const menuPicturesByRestaurantId = async (restaurant_id) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+        const response = await fetch(urls.businessMenus, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token, restaurant_id })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+export const restaurantPicturesByRestaurantId = async (restaurant_id) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+        const response = await fetch(urls.businessInterior, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token, restaurant_id })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+export const submitReview = async (form) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        const type = user ? user.type : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+        const response = await fetch(urls.userAddReview, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token, ...form })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+export const getUserReviews = async (form) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        if (!api_token || user.type !== 'user') {
+            return { success: false, message: 'Not logged in' };
+        }
+
+        const response = await fetch(urls.userReviews, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult.reviews }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+export const findRestaurantByName = async (name) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+
+        const response = await fetch(urls.userFindRestaurantByName, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token, text: name })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult.response }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+export const foodGrid = async (name) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+        const response = await fetch(urls.foodGrid, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token, text: name })
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult.food_items }
         } else {
             return { success: false, message: 'Something went wrong' };
         }

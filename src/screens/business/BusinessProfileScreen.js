@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, AsyncStorage, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, AsyncStorage, Dimensions } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { NavigationActions } from 'react-navigation'
 
+import Loader from '../../components/Loader';
 import styles from '../../styles/screens/business/BusinessProfileScreen.style';
 import colors from '../../styles/colors.style';
 
@@ -38,18 +40,16 @@ class BusinessProfileScreen extends React.Component {
     }
     _renderPage = ({item, index}) => {
         const { page } = item;
-        let renderPage;
-        if (page === 1) {
-            renderPage = <BusinessInfoPage registration={this.props.registration} data={this.state.data}/>
-        } else if (page === 2) {
-            renderPage = <BusinessHoursPage registration={this.props.registration} data={this.state.data}/>
-        } else if (page === 3) {
-            renderPage = <BusinessFeaturesPage registration={this.props.registration} data={this.state.data} nextAction={() => this.props.navigation.navigate('BusinessUpload')} />
-        } 
         return (
-            <View style={[styles.page, { width: viewportWidth }]}>
-                { renderPage }
-            </View>
+            <PageRenderer page={page} registration={this.props.registration} data={this.state.data} nextAction={() => this.props.navigation.dispatch(
+                NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'BusinessUpload' }),
+                    ],
+                    key: null
+                })
+            )} />
         );
     }
 
@@ -74,19 +74,30 @@ class BusinessProfileScreen extends React.Component {
                         carouselRef={this.slider}
                         tappableDots={!!this.slider} />
                 </View> :
-                <View style={{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    opacity: 0.2,
-                    backgroundColor: 'black',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <ActivityIndicator size='large' />
-                </View>
+                <Loader show />
+        );
+    }
+}
+
+
+class PageRenderer extends React.Component {
+    shouldComponentUpdate() {
+        return false;
+    }
+    render() {
+        const { page } = this.props;
+        let renderPage;
+        if (page === 1) {
+            renderPage = <BusinessInfoPage registration={this.props.registration} data={this.props.data}/>
+        } else if (page === 2) {
+            renderPage = <BusinessHoursPage registration={this.props.registration} data={this.props.data}/>
+        } else if (page === 3) {
+            renderPage = <BusinessFeaturesPage registration={this.props.registration} data={this.props.data} nextAction={() => this.props.nextAction()} />
+        } 
+        return (
+            <View style={[styles.page, { width: viewportWidth }]}>
+                { renderPage }
+            </View>
         );
     }
 }

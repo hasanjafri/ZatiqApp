@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, View, ScrollView, Dimensions, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, Dimensions } from 'react-native';
 import { Overlay, Icon, Button, List, ListItem } from 'react-native-elements';
 
 import textStyles from '../../styles/text.style';
 import styles from '../../styles/screens/business/Pages.style';
 import colors from '../../styles/colors.style';
 import { getUserProfile, setUserProfile } from '../../actions/UserAction';
+import Loader from '../../components/Loader';
 
 import BusinessAction from '../../actions/BusinessAction';
 const BusinessInstance = BusinessAction.getInstance();
@@ -75,53 +76,39 @@ class PreferenceOverlay extends React.Component {
                     height={height - 100}
                     containerStyle={{ padding: 0 }}
                     overlayStyle={styles.overlayContainer}>
-                    { !this.state.isLoading ?
-                    <React.Fragment>
                         <View style={styles.header}>
                             <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Set Preferences</Text>
                             <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
                         </View>
-                        <ScrollView style={styles.wrapper}>
-                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
-                            <List>
-                                { this.preferences.map((preference, i) => {
-                                    const { text, value } = preference;
-                                    const isActive = this.state.preferences[value];
-                                    return (
-                                        <ListItem key={i}
-                                            rightIcon={
-                                                isActive ?
-                                                <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
-                                                <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
-                                            }
-                                            titleStyle={{ fontFamily: 'nunito' }}
-                                            onPress={() => this.togglePreference(value)}
-                                            title={text}
-                                        />
-                                    );
-                                })}
-                            </List>
-                            <Button title='Save'
-                                loading={this.state.isLoading}
-                                titleStyle={[textStyles.medium, { height: 50 }]}
-                                buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                                loading={this.state.isLoading}
-                                onPress={() => this.saveItem()} />
-                        </ScrollView>
-                    </React.Fragment> :
-                    <View style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                        opacity: 0.2,
-                        backgroundColor: 'black',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <ActivityIndicator size='large' />
-                    </View> }
+                        { !this.state.isLoading ?
+                            <ScrollView style={styles.wrapper}>
+                                <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
+                                <List>
+                                    { this.preferences.map((preference, i) => {
+                                        const { text, value } = preference;
+                                        const isActive = this.state.preferences[value];
+                                        return (
+                                            <ListItem key={i}
+                                                rightIcon={
+                                                    isActive ?
+                                                    <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
+                                                    <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
+                                                }
+                                                titleStyle={{ fontFamily: 'nunito' }}
+                                                onPress={() => this.togglePreference(value)}
+                                                title={text}
+                                            />
+                                        );
+                                    })}
+                                </List>
+                                <Button title='Save'
+                                    loading={this.state.isLoading}
+                                    titleStyle={[textStyles.medium, { height: 50 }]}
+                                    buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                                    loading={this.state.isLoading}
+                                    onPress={() => this.saveItem()} />
+                            </ScrollView> :
+                            <View style={{ flex: 1, height: '100%', width: '100%' }}><Loader show clear/></View> }
                 </Overlay>
         );
     }

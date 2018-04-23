@@ -54,42 +54,14 @@ export default styles = StyleSheet.create({
         paddingVertical: 10,
         marginTop: 20,
         borderTopWidth: 1,
-        borderTopColor: colors.lightGrey,
+        borderTopColor: colors.lightergrey,
         width: '90%'
     },
     open: {
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
         height: 25,
         lineHeight: 25,
         color: 'white',
         textAlign: 'center'
-    },
-    tag: {
-        height: 25,
-        lineHeight: 25,
-        backgroundColor: colors.primaryHalfOpacity
-    },
-    reviewsContainer: {
-        backgroundColor: 'white',
-        borderLeftWidth: 5,
-        borderLeftColor: colors.primary,
-        marginHorizontal: 10
-    },
-    reviewRow: {
-        flexDirection: 'row',
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        marginRight: 20
-    },
-    reviewTitle: {
-        color: 'black',
-        fontSize: 16,
-        fontFamily: 'nunito-bold',
-        paddingBottom: 5
-    },
-    reviewContent: {
-        color: 'black',
-        fontFamily: 'nunito',
-        fontSize: 12
     }
 });

@@ -81,14 +81,12 @@ class BusinessInfoPage extends React.Component {
                         containerStyle={{ width: '100%' }}
                         inputStyle={styles.input}
                         onSubmitEditing={() => { this.address_input.focus(); }}
-                        // blurOnSubmit={false}
                         onChangeText={text => this.onTextChange(text, 'name')}/>
                     
                     <Text style={[textStyles.small, styles.headerText]}>Address</Text>
                     <Input value={this.state.address}
                         ref={(input) => { this.address_input = input; }}
                         onSubmitEditing={() => { this.number_input.focus(); }}
-                        // blurOnSubmit={false}
                         containerStyle={{ width: '100%' }}
                         dataDetectorTypes={'address'}
                         inputStyle={styles.input}
@@ -98,7 +96,6 @@ class BusinessInfoPage extends React.Component {
                     <Input value={this.state.number}
                         ref={(input) => { this.number_input = input; }}
                         onSubmitEditing={() => { this.website_input.focus(); }}
-                        // blurOnSubmit={false}
                         containerStyle={{ width: '100%' }}
                         keyboardType={'phone-pad'}
                         dataDetectorTypes={'phoneNumber'}

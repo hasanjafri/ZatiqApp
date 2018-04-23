@@ -43,7 +43,6 @@ export default class BusinessAction {
                 body: JSON.stringify(form)
             });
             const parsedResult = await response.json();
-            console.log(parsedResult);
             if (response.status === 200) {
                 await state.setUser({ data: parsedResult, type: 'business' });
                 return { success: true };
@@ -124,7 +123,7 @@ export default class BusinessAction {
             });
             const parsedResult = await response.json();
             if (response.status === 200) {
-                return { success: true, data: parsedResult };
+                return { success: true, data: parsedResult.response };
             } else {
                 return { success: false, message: 'Something went wrong' };
             }
@@ -191,9 +190,10 @@ export default class BusinessAction {
     }
     async getUploadList() {
         try {
-            const businessUser = state.getUser();
-            const api_token = businessUser ? businessUser.data.api_token : null;
-            if (!api_token || businessUser.type !== 'business') {
+            const user = state.getUser();
+            const api_token = user ? user.data.api_token : null;
+            const type = user ? user.type : null;
+            if (!api_token) {
                 return { success: false, message: 'Not logged in' };
             }
 
@@ -220,7 +220,7 @@ export default class BusinessAction {
                         'Accept': 'application/json',
                         'Content-type': 'application/json'
                     },
-                    body: JSON.stringify({ api_token })
+                    body: JSON.stringify({ api_token, type })
                 })
             ]);
             const parsedMenuPictures = await menuPictures.json();
@@ -321,6 +321,33 @@ export default class BusinessAction {
             const parsedResult = await response.json();
             if (response.status === 200) {
                 return { success: true, data: parsedResult.response }
+            } else {
+                return { success: false, message: 'Something went wrong' };
+            }
+        } catch(err) {
+            console.log(err)
+            return { success: false, message: 'Something went wrong' };
+        }
+    }
+    async getBusinessReviews() {
+        try {
+            const businessUser = state.getUser();
+            const api_token = businessUser ? businessUser.data.api_token : null;
+            if (!api_token || businessUser.type !== 'business') {
+                return { success: false, message: 'Not logged in' };
+            }
+
+            const response = await fetch(urls.businessReviews, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({ api_token })
+            });
+            const parsedResult = await response.json();
+            if (response.status === 200) {
+                return { success: true, data: parsedResult.reviews }
             } else {
                 return { success: false, message: 'Something went wrong' };
             }

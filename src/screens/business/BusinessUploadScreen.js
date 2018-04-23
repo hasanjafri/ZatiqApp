@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, KeyboardAvoidingView, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { View, Text, KeyboardAvoidingView, ScrollView, Image } from 'react-native';
 import { Icon, Button, List, ListItem } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 
+import Loader from '../../components/Loader';
 import AddFoodItemOverlay from '../../components/addFoodItem/AddFoodItemOverlay';
 import styles from '../../styles/screens/business/Pages.style';
 import textStyles from '../../styles/text.style';
@@ -30,7 +31,6 @@ class BusinessUploadScreen extends React.Component {
     async componentDidMount() {
         if (!this.props.registration) {
             const result = await BusinessInstance.getUploadList();
-            console.log(result.data);
             if (result.success) {
                 this.setState({
                     menuPictures: result.data.menuPictures,
@@ -84,6 +84,7 @@ class BusinessUploadScreen extends React.Component {
         
         this.setState({
             showAddFoodOverlay: false,
+            selectedFoodItem: null,
             foodItems: this.state.foodItems
         });
     }
@@ -178,24 +179,14 @@ class BusinessUploadScreen extends React.Component {
                             buttonStyle={styles.uploadButton}
                             onPress={() => this.showAddFoodOverlay()}/>
                     </ScrollView>
-                    <AddFoodItemOverlay showOverlay={this.state.showAddFoodOverlay}
-                        saveFoodItem={this.saveFoodItem}
-                        selectedFoodItem={this.state.selectedFoodItem}
-                        onClose={() => this.setState({ showAddFoodOverlay: false })}/>
+                    { this.state.showAddFoodOverlay ? 
+                        <AddFoodItemOverlay showOverlay
+                            saveFoodItem={this.saveFoodItem}
+                            selectedFoodItem={this.state.selectedFoodItem}
+                            onClose={() => this.setState({ showAddFoodOverlay: false, selectedFoodItem: null })}/> : null
+                    }
                 </React.Fragment> :
-                <View style={{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    opacity: 0.2,
-                    backgroundColor: 'black',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <ActivityIndicator size='large' />
-                </View>
+                <Loader show />
         );
     }
 }

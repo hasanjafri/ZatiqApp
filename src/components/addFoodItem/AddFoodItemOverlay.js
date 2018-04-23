@@ -105,9 +105,9 @@ class AddFoodItemOverlay extends React.Component {
             tuna: false
         };
     }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedFoodItem) {
-            const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id } = nextProps.selectedFoodItem;
+    componentDidMount() {
+        if (this.props.selectedFoodItem) {
+            const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id } = this.props.selectedFoodItem;
             this.tags = tags;
             this.seafood = seafood;
             this.meat = meat;
@@ -157,7 +157,6 @@ class AddFoodItemOverlay extends React.Component {
         } else if (type === 'overview') {
             this.item_price_input.focus();
         }
-        // console.log(this[inputName])
     }
     toggleItem = (type, value, status) => {
         this[type][value] = status;
@@ -189,7 +188,7 @@ class AddFoodItemOverlay extends React.Component {
                 item_price: this.item_price,
                 meal_type: meal_indexes,
                 tags: this.tags,
-                meat: this.meatState,
+                meat: this.meat,
                 seafood: this.seafood,
             };
             let type = 'create';
@@ -218,6 +217,9 @@ class AddFoodItemOverlay extends React.Component {
         this.item_price_input = input;
     }
     render() {
+        if (!this.props.showOverlay) {
+            return null;
+        }
         const image = this.state.image ? `data:image/png;base64,${this.state.image.base64}` : null;
         const tagItems = lists.tags.map((tag, i) => {
             const { text, value } = tag;

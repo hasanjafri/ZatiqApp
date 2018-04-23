@@ -6,19 +6,18 @@ import SliderEntry from './SliderEntry';
 import styles from '../../styles/components/Slider.style';
 import colors from '../../styles/colors.style';
 
-const INITIAL_ACTIVE_ITEM = 1;
-
 class Slider extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            activeItem: INITIAL_ACTIVE_ITEM
+            activeItem: 0
         };
         this._renderItemWithParallax = this._renderItemWithParallax.bind(this);
     }
     _renderItemWithParallax ({item, index}, parallaxProps) {
         return (
             <SliderEntry data={item}
+                showTagsOverlay={this.props.showTagsOverlay}
                 navigateTo={this.props.navigateTo}
                 type={this.props.type}
                 even={(index + 1) % 2 === 0}
@@ -36,7 +35,7 @@ class Slider extends Component {
                     sliderWidth={sliderWidth}
                     itemWidth={itemWidth}
                     hasParallaxImages
-                    firstItem={INITIAL_ACTIVE_ITEM}
+                    firstItem={this.state.activeItem}
                     inactiveSlideScale={0.94}
                     inactiveSlideOpacity={0.7}
                     containerCustomStyle={styles.slider}

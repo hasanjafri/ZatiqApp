@@ -21,7 +21,7 @@ class Drawer extends React.Component {
         this.items = [
             { text: 'Home', action: () => changeRoute('Application', 'Home')},
             { text: 'Find Restaurant', action: () => changeRoute('FindRestaurant', 'Find Restaurant')},
-            { text: 'Find Food', action: () => changeRoute('FindRestaurant', 'Find Food')}
+            { text: 'Find Food', action: () => changeRoute('FindFood', 'Find Food')}
         ];
         const state = appState.getInstance();
         this.user = state.getUser();
@@ -29,6 +29,10 @@ class Drawer extends React.Component {
             this.items.push({ section: 'BUSINESS SECTION' });
             this.items.push({ text: 'Update Profile', action: () => changeRoute('BusinessProfile', 'Update Profile')});
             this.items.push({ text: 'Upload New Content', action: () => changeRoute('BusinessUpload', 'Upload New Content')});
+            this.items.push({ text: 'Reviews', action: () => changeRoute('Reviews', 'Reviews')});
+            this.items.push({ text: 'My Restaurant', action: () => changeRoute('BusinessRestaurant', 'My Restaurant')});
+        } else if (this.user.type === 'user') {
+            this.items.push({ text: 'Reviews', action: () => changeRoute('Reviews', 'Reviews')});
         }
     }
     render() {
@@ -54,7 +58,7 @@ class Drawer extends React.Component {
             <SafeAreaView style={{ marginTop: 90, flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
                 <View style={styles.locationContainer}>
                     <Text style={[textStyles.large, { color: 'black' }]}>Current Location</Text>
-                    <Text style={[textStyles.medium, styles.locationText]}>Toronto, Canada</Text>
+                    <Text style={[textStyles.medium, styles.locationText]}>Peterborough, Canada</Text>
                 </View>
                 { drawerItems }
                 <TouchableOpacity activeOpacity={1} style={styles.buttonContainer} onPress={async () => {

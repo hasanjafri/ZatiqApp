@@ -11,11 +11,19 @@ class AddReviewButton extends React.Component {
             showOverlay: false
         }
     }
+    onPress = () => {
+        if (this.props.onPress) {
+            this.props.onPress();
+        } else {
+            this.setState({ showOverlay: true })
+        }
+    }
     render() {
         const { showOverlay } = this.state;
+        const { noOverlay } = this.props;
         return (
             <React.Fragment>
-                <AddReviewOverlay showOverlay={showOverlay} onClose={() => this.setState({ showOverlay: false })}/>
+                { !noOverlay ? <AddReviewOverlay showOverlay={showOverlay} onClose={() => this.setState({ showOverlay: false })}/> : null }
                 { !showOverlay && !this.props.hide ?
                     <Icon reverse raised
                         iconStyle={styles.icon}
@@ -24,7 +32,7 @@ class AddReviewButton extends React.Component {
                         type={'ionicon'}
                         size={27}
                         color={colors.primary}
-                        onPress={() => this.setState({ showOverlay: true })} /> : null
+                        onPress={() => this.onPress()} /> : null
                 }
             </React.Fragment>
         );

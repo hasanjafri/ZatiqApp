@@ -4,6 +4,15 @@ const urls = {
     uploadImage: hostname + '/image/business/',
     userLogin: hostname + '/user/login/',
     userProfile: hostname + '/user/profile/',
+    userAddReview: hostname + '/user/review/add/',
+    userReviews: hostname + '/user/reviews/all/',
+
+    userFindRestaurantByName: hostname + '/find/restaurant/name/',
+    foodGrid: hostname + '/food/grid/',
+
+    // restaurant screen endpoints
+    businessMenus: hostname + '/user/menu/all/',
+    businessInterior: hostname + '/user/interior/all/',
 
     searchCuisine: hostname + '/search/:cuisine/',
     userPreferences: hostname + '/user/preferences/',
@@ -14,7 +23,8 @@ const urls = {
     businessRegister:  hostname + '/business/register/',
 
     businessProfile:  hostname + '/business/profile/',
-    businessEditProfile:  hostname + '/business/profile/edit/',
+    businessEditProfile:  hostname + '/business/profile/edit/', 
+    businessReviews:  hostname + '/business/reviews/all/', 
 
     businessAddMenuPicture:  hostname + '/restaurant/menu/add/',
     businessDeleteMenuPicture:  hostname + '/restaurant/menu/delete/',
@@ -24,7 +34,7 @@ const urls = {
     businessDeleteRestaurantPicture:  hostname + '/restaurant/interior/delete/',
     businessRestaurantPictures:  hostname + '/restaurant/interior/all/',
 
-    businessFoodItems: hostname + '/food/restaurantid/',
+    businessFoodItems: hostname + '/food/restaurantid/', // need api_token and user_type
     businessAddFoodItem: hostname + '/business/add/food/',
     businessEditFoodItem: hostname + '/business/edit/food/',
     businessDeleteFoodItem: hostname + '/business/delete/food/',

@@ -10,7 +10,7 @@ function wp (percentage) {
 }
 
 const slideHeight = viewportHeight - 70 - 20 - 70; // 90 for header, 70 for pagination?
-const slideWidth = wp(75);
+const slideWidth = wp(85);
 const itemHorizontalMargin = wp(2);
 
 export const sliderWidth = viewportWidth;
@@ -58,12 +58,22 @@ export default StyleSheet.create({
     contentContainerEven: {
         backgroundColor: 'white'
     },
-    ratingContainer: {
-        paddingVertical: 10,
-        backgroundColor: 'rgba(0,0,0,0)'
+    
+    tagContainer: {
+        width: '100%',
+        marginTop: 5,
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+    },
+    tag: {
+        backgroundColor: colors.blue,
+        lineHeight: 20,
+        marginBottom: 5,
+        paddingHorizontal: 10,
+        marginRight: 5
     },
     open: {
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
         height: 25,
         marginTop: 10,
         marginLeft: 10,

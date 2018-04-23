@@ -46,8 +46,8 @@ export default styles = StyleSheet.create({
     },
     imageContainer: {
         height: '100%',
-        backgroundColor: '#70757c',
         flex: 1,
+        backgroundColor: 'rgba(0,0,0,.6)',
         justifyContent: 'center'
     },
     equalHeightContainer: {

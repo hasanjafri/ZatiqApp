@@ -1,8 +1,11 @@
 import React from 'react';
-import { Text, View, ScrollView, Dimensions } from 'react-native';
-import { Overlay, Input, SearchBar, Icon, Button, Avatar } from 'react-native-elements';
+import { Text, View, ScrollView, Dimensions, Image } from 'react-native';
+import { Overlay, Input, SearchBar, Icon, Button, Avatar, List, ListItem } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 import { ImagePicker } from 'expo';
+
+import Loader from '../../components/Loader';
+import { foodItemsByRestaurantId, submitReview } from '../../actions/UserAction';
 
 import textStyles from '../../styles/text.style';
 import styles from '../../styles/screens/business/Pages.style';
@@ -12,13 +15,35 @@ class AddReviewOverlay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchValue: '',
             rating: 3,
-            picture: null
+            image: null,
+            text: '',
+            step: 0,
+            isLoading: true,
+            food_item_id: null,
+            foodItems: [],
+            submittingReview: false
         };
     }
-    onSearch(text) {
-        console.log(text);
+    async componentWillReceiveProps(nextProps) {
+        if (!this.props.showOverlay && nextProps.showOverlay) {
+            this.setState({
+                rating: 3,
+                image: null,
+                step: 0,
+                text: '',
+                isLoading: true,
+                food_item_id: null,
+                foodItems: []
+            })
+            const result = await foodItemsByRestaurantId(this.props.restaurant_id);
+            if (result.success) {
+                this.setState({ isLoading: false, foodItems: result.data.food_items });
+            } else {
+                alert(result.message);
+                this.setState({ isLoading: false });
+            }
+        }
     }
     uploadPicture = async (type) => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -29,16 +54,116 @@ class AddReviewOverlay extends React.Component {
         });
 
         if (!result.cancelled) {
-            this.setState({ picture: {
-                image_aspect_ratio: result.width / result.height,
+            this.setState({ image: {
+                image_aspect_ratio: (result.width / result.height).toString(),
                 base64: result.base64
             }});
         }
     }
+    async submitReview() {
+        this.setState({ submittingReview: true });
+        const { food_item_id, text, rating, image } = this.state;
+        const result = await submitReview({
+            image,
+            restaurant_id: this.props.restaurant_id,
+            food_item_id,
+            text,
+            rating
+        });
+        this.setState({ submittingReview: false });
+        if (result.success) {
+            alert('Success! We left a review. Thank you.')
+            this.props.onClose();
+        } else {
+            alert(result.message);
+        }
+    }
+    _renderReview() {
+        const image = this.state.image ? `data:image/png;base64,${this.state.image.base64}` : null;
+        return (
+            <ScrollView style={styles.wrapper}>
+                <Text style={[textStyles.tiny, styles.headerText]}>Picture (Optional)</Text>
+                <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
+                    { image ?
+                        <Avatar xlarge rounded
+                            source={{ uri: image }}
+                            onPress={() => this.uploadPicture()}
+                            activeOpacity={0.7} /> :
+                        <Avatar xlarge rounded
+                            icon={{ name: 'restaurant' }}
+                            onPress={() => this.uploadPicture()}
+                            activeOpacity={0.7} />
+                    }
+                </View>
+
+                <Text style={[textStyles.tiny, styles.headerText]}>Review</Text>
+                <Input style={styles.input}
+                    onChangeText={text => this.setState({ text })}
+                    multiline
+                    numberOfLines={4} />
+                
+                <Text style={[textStyles.tiny, styles.headerText]}>Rating</Text>
+                <View style={styles.centered}>
+                    <StarRating maxStars={5}
+                        starSize={35}
+                        rating={this.state.rating}
+                        selectedStar={(star) => this.setState({ rating: star })}
+                        containerStyle={{ width: 150, justifyContent: 'center', alignItems: 'center' }}
+                        buttonStyle={{ padding: 10 }}
+                        fullStarColor={'#f1c40f'} />
+
+                    <Button title='Submit'
+                        loading={this.state.submittingReview}
+                        titleStyle={[textStyles.medium, { height: 50 }]}
+                        buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                        onPress={() => this.submitReview()} />
+                </View>
+            </ScrollView>
+        );
+    }
+    goNextStep(food_item_id) {
+        this.setState({ step: 1, food_item_id });
+    }
+    _renderFoodItems() {
+        let renderedList;
+        if (!this.state.foodItems || this.state.foodItems.length === 0) {
+            return (
+                <ScrollView style={styles.wrapper}>
+                    <Text style={[textStyles.medium, { marginTop: 30, color: 'black' }]}>This restaurant doesn't have any food items.</Text>
+                </ScrollView>
+            );
+        }
+        return (
+            <ScrollView style={styles.wrapper}>
+                <List>
+                    { this.state.foodItems.map((item, i) => {
+                        return (
+                            <ListItem key={i}
+                                leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: 'data:image/png;base64,' + item.image.base64}}/></View>}
+                                onPress={() => this.goNextStep(item.food_item_id)}
+                                subtitle={item.overview}
+                                title={item.item_name} />
+                        );
+                    })}
+                </List>
+            </ScrollView>
+        );
+    }
     render() {
+        if (!this.props.showOverlay) {
+            return null;
+        }
         const width = Dimensions.get('window').width;
         const height = Dimensions.get('window').height;
-        const image = this.state.picture ? `data:image/png;base64,${this.state.picture.base64}` : null;
+        let renderedElement;
+        if (this.state.isLoading) {
+            renderedElement = <Loader show />
+        } else if (this.state.step === 0) {
+            renderedElement = this._renderFoodItems();
+        } else {
+            renderedElement = this._renderReview();
+        }
+
         return (
             <Overlay isVisible={this.props.showOverlay}
                 width={width - 20}
@@ -49,69 +174,7 @@ class AddReviewOverlay extends React.Component {
                     <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Leave A Review</Text>
                     <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
                 </View>
-                <ScrollView style={styles.wrapper}>
-                    <Text style={[textStyles.tiny, styles.headerText]}>Picture (Optional)</Text>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
-                        { image ?
-                            <Avatar xlarge rounded
-                                source={{ uri: image }}
-                                onPress={() => this.uploadPicture()}
-                                activeOpacity={0.7} /> :
-                            <Avatar xlarge rounded
-                                icon={{ name: 'restaurant' }}
-                                onPress={() => this.uploadPicture()}
-                                activeOpacity={0.7} />
-                        }
-                    </View>
-
-                    <SearchBar onChangeText={this.onSearch}
-                        lightTheme
-                        showLoading
-                        noIcon
-                        containerStyle={{
-                            paddingHorizontal: 0,
-                            marginHorizontal: 0,
-                            marginTop: 20,
-                            backgroundColor: 'white',
-                            borderTopWidth: 0,
-                            borderBottomWidth: 0,
-                        }}
-                        inputStyle={{
-                            backgroundColor: 'white',
-                            borderWidth: 1,
-                            borderRadius: 5,
-                            marginHorizontal: 0,
-                            fontFamily: 'nunito',
-                            paddingHorizontal: 10,
-                            color: 'black',
-                            borderColor: colors.lightergrey
-                        }}
-                        onClear={() => this.setState({ searchValue: '' })}
-                        placeholder={'Find Restaurant'} />
-                    <Text style={[textStyles.tiny, styles.headerText]}>Dish</Text>
-                    <Input style={styles.input} />
-
-                    <Text style={[textStyles.tiny, styles.headerText]}>Review</Text>
-                    <Input style={styles.input} multiline numberOfLines={4} />
-                    
-                    <Text style={[textStyles.tiny, styles.headerText]}>Rating</Text>
-                    <View style={styles.centered}>
-                        <StarRating maxStars={5}
-                            starSize={35}
-                            rating={this.state.rating}
-                            selectedStar={(star) => this.setState({ rating: star })}
-                            containerStyle={{ width: 150, justifyContent: 'center', alignItems: 'center' }}
-                            buttonStyle={{ padding: 10 }}
-                            fullStarColor={'#f1c40f'} />
-
-                        <Button title='Submit'
-                            loading={this.state.isLoading}
-                            titleStyle={[textStyles.medium, { height: 50 }]}
-                            buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                            loading={this.state.isLoading}
-                            onPress={() => this.submit()} />
-                    </View>
-                </ScrollView>
+                { renderedElement }
             </Overlay>
         );
     }
