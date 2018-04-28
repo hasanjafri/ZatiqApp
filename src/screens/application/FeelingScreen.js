@@ -120,8 +120,8 @@ class Category extends React.Component {
                     <ImageBackground style={styles.topPickImage} source={require('../../assets/backgrounds/top-picks.png')}>
                         <View style={styles.topPickImageOverlay}>
                             <Text style={textStyles.largeBold}>ZATIQ'S</Text>
-                            <Text style={textStyles.hugeBold}>PROMOTIONS</Text>
-                            <Text style={textStyles.large}>OF THE DAY</Text>
+                            <Text style={textStyles.hugeBold}>LAUNCH DEALS</Text>
+                            {/* <Text style={textStyles.large}>OF THE DAY</Text> */}
                         </View>
                         <Loader light show={this.state.isLoading} />
                     </ImageBackground>
@@ -132,7 +132,7 @@ class Category extends React.Component {
             categoryItem = (
                 <TouchableOpacity style={style} onPress={() => this.onSearchCuisine(category)}>
                     <ImageBackground style={styles.imageContainer} source={src}>
-                        <Text style={textStyles.large}>{category.toUpperCase()}</Text>
+                        <Text style={textStyles.largeBold}>{category.toUpperCase()}</Text>
                     </ImageBackground>
                     <Loader light show={this.state.isLoading} />
                 </TouchableOpacity>

@@ -26,7 +26,7 @@ const SettingsButton = props => (
 
 const SkipButton = props => (
     <TouchableHighlight underlayColor={'transparent'} style={{ paddingRight: 20 }} onPress={() => props.navigation.navigate(props.screen)}>
-        <Text style={{fontSize: 16, color: 'white', fontFamily: 'nunito', fontWeight: 'bold' }}>Skip</Text>
+        <Text style={{fontSize: 16, color: 'white', fontFamily: 'nunito', fontWeight: 'bold' }}>{props.hasValue ? 'Next' : 'Skip'}</Text>
     </TouchableHighlight>
 );
 

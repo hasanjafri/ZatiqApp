@@ -105,6 +105,14 @@ class BusinessHoursPage extends React.Component {
             <ScrollView style={styles.wrapper}>
                 { !this.user ? <Text style={[textStyles.medium, styles.headerText, { paddingVertical: 20 }]}>Next, we need your opening hours.</Text> : null }
                 { this.days.map(day => this._dateRenderer(day)) }
+                <View style={styles.centered}>
+                    <Button title='Next'
+                        iconRight
+                        icon={<Icon type='font-awesome' name='chevron-right' color='white' size={20} />}
+                        titleStyle={[textStyles.medium, { height: 50 }]}
+                        buttonStyle={styles.uploadButton}
+                        onPress={() => this.props.nextAction()}/>
+                </View>
             </ScrollView>
         );
     }

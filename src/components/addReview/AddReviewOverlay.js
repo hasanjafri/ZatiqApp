@@ -47,7 +47,7 @@ class AddReviewOverlay extends React.Component {
     }
     uploadPicture = async (type) => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
+            // allowsEditing: true,
             aspect: [4, 3],
             base64: true,
             quality: 0.5
@@ -99,8 +99,8 @@ class AddReviewOverlay extends React.Component {
                 <Text style={[textStyles.tiny, styles.headerText]}>Review</Text>
                 <Input style={styles.input}
                     onChangeText={text => this.setState({ text })}
-                    multiline
-                    numberOfLines={4} />
+                    returnKeyLabel={'Next'}
+                    returnKeyType={'next'} />
                 
                 <Text style={[textStyles.tiny, styles.headerText]}>Rating</Text>
                 <View style={styles.centered}>
@@ -156,7 +156,7 @@ class AddReviewOverlay extends React.Component {
         const height = Dimensions.get('window').height;
         let renderedElement;
         if (this.state.isLoading) {
-            renderedElement = <Loader show />
+            renderedElement = <Loader show clear />
         } else if (this.state.step === 0) {
             renderedElement = this._renderFoodItems();
         } else {

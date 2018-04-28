@@ -22,6 +22,12 @@ class AddFoodItemOverlay extends React.Component {
             image: null
         };
 
+        this.resetForm();
+        this.setOverviewRef = this.setOverviewRef.bind(this);
+        this.setNameRef = this.setNameRef.bind(this);
+        this.setPriceRef = this.setPriceRef.bind(this);
+    }
+    resetForm() {
         this.item_name = '';
         this.overview = '';
         this.item_price = '';
@@ -105,12 +111,12 @@ class AddFoodItemOverlay extends React.Component {
             tuna: false
         };
     }
-    componentDidMount() {
-        if (this.props.selectedFoodItem) {
-            const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id } = this.props.selectedFoodItem;
-            this.tags = {...tags};
-            this.seafood = {...seafood};
-            this.meat = {...meat};
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.selectedFoodItem) {
+            const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id } = nextProps.selectedFoodItem;
+            this.tags = tags;
+            this.seafood = seafood;
+            this.meat = meat;
             this.item_name = item_name;
             this.overview = overview;
             this.item_price = item_price;
@@ -129,15 +135,14 @@ class AddFoodItemOverlay extends React.Component {
             }
             this.meal_type = meal_indexes;
             this.setState({ image, food_item_id });
+        } else {
+            this.resetForm();
+            this.setState({ image: null, food_item_id: null });
         }
-
-        this.setOverviewRef = this.setOverviewRef.bind(this);
-        this.setNameRef = this.setNameRef.bind(this);
-        this.setPriceRef = this.setPriceRef.bind(this);
     }
     uploadPicture = async (type) => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
+            // allowsEditing: true,
             aspect: [4, 3],
             base64: true,
             quality: 0.5
@@ -151,11 +156,14 @@ class AddFoodItemOverlay extends React.Component {
         }
     }
     onSubmitEditing = type => {
-        const inputName = `${type}_input`;
         if (type === 'item_name') {
-            this.overview_input.focus();
+            if (this.overview_input) {
+                this.overview_input.focus();
+            }
         } else if (type === 'overview') {
-            this.item_price_input.focus();
+            if (this.item_price_input) {
+                this.item_price_input.focus();
+            }
         }
     }
     toggleItem = (type, value, status) => {
@@ -200,7 +208,7 @@ class AddFoodItemOverlay extends React.Component {
             const result = await BusinessInstance.saveFoodItem({ form, type });
             this.setState({ isLoading: false });
             if (result.success) {
-                form.food_item_id = result.data.food_item_id;
+                form.food_item_id = type === 'edit' ? result.data.food_item_id : result.data.response.food_item_id;
                 this.props.saveFoodItem({ form, type });
             } else {
                 alert(result.message);
@@ -364,19 +372,14 @@ class InputHandler extends React.Component {
     render() {
         const { type, setRef } = this.props;
         return (
-            type === 'overview' ?
-                <Input ref={setRef} value={this.state.input}
-                    multiline numberOfLines={4}
-                    style={styles.input}
-                    onSubmitEditing={() => this.onSubmitEditing()}
-                    blurOnSubmit={false}
-                    onChangeText={text => this.changeText(text)} /> :
-                <Input ref={setRef} value={this.state.input}
-                    style={styles.input}
-                    keyboardType={type === 'item_price' ? 'numeric' : 'default'}
-                    onSubmitEditing={() => this.onSubmitEditing()}
-                    blurOnSubmit={type === 'item_price'}
-                    onChangeText={text => this.changeText(text)} />
+            <Input ref={setRef} value={this.state.input}
+                style={styles.input}
+                keyboardType={type === 'item_price' ? 'numeric' : 'default'}
+                onSubmitEditing={() => this.onSubmitEditing()}
+                returnKeyLabel={'Next'}
+                returnKeyType={'next'}
+                blurOnSubmit={type === 'item_price'}
+                onChangeText={text => this.changeText(text)} />
         )
     }
 }

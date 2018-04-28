@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ImageBackground, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 import { SocialIcon, Input, Icon, Button } from 'react-native-elements';
+import { Keyboard } from 'react-native'
 
 import styles from '../../styles/screens/business/BusinessSignUpScreen.style';
 import colors from '../../styles/colors.style';
@@ -20,7 +21,10 @@ class BusinessSignUpScreen extends React.Component {
         };
         this.businessRegister = this.businessRegister.bind(this);
     }
-
+    componentDidMount() {
+        // Hide that keyboard!
+        Keyboard.dismiss();
+    }
     businessRegister = () => {
         // Validate
         const { email, password, repeatPassword } = this.state;
@@ -63,6 +67,8 @@ class BusinessSignUpScreen extends React.Component {
                         blurOnSubmit={false}
                         placeholder='Business E-mail'
                         keyboardType={'email-address'}
+                        returnKeyLabel={'Next'}
+                        returnKeyType={'next'}
                         leftIcon={<Icon type='font-awesome' name='user-circle-o' size={25} color='white' />}
                         onChangeText={text => this.setState({ email: text })}/>
                     <Input leftIconContainerStyle={styles.iconContainer}
@@ -73,6 +79,8 @@ class BusinessSignUpScreen extends React.Component {
                         onSubmitEditing={() => { this.password_repeat_input.focus(); }}
                         blurOnSubmit={false}
                         placeholder='Password'
+                        returnKeyLabel={'Next'}
+                        returnKeyType={'next'}
                         secureTextEntry
                         leftIcon={<Icon type='font-awesome' name='lock' size={25} color='white' />}
                         secureTextEntry
@@ -83,6 +91,8 @@ class BusinessSignUpScreen extends React.Component {
                         ref={(input) => { this.password_repeat_input = input; }}
                         inputStyle={styles.input}
                         placeholder='Repeat Password'
+                        returnKeyLabel={'Done'}
+                        returnKeyType={'done'}
                         secureTextEntry
                         leftIcon={<Icon type='font-awesome' name='lock' size={25} color='white' />}
                         secureTextEntry

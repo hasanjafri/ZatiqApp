@@ -192,13 +192,17 @@ const ApplicationOut = StackNavigator({
         }
     },
     BusinessUpload: {
-        screen: props => <BusinessUploadScreen {...props} registration />,
+        screen: props => <BusinessUploadScreen {...props} registration />,  
         navigationOptions: ({ navigation }) => {
+            let hasValue;
+            if (navigation && navigation.state && navigation.state.params) {
+                hasValue = navigation.state.params.hasValue;
+            }
             return {
                 headerBackground: <ImageHeader />,
                 headerTintColor: 'white',
                 headerLeft: (<View></View>),
-                headerRight: <SkipButton navigation={navigation} screen={'SwitchIn'}/>
+                headerRight: <SkipButton navigation={navigation} hasValue={hasValue} screen={'SwitchIn'}/>
             }
         }
     }

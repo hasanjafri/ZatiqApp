@@ -51,7 +51,7 @@ class BusinessUploadScreen extends React.Component {
 
     uploadMenu = async (type) => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
+            // allowsEditing: true,
             aspect: [4, 3],
             base64: true,
             quality: 0.5
@@ -67,6 +67,7 @@ class BusinessUploadScreen extends React.Component {
             const res = await BusinessInstance.uploadPicture({ type, image });
             if (res.success) {
                 newImages.push({ image, image_id: res.data.image_id });
+                this.props.navigation.setParams({ hasValue: true });
                 this.setState({ [type]: newImages, isLoading: false });
             } else {
                 this.setState({ isLoading: false });
@@ -81,7 +82,9 @@ class BusinessUploadScreen extends React.Component {
             const index = this.state.foodItems.findIndex(item => item.food_item_id === form.food_item_id);
             this.state.foodItems.splice(index, 1, form);
         }
-        
+        if (this.props.registration) {
+            this.props.navigation.setParams({ hasValue: true });
+        }
         this.setState({
             showAddFoodOverlay: false,
             selectedFoodItem: null,
@@ -185,14 +188,12 @@ class BusinessUploadScreen extends React.Component {
                                 onPress={() => this.showAddFoodOverlay()}/>
                         </View>
                     </ScrollView>
-                    { this.state.showAddFoodOverlay ? 
-                        <AddFoodItemOverlay showOverlay
-                            saveFoodItem={this.saveFoodItem}
-                            selectedFoodItem={this.state.selectedFoodItem}
-                            onClose={() => this.setState({ showAddFoodOverlay: false, selectedFoodItem: null })}/> : null
-                    }
+                    <AddFoodItemOverlay showOverlay={this.state.showAddFoodOverlay}
+                        saveFoodItem={this.saveFoodItem}
+                        selectedFoodItem={this.state.selectedFoodItem}
+                        onClose={() => this.setState({ showAddFoodOverlay: false, selectedFoodItem: null })}/>
                 </React.Fragment> :
-                <Loader show />
+                <Loader show clear />
         );
     }
 }

@@ -53,6 +53,8 @@ class BusinessLoginScreen extends React.Component {
                         keyboardType={'email-address'}
                         onSubmitEditing={() => { this.password_input.focus(); }}
                         blurOnSubmit={false}
+                        returnKeyLabel={'Next'}
+                        returnKeyType={'next'}
                         placeholder='Business E-mail'
                         leftIcon={<Icon type='font-awesome' name='user-circle-o' size={25} color='white' />}
                         onChangeText={(email) => this.setState({email})}
@@ -62,6 +64,8 @@ class BusinessLoginScreen extends React.Component {
                         inputContainerStyle={styles.inputDirectContainer}
                         inputStyle={styles.input}
                         placeholder='Password'
+                        returnKeyLabel={'Done'}
+                        returnKeyType={'done'}
                         ref={(input) => { this.password_input = input; }}
                         onChangeText={(password) => this.setState({password})}
                         underlineColorAndroid='transparent'

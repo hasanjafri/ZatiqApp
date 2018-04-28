@@ -11,7 +11,7 @@ function wp (percentage) {
 
 const slideHeight = viewportHeight - 70 - 20 - 70; // 90 for header, 70 for pagination?
 const slideWidth = wp(85);
-const itemHorizontalMargin = wp(2);
+const itemHorizontalMargin = wp(1);
 
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
@@ -71,6 +71,9 @@ export default StyleSheet.create({
         marginBottom: 5,
         paddingHorizontal: 10,
         marginRight: 5
+    },
+    leftPart: {
+        width: slideWidth - 70
     },
     open: {
         paddingHorizontal: 10,

@@ -30,7 +30,6 @@ export default class SliderEntry extends Component {
     get image () {
         const { data: {  image: { base64, image_aspect_ratio } }, parallax, parallaxProps, even, type } = this.props;
         if (!base64) {
-            // return <Image source={require('../../assets/backgrounds/placeholder.png')} style={styles.imagePlaceholder} />
             return <Image style={styles.imagePlaceholder} />
         }
         const displayImage = 'data:image/png;base64,' + base64;
@@ -38,7 +37,7 @@ export default class SliderEntry extends Component {
             <ParallaxImage source={{ uri: displayImage }}
                 containerStyle={[styles.imageContainer, even ? styles.imageContainerEven : {}]}
                 style={styles.image}
-                parallaxFactor={0.35}
+                parallaxFactor={0.05}
                 showSpinner
                 spinnerColor={even ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.25)'}
                 {...parallaxProps} />
@@ -91,12 +90,17 @@ export default class SliderEntry extends Component {
                         <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
                     </View>
                     <View style={[styles.contentContainer, even ? styles.contentContainerEven : {}]}>
-                        <Text style={[textStyles.title, { fontSize: 16 }]} numberOfLines={2} >{ item_name }</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.leftPart}>
+                                <Text style={[textStyles.title, { fontSize: 16 }]} numberOfLines={2} >{ item_name }</Text>
+                            </View>
+                            <Text style={[textStyles.subitle, { color: colors.gray, textAlign: 'center', right: 0, position: 'absolute' }]} >${ item_price }</Text>
+                        </View>
                         <Text style={textStyles.subtitle} numberOfLines={2} >{ overview }</Text>
                         <View style={styles.tagContainer}>{this.getTags(tags)}</View>
                         
                         <View style={{ flexDirection: 'row' }}>
-                            <View style={{ paddingVertical: 10, width: 150 }}>
+                            <View style={[styles.leftPart, { paddingVertical: 10 }]}>
                                 <Text style={[textStyles.title,  { fontSize: 16 }]} numberOfLines={2} >{ name }</Text>
                             </View>
                             <Text style={[styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>

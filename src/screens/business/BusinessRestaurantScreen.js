@@ -23,7 +23,7 @@ class BusinessRestaurantScreen extends React.Component {
     }
     render() {
         if (this.state.isLoading) {
-            return <Loader show />
+            return <Loader show clear />
         }
         const { data } = this.state;
         if (data) {

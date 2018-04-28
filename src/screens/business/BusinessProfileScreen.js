@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, AsyncStorage, Dimensions } from 'react-native';
+import { View, Text, AsyncStorage, Dimensions, Keyboard } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { NavigationActions } from 'react-navigation'
 
@@ -25,8 +25,8 @@ class BusinessProfileScreen extends React.Component {
             isLoading: !props.registration
         }
     }
-
     async componentDidMount() {
+        Keyboard.dismiss();
         if (!this.props.registration) {
             const result = await BusinessInstance.getProfile();
             if (result.success) {
@@ -38,10 +38,19 @@ class BusinessProfileScreen extends React.Component {
             }
         }
     }
+    updateNextActiveItem(nextActiveItem) {
+        Keyboard.dismiss();
+        this.slider.snapToNext();
+        this.setState({ activeItem: nextActiveItem });
+    }
     _renderPage = ({item, index}) => {
         const { page } = item;
         return (
-            <PageRenderer page={page} registration={this.props.registration} data={this.state.data} nextAction={() => this.props.navigation.dispatch(
+            <PageRenderer page={page}
+                registration={this.props.registration}
+                selectNextActiveItem={nextActiveItem => this.updateNextActiveItem(nextActiveItem)}
+                data={this.state.data}
+                nextAction={() => this.props.navigation.dispatch(
                 NavigationActions.reset({
                     index: 0,
                     actions: [
@@ -74,11 +83,10 @@ class BusinessProfileScreen extends React.Component {
                         carouselRef={this.slider}
                         tappableDots={!!this.slider} />
                 </View> :
-                <Loader show />
+                <Loader show clear />
         );
     }
 }
-
 
 class PageRenderer extends React.Component {
     shouldComponentUpdate() {
@@ -88,9 +96,9 @@ class PageRenderer extends React.Component {
         const { page } = this.props;
         let renderPage;
         if (page === 1) {
-            renderPage = <BusinessInfoPage registration={this.props.registration} data={this.props.data}/>
+            renderPage = <BusinessInfoPage registration={this.props.registration} data={this.props.data} nextAction={() => this.props.selectNextActiveItem(1)} />
         } else if (page === 2) {
-            renderPage = <BusinessHoursPage registration={this.props.registration} data={this.props.data}/>
+            renderPage = <BusinessHoursPage registration={this.props.registration} data={this.props.data} nextAction={() => this.props.selectNextActiveItem(2)} />
         } else if (page === 3) {
             renderPage = <BusinessFeaturesPage registration={this.props.registration} data={this.props.data} nextAction={() => this.props.nextAction()} />
         } 

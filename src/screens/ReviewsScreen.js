@@ -45,37 +45,37 @@ class ReviewsScreen extends React.Component {
         }
     }
     render() {
+        if (this.state.isLoading) {
+            return <Loader show clear />
+        }
         return (
-            <React.Fragment>
-                <ScrollView style={styles.scrollViewContainer}>
-                    {/* Reviews */}
-                    { !this.state.reviews || this.state.reviews.length === 0 ?
-                        <Text style={[textStyles.medium, { marginTop: 30, color: 'black' }]}>No reviews.</Text> :
-                        <View style={styles.reviewsContainer}>
-                            { this.state.reviews.map((review, i) =>
-                                <View key={i} style={styles.reviewRow}>
-                                    <Image style={{ height: 100, width: '30%', borderRadius: 20 }} resizeMode={'cover'} source={{ uri: `data:image/png;base64,${review.image.base64}`}} />
+            <ScrollView style={styles.scrollViewContainer}>
+                {/* Reviews */}
+                { !this.state.reviews || this.state.reviews.length === 0 ?
+                    <Text style={[textStyles.medium, { marginTop: 30, color: 'black' }]}>No reviews.</Text> :
+                    <View style={styles.reviewsContainer}>
+                        { this.state.reviews.map((review, i) =>
+                            <View key={i} style={styles.reviewRow}>
+                                <Image style={{ height: 100, width: '30%', borderRadius: 20 }} resizeMode={'cover'} source={{ uri: `data:image/png;base64,${review.image.base64}`}} />
 
-                                    <View style={{ width: '70%', paddingLeft: 10 }}>
-                                        <Text style={styles.reviewTitle}>{review.name}</Text>
-                                        <View style={{ flexDirection: 'row'}}>
-                                            <StarRating disabled
-                                                maxStars={5}
-                                                starSize={10}
-                                                rating={review.rating}
-                                                containerStyle={{ paddingBottom: 10, width: 60, paddingRight: 2 }}
-                                                fullStarColor={'#f1c40f'} />
-                                            <Text style={[textStyles.miniItalic, {color: 'black', marginLeft: 10, marginTop: -3}]}>{moment(review.date_created).fromNow()}</Text>
-                                        </View>
-                                        <Text style={styles.reviewContent}>{review.text}</Text>
+                                <View style={{ width: '70%', paddingLeft: 10 }}>
+                                    <Text style={styles.reviewTitle}>{review.name}</Text>
+                                    <View style={{ flexDirection: 'row'}}>
+                                        <StarRating disabled
+                                            maxStars={5}
+                                            starSize={10}
+                                            rating={review.rating}
+                                            containerStyle={{ paddingBottom: 10, width: 60, paddingRight: 2 }}
+                                            fullStarColor={'#f1c40f'} />
+                                        <Text style={[textStyles.miniItalic, {color: 'black', marginLeft: 10, marginTop: -3}]}>{moment(review.date_created).fromNow()}</Text>
                                     </View>
+                                    <Text style={styles.reviewContent}>{review.text}</Text>
                                 </View>
-                            )}
-                        </View>
-                    }
-                </ScrollView>
-                <Loader show={this.state.isLoading} clear />
-            </React.Fragment>
+                            </View>
+                        )}
+                    </View>
+                }
+            </ScrollView>
         );
     }
 }
