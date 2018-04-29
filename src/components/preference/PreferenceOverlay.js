@@ -25,19 +25,29 @@ class PreferenceOverlay extends React.Component {
                 vegetarian: false,
                 lactose_intolerant: false,
                 gluten_free: false,
-                nuts_allergy: false
+                nuts_allergy: false,
+                milk_allergy: false,
+                eggs_allergy: false,
+                crustacean_allergy: false,
+                wheat_allergy: false,
+                soybeans_allergy: false,
             }
         };
         this.preferences = [
-            { text: 'Spicy', value: 'spicy'},
-            { text: 'Halal', value: 'halal'},
-            { text: 'Kosher', value: 'kosher'},
-            { text: 'Healthy', value: 'healthy'},
-            { text: 'Vegan Friendly', value: 'vegan'},
-            { text: 'Vegetarian', value: 'vegetarian'},
-            { text: 'Lactose Intolerant', value: 'lactose_intolerant'},
+            { text: 'Eggs Allergy', value: 'eggs_allergy'},
+            { text: 'Crustacean Allergy', value: 'crustacean_allergy'},
             { text: 'Gluten Free', value: 'gluten_free'},
-            { text: 'Nuts Allergy', value: 'nuts_allergy'}
+            { text: 'Halal', value: 'halal'},
+            { text: 'Healthy', value: 'healthy'},
+            { text: 'Kosher', value: 'kosher'},
+            { text: 'Lactose Intolerant', value: 'lactose_intolerant'},
+            { text: 'Milk Allergy Allergy', value: 'milk_allergy'},
+            { text: 'Nuts Allergy', value: 'nuts_allergy'},
+            { text: 'Soybeans Allergy', value: 'soybeans_allergy'},
+            { text: 'Spicy', value: 'spicy'},
+            { text: 'Wheat Allergy', value: 'wheat_allergy'},
+            { text: 'Vegan Friendly', value: 'vegan'},
+            { text: 'Vegetarian', value: 'vegetarian'}
         ];
     }
     async componentWillReceiveProps(nextProps) {

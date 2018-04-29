@@ -17,14 +17,18 @@ import appState from '../../appState';
 class FeelingScreen extends React.Component {
     constructor(props) {
         super(props);
-        const state = appState.getInstance();
-        this.user = state.getUser();
+        this.user = appState.getInstance().getUser();
         this.state = {
             showPreferenceOverlay: false
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
         this.props.navigation.setParams({ togglePreferenceModal: this.togglePreferenceModal });
+        let hasSeenPreferences = await appState.getInstance().hasSeenPreferences();
+        if (!hasSeenPreferences) {
+            this.togglePreferenceModal();
+            await appState.getInstance().seenPreferences();
+        }
     }
     togglePreferenceModal = () => {
         this.setState({ showPreferenceOverlay: !this.state.showPreferenceOverlay });

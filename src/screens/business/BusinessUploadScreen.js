@@ -154,7 +154,18 @@ class BusinessUploadScreen extends React.Component {
             this.props.registration || !this.state.isLoading ?
                 <React.Fragment>
                     <ScrollView style={styles.listContainer}>
-                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left', paddingTop: 20 }]}>Upload Menu Pictures</Text>
+                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left', paddingTop: 20 }]}>Add food items</Text>
+                        { foodItems.length > 0 ? 
+                            foodItems : null }
+                        <View style={styles.centered}>
+                            <Button title='Add'
+                                icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
+                                titleStyle={[textStyles.medium, { height: 50 }]}
+                                buttonStyle={styles.uploadButton}
+                                onPress={() => this.showAddFoodOverlay()}/>
+                        </View>
+
+                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Upload pictures of your menu card</Text>
                         { menuItems.length > 0 ? 
                             menuItems : null }
                         <View style={styles.centered}>
@@ -165,7 +176,7 @@ class BusinessUploadScreen extends React.Component {
                                 onPress={() => this.uploadMenu('menuPictures')}/>
                         </View>
 
-                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Upload Restaurant Interior Pictures</Text>
+                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Upload interior pictures of your restaurant</Text>
                         { pictureItems.length > 0 ?
                             pictureItems : null }
                         <View style={styles.centered}>
@@ -174,18 +185,6 @@ class BusinessUploadScreen extends React.Component {
                                 titleStyle={[textStyles.medium, { height: 50 }]}
                                 buttonStyle={styles.uploadButton}
                                 onPress={() => this.uploadMenu('restaurantPictures')}/>
-                        </View>
-                        
-
-                        <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Add Food Items</Text>
-                        { foodItems.length > 0 ? 
-                            foodItems : null }
-                        <View style={styles.centered}>
-                            <Button title='Add'
-                                icon={<Icon type='font-awesome' name='plus' color='white' size={20} />}
-                                titleStyle={[textStyles.medium, { height: 50 }]}
-                                buttonStyle={styles.uploadButton}
-                                onPress={() => this.showAddFoodOverlay()}/>
                         </View>
                     </ScrollView>
                     <AddFoodItemOverlay showOverlay={this.state.showAddFoodOverlay}

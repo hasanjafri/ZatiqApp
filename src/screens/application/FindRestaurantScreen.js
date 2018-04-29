@@ -15,7 +15,7 @@ class FindRestaurant extends React.Component {
             restaurants: []
         }
         this.loaded = false;
-        this.onChangeTextDelayed = _.throttle(this.onChangeText, 2000);
+        this.onChangeTextDelayed = _.throttle(this.onChangeText, 1000);
     }
     onChangeText = async (text) => {
         if (text !== '' && text.length >= 2) {

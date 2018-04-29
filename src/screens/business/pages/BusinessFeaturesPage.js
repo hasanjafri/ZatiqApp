@@ -18,33 +18,37 @@ class BusinessFeaturesPage extends React.Component {
             isLoading: false,
             features: {
                 delivery: false,
+                buffet: false,
                 takeout: false,
+                family_friendly: false,
+                pescetarian_friendly: false,
                 reservation: false,
+                parking: false,
                 patio: false,
-                wheelChair: false
+                wheelchair_accessible: false,
+                wifi: false
             }
         };
         BusinessInstance.setRegisterForm({ features: this.state.features });
 
         this.user = state.user;
         this.features = [
-            { text: 'Delivery', value: 'delivery'},
-            { text: 'Takeout', value: 'takeout'},
             { text: 'Accepts Reservation', value: 'reservation'},
+            { text: 'Buffet', value: 'buffet'},
+            { text: 'Delivery', value: 'delivery'},
+            { text: 'Family Friendly', value: 'family_friendly'},
+            { text: 'Parking Available', value: 'parking'},
+            { text: 'Pescetarian Friendly', value: 'pescetarian_friendly'},
             { text: 'Patio', value: 'patio'},
-            { text: 'Wheel Chair Accessible', value: 'wheelChair'}
+            { text: 'Takeout', value: 'takeout'},
+            { text: 'Wheelchair Accessible', value: 'wheelchair_accessible'},
+            { text: 'Wifi', value: 'wifi'}
         ];
     }
     componentDidMount() {
         if (this.props.data) {
-            const { patio, reservation, takeout, wheelchair_accessible, delivery } = this.props.data;
-            this.setState({ features: {
-                patio,
-                reservation,
-                takeout,
-                wheelChair: wheelchair_accessible,
-                delivery
-            }});
+            const { features } = this.props.data;
+            this.setState({ features });
         }
     }
 

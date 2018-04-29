@@ -1,7 +1,6 @@
 export default [
     { value: 'breakfast', text: 'Breakfast', source: require('../assets/icons/Breakfast.png') },
     { value: 'brunch', text: 'Brunch', source: require('../assets/icons/Brunch.png') },
-    { value: 'burger', text: 'Burger', source: require('../assets/icons/Burger.png') },
     { value: 'canadian', text: 'Canadian', source: require('../assets/icons/Canadian.png') },
     { value: 'caribbean', text: 'Caribbean', source: require('../assets/icons/Caribbean.png') },
     { value: 'chinese', text: 'Chinese', source: require('../assets/icons/Chinese.png') },
@@ -16,7 +15,6 @@ export default [
     { value: 'italian', text: 'Italian', source: require('../assets/icons/Italian.png') },
     { value: 'japanese', text: 'Japanese', source: require('../assets/icons/Japanese.png') },
     { value: 'korean', text: 'Korean', source: require('../assets/icons/Korean.png') },
-    { value: 'kosher', text: 'Kosher', source: require('../assets/icons/Kosher.png') },
     { value: 'lunch', text: 'Lunch', source: require('../assets/icons/Lunch.png') },
     { value: 'mexican', text: 'Mexican', source: require('../assets/icons/Mexican.png') },
     { value: 'middleeastern', text: 'Middle Eastern', source: require('../assets/icons/MiddleEastern.png') },

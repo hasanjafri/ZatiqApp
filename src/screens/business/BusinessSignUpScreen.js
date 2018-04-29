@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, ImageBackground, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 import { SocialIcon, Input, Icon, Button } from 'react-native-elements';
-import { Keyboard } from 'react-native'
+import { Keyboard, Linking } from 'react-native'
 
 import styles from '../../styles/screens/business/BusinessSignUpScreen.style';
 import colors from '../../styles/colors.style';
@@ -48,7 +48,9 @@ class BusinessSignUpScreen extends React.Component {
             alert(error);
         }
     }
-
+    openTermsAndConditions() {
+        Linking.openURL('http://zatiq.com/wp-content/uploads/2018/04/TERMS-AND-CONDITIONS.pdf');
+    }
     render() {
         const { navigate } = this.props.navigation;
         return (
@@ -98,8 +100,8 @@ class BusinessSignUpScreen extends React.Component {
                         secureTextEntry
                         onChangeText={text => this.setState({ repeatPassword: text })} />
 
-                    <TouchableHighlight onPress={() => this.props.navigation.goBack()}>
-                        <Text style={{ color: 'white', paddingBottom: 15 }}>Terms and Conditions</Text>
+                    <TouchableHighlight onPress={() => this.openTermsAndConditions()}>
+                        <Text style={{ color: 'white', paddingBottom: 15 }} >Terms and Conditions</Text>
                     </TouchableHighlight>
 
                     <Button title="Next"

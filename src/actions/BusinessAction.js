@@ -257,7 +257,6 @@ export default class BusinessAction {
             } else {
                 url = urls.businessAddFoodItem
             }
-            console.log(form.food_item_id);
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {

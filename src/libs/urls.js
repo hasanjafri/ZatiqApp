@@ -9,7 +9,7 @@ const urls = {
 
     userFindRestaurantByName: hostname + '/find/restaurant/name/',
     foodGrid: hostname + '/food/grid/',
-
+    foodGridSearchName: hostname + '/food/grid/name/', // api_token, text
     // restaurant screen endpoints
     businessMenus: hostname + '/user/menu/all/',
     businessInterior: hostname + '/user/interior/all/',

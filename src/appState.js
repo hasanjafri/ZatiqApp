@@ -10,6 +10,25 @@ export default class AppState {
     // variables
     user = null; // 'user' or 'business'
 
+    async hasSeenPreferences() {
+        let hasSeen;
+        try {
+            hasSeen = await AsyncStorage.getItem(keys.HAS_SET_PREFERENCES);
+            hasSeen = JSON.parse(hasSeen) || false; 
+        } catch(err) {
+            console.log(err);
+        }
+        return hasSeen;
+    }
+    async seenPreferences() {
+        try {
+            await AsyncStorage.setItem(keys.HAS_SET_PREFERENCES, JSON.stringify(true));
+        } catch(err) {
+            console.log(err);
+            return false;  
+        };
+        return true;
+    }
     async setUser({ data, type }) {
         const user = { data, type };
         try {
