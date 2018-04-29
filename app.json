@@ -1,5 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "25.0.0"
+   "name": "Your App Name",
+   "icon": "./src/assets/logos/zatiq_logo.jpg",
+   "version": "1.0.1",
+   "slug": "zatiq-app",
+   "sdkVersion": "25.0.0",
+   "ios": {
+     "bundleIdentifier": "com.zatiq.zatiqapp"
+   },
+   "android": {
+     "package": "com.zatiq.zatiqapp"
+   }
   }
 }
