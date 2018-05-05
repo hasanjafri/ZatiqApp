@@ -5,9 +5,6 @@ export default StyleSheet.create({
     scrollview: {
         flex: 1
     },
-    mainContainer: {
-        // paddingVertical: 20
-    },
     mainContainerDark: {
         backgroundColor: colors.black
     },

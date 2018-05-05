@@ -170,7 +170,7 @@ class AddReviewOverlay extends React.Component {
                 containerStyle={{ padding: 0 }}
                 overlayStyle={styles.overlayContainer}>
                 <View style={styles.header}>
-                    <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Leave A Review</Text>
+                    <Text style={[textStyles.medium, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>{ this.state.step === 0 ? 'Select the food item you\'d like to review': 'Leave a review'}</Text>
                     <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
                 </View>
                 { renderedElement }

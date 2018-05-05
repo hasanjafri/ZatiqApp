@@ -4,6 +4,7 @@ import { Icon, Button } from 'react-native-elements';
 import moment from 'moment';
 import GridView from 'react-native-super-grid';
 import phoneFormatter from 'phone-formatter';
+import Slider from '../../components/slider/Slider';
 
 // Custom imports
 import styles from '../../styles/screens/application/RestaurantScreen.style';
@@ -12,6 +13,8 @@ import AddReviewButton from '../../components/addReview/AddReviewButton';
 import AddReviewOverlay from '../../components/addReview/AddReviewOverlay';
 import TagsOverlay from '../../components/TagsOverlay';
 import Loader from '../../components/Loader';
+
+import { foodItemsByRestaurantId } from '../../actions/UserAction';
 
 import { restaurantPicturesByRestaurantId, menuPicturesByRestaurantId } from '../../actions/UserAction';
 
@@ -33,16 +36,32 @@ class RestaurantScreen extends React.Component {
         const user = state.getUser();
         
         this.isBusiness = user && user.type === 'business';
+        const data = props.navigation.state.params;
         this.state = {
             showOverlay: false,
             showTagsOverlay: false,
-            data: props.navigation.state.params
+            data,
+            restaurantPictures: data ? [{image: data.restaurant_info.image}] : null 
         };
         this.ITEMS = [
             { text: 'Features', type: 'features', source: require('../../assets/icons/Breakfast.png') },
             { text: 'Menu', type: 'menu', source: require('../../assets/icons/Lunch.png') },
-            { text: 'Restaurant', type: 'restaurant', source: require('../../assets/icons/Brunch.png') }
+            { text: 'Food', type: 'food', source: require('../../assets/icons/Brunch.png') }
         ];
+    }
+    async componentDidMount() {
+        const { data: { restaurant_id }} = this.state;
+        let result;
+        try {
+            result = await restaurantPicturesByRestaurantId(restaurant_id);
+        } catch(err) {
+            console.log(err);
+        }
+        if (result.success) {
+            this.setState({ restaurantPictures: this.state.restaurantPictures.concat(result.data.response)})
+        } else {
+            alert(result.message);
+        }
     }
     isOpen(hours) {
         const now = moment();
@@ -107,14 +126,13 @@ class RestaurantScreen extends React.Component {
             <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <ScrollView style={styles.scrollViewContainer}>
                     {/* Restaurant Image */}
-                    <View style={styles.imageContainer}>
-                        <Image style={styles.restaurantImage} resizeMode={'cover'} source={{ uri: businessImage }} />
-                    </View>
+                    <Slider data={this.state.restaurantPictures} noPaginate type="FullPicture" />
+
                     <View style={styles.centered}>
                         {/* Title & Address */}
                         <Text style={[textStyles.largeBold, { paddingTop: 10 }]}>{name}</Text>
                         <Text style={[textStyles.small, { fontFamily: 'nunito-italic'}]}>{address}</Text>
-                        {/* Rating, Features, Menu, Photos & Call to Order */}
+                        {/* Features, Menu, Photos & Contact Restaurant */}
                         <GridView itemDimension={80}
                             items={this.ITEMS}
                             renderItem={(item) =>
@@ -126,7 +144,7 @@ class RestaurantScreen extends React.Component {
                             style={{paddingTop: 10, flex: 1}}/>
                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={() => this.onCall(number)}>
                             <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'call'} color={'white'} />
-                            <Text style={[textStyles.small, styles.buttonText]}>Call To Order</Text>
+                            <Text style={[textStyles.small, styles.buttonText]}>Contact Restaurant</Text>
                         </TouchableOpacity>
                         {/* Hours */}
                         { this._renderSection('Hours') }
@@ -175,15 +193,18 @@ class GridItem extends React.Component {
             this.props.openTagsOverlay();
         } else {
             this.setState({ isLoading: true });
-            let result;
+            let result, data;
+            const { restaurant_id } = this.props;
             if (type === 'menu') {
-                result = await menuPicturesByRestaurantId(this.props.restaurant_id);
+                result = await menuPicturesByRestaurantId(restaurant_id);
+                data = result.data.response;
             } else {
-                result = await restaurantPicturesByRestaurantId(this.props.restaurant_id);
+                result = await foodItemsByRestaurantId(restaurant_id);
+                data = result.data.food_items;
             }
             this.setState({ isLoading: false });
             if (result.success) {
-                this.props.navigateTo('Picture', result.data.response);
+                this.props.navigateTo('Picture', { data, type });
             } else {
                 alert(result.message);
             }

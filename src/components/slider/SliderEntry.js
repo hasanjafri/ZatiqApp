@@ -28,21 +28,22 @@ export default class SliderEntry extends Component {
         return false;
     }
     get image () {
-        const { data: {  image: { base64, image_aspect_ratio } }, parallax, parallaxProps, even, type } = this.props;
+        const { data: {  image: { base64, image_aspect_ratio } }, parallaxProps, even, type } = this.props;
         if (!base64) {
             return <Image style={styles.imagePlaceholder} />
         }
         const displayImage = 'data:image/png;base64,' + base64;
-        return parallax ? (
-            <ParallaxImage source={{ uri: displayImage }}
-                containerStyle={[styles.imageContainer, even ? styles.imageContainerEven : {}]}
-                style={styles.image}
-                parallaxFactor={0.05}
-                showSpinner
-                spinnerColor={even ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.25)'}
-                {...parallaxProps} />
-        ) : (
-            <Image source={{ uri: displayImage }} style={styles.image} />
+        const isFull = type === 'FullPicture';
+        return (
+            isFull ?
+                <Image source={{ uri: displayImage }} style={[styles.image, {borderWidth: 1, borderColor: 'white'}]} /> :
+                <ParallaxImage source={{ uri: displayImage }}
+                    containerStyle={styles.imageContainer}
+                    style={styles.image}
+                    parallaxFactor={0.05}
+                    showSpinner
+                    spinnerColor={even ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.25)'}
+                    {...parallaxProps} />
         );
     }
     onCall(number) {
@@ -66,12 +67,12 @@ export default class SliderEntry extends Component {
         const tagsDisplay = tagList.map((tag, i) => <Text style={[textStyles.miniItalic, styles.tag]} key={i}>{tag}</Text>);
         tagsDisplay.push(
             <TouchableOpacity activeOpacity={1} key={-1} onPress={() => this.props.showTagsOverlay(this.props.data)}>
-                <Text key={-1} style={[textStyles.miniItalic, styles.tag, { color: 'black', backgroundColor: 'white', fontFamily: 'nunito-bold' }]}>View All</Text>
+                <Text key={-1} style={[textStyles.miniItalic, { color: 'black', fontFamily: 'nunito-bold', lineHeight: 20 }]}>View All</Text>
             </TouchableOpacity>
-        )
+        );
         return tagsDisplay;
     }
-    _renderSuggestionEntry() {
+    _renderSuggestionEntry(type) {
         const { data: {
             food_item_id,
             item_name,
@@ -98,25 +99,29 @@ export default class SliderEntry extends Component {
                         </View>
                         <Text style={textStyles.subtitle} numberOfLines={2} >{ overview }</Text>
                         <View style={styles.tagContainer}>{this.getTags(tags)}</View>
-                        
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={[styles.leftPart, { paddingVertical: 10 }]}>
-                                <Text style={[textStyles.title,  { fontSize: 16 }]} numberOfLines={2} >{ name }</Text>
-                            </View>
-                            <Text style={[styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
-                                { isOpen ? 'Open now' : 'Closed' }
-                            </Text>
-                        </View>
-                        <View style={styles.buttonBar}>
-                            <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={() => this.onCall(number)}>
-                                <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'call'} color={'white'} />
-                                <Text style={[textStyles.small, styles.buttonText]}>Call To Order</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => this.props.navigateTo('Restaurant', this.props.data)}>
-                                <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'import-contacts'} color={'white'} />
-                                <Text style={[textStyles.small, styles.buttonText]}>View Restaurant</Text>
-                            </TouchableOpacity>
-                        </View>
+                        {
+                            type === 'Suggestion' ?
+                                <React.Fragment>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={[styles.leftPart, { paddingVertical: 10 }]}>
+                                            <Text style={[textStyles.title,  { fontSize: 16 }]} numberOfLines={2} >{ name }</Text>
+                                        </View>
+                                        <Text style={[styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
+                                            { isOpen ? 'Open now' : 'Closed' }
+                                        </Text>
+                                    </View>
+                                    <View style={styles.buttonBar}>
+                                        <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={() => this.onCall(number)}>
+                                            <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'call'} color={'white'} />
+                                            <Text style={[textStyles.small, styles.buttonText]}>Contact Restaurant</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => this.props.navigateTo('Restaurant', this.props.data)}>
+                                            <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'import-contacts'} color={'white'} />
+                                            <Text style={[textStyles.small, styles.buttonText]}>View Restaurant</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </React.Fragment> : null
+                        }
                     </View>
                 </View>
             </React.Fragment>
@@ -134,6 +139,11 @@ export default class SliderEntry extends Component {
         );
     }
     render () {
-        return this.props.type === 'Suggestion' ? this._renderSuggestionEntry() : this._renderImageEntry()
+        const { type } = this.props;
+        if (type === 'Suggestion' || type === 'Food') {
+            return this._renderSuggestionEntry(type);
+        } else if (type === 'Picture' || type === 'FullPicture') {
+            return this._renderImageEntry();
+        }
     }
 }

@@ -31,8 +31,6 @@ export default StyleSheet.create({
         marginBottom: IS_IOS ? 0 : -1, 
         backgroundColor: 'white'
     },
-    imageContainerEven: {
-    },
     imagePlaceholder: {
         resizeMode: 'cover',
         // width: 150,
