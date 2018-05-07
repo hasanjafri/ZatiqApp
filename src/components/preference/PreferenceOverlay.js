@@ -22,32 +22,47 @@ class PreferenceOverlay extends React.Component {
                 kosher: false,
                 healthy: false,
                 vegan: false,
+                fish: false,
                 vegetarian: false,
                 lactose_intolerant: false,
                 gluten_free: false,
-                nuts_allergy: false,
                 milk_allergy: false,
                 eggs_allergy: false,
                 crustacean_allergy: false,
                 wheat_allergy: false,
                 soybeans_allergy: false,
+                jain: false,
+                omnivore: false,
+                pescatarian: false,
+                peanuts_allergy: false,
+                treenuts_allergy: false
             }
         };
         this.preferences = [
-            { text: 'Eggs Allergy', value: 'eggs_allergy'},
-            { text: 'Crustacean Allergy', value: 'crustacean_allergy'},
-            { text: 'Gluten Free', value: 'gluten_free'},
+            { section: 'I am' },
+            { text: 'Omnivore', value: 'omnivore'},
+            { text: 'Pescatarian', value: 'pescatarian'},
+            { text: 'Vegan', value: 'vegan'},
+            { text: 'Vegetarian', value: 'vegetarian'},
+
+            { section: 'I only eat' },
             { text: 'Halal', value: 'halal'},
             { text: 'Healthy', value: 'healthy'},
+            { text: 'Jain', value: 'jain'},
             { text: 'Kosher', value: 'kosher'},
-            { text: 'Lactose Intolerant', value: 'lactose_intolerant'},
-            { text: 'Milk Allergy Allergy', value: 'milk_allergy'},
-            { text: 'Nuts Allergy', value: 'nuts_allergy'},
-            { text: 'Soybeans Allergy', value: 'soybeans_allergy'},
+
+            { section: 'I am allergic to' },
+            { text: 'Crustacean', value: 'crustacean_allergy'},
+            { text: 'Eggs', value: 'eggs_allergy'},
+            { text: 'Fish', value: 'fish_allergy'},
+            { text: 'Gluten', value: 'gluten_free'},
+            { text: 'Lactose', value: 'lactose_intolerant'},
+            { text: 'Milk', value: 'milk_allergy'},
+            { text: 'Peanuts', value: 'peanuts_allergy'},
             { text: 'Spicy', value: 'spicy'},
-            { text: 'Wheat Allergy', value: 'wheat_allergy'},
-            { text: 'Vegan Friendly', value: 'vegan'},
-            { text: 'Vegetarian', value: 'vegetarian'}
+            { text: 'Soybeans', value: 'soybeans_allergy'},
+            { text: 'Tree Nuts', value: 'treenuts_allergy'},
+            { text: 'Wheat', value: 'wheat_allergy'},
         ];
     }
     async componentWillReceiveProps(nextProps) {
@@ -84,6 +99,9 @@ class PreferenceOverlay extends React.Component {
         const preferences = this.preferences.map((preference, i) => {
             const { text, value } = preference;
             const isActive = this.state.preferences[value];
+            if (preference.section) {
+                return <Text key={i} style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>{preference.section}</Text>
+            }
             return (
                 <ListItem key={i}
                     rightIcon={
@@ -104,12 +122,11 @@ class PreferenceOverlay extends React.Component {
                     containerStyle={{ padding: 0 }}
                     overlayStyle={styles.overlayContainer}>
                         <View style={styles.header}>
-                            <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Set Preferences</Text>
+                            <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Tell us a bit about yourself</Text>
                             <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
                         </View>
                         { !this.state.isLoading ?
                             <ScrollView style={styles.wrapper}>
-                                <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
                                 {preferences}
                                 <View style={styles.centered}>
                                     <Button title='Save'

@@ -21,12 +21,6 @@ import { restaurantPicturesByRestaurantId, menuPicturesByRestaurantId } from '..
 import appState from '../../appState';
 const state = appState.getInstance();
 
-const TAGS = [
-    { text: 'Features', source: require('../../assets/icons/Breakfast.png') },
-    { text: 'Menu', source: require('../../assets/icons/Brunch.png') },
-    { text: 'Photos', source: require('../../assets/icons/Lunch.png') }
-];
-
 const momentDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 const displayDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -44,9 +38,9 @@ class RestaurantScreen extends React.Component {
             restaurantPictures: data ? [{image: data.restaurant_info.image}] : null 
         };
         this.ITEMS = [
-            { text: 'Features', type: 'features', source: require('../../assets/icons/Breakfast.png') },
-            { text: 'Menu', type: 'menu', source: require('../../assets/icons/Lunch.png') },
-            { text: 'Food', type: 'food', source: require('../../assets/icons/Brunch.png') }
+            { text: 'Features', type: 'features', source: require('../../assets/backgrounds/Features-min.png') },
+            { text: 'Menu', type: 'menu', source: require('../../assets/backgrounds/menu-min.png') },
+            { text: 'Food', type: 'food', source: require('../../assets/backgrounds/Pictures-min.png') }
         ];
     }
     async componentDidMount() {
