@@ -9,7 +9,13 @@ export default class AppState {
 
     // variables
     user = null; // 'user' or 'business'
-
+    selectedDrawerItem = 'Home';
+    setSelectedDrawerItem(item) {
+        this.selectedDrawerItem = item;
+    }
+    getSelectedDrawerItem() {
+        return this.selectedDrawerItem;
+    }
     async hasSeenPreferences() {
         let hasSeen;
         try {

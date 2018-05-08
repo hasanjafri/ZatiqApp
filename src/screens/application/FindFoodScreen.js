@@ -9,6 +9,8 @@ import { foodGrid, foodGridSearchName } from '../../actions/UserAction';
 import textStyles from '../../styles/text.style';
 
 import _ from 'lodash';
+import appState from '../../appState';
+const state = appState.getInstance();
 
 class FindFood extends React.Component {
     constructor(props) {
@@ -54,10 +56,13 @@ class FindFood extends React.Component {
     _renderFoodItem(item) {
         const image = `data:image/png;base64,${item.image.base64}`
         return (
-            <TouchableOpacity activeOpacity={0.5} onPress={() => this.props.navigation.navigate('Restaurant', {
-                restaurant_id: item.restaurant_id,
-                restaurant_info: item.restaurant_info
-            })}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => {
+                    state.setSelectedDrawerItem('Home');
+                    this.props.navigation.navigate('Restaurant', {
+                        restaurant_id: item.restaurant_id,
+                        restaurant_info: item.restaurant_info
+                    })
+                }}>
                 <View style={styles.item}>
                     <Image style={{ height: '100%', width: '100%', alignItems: 'center' }} resizeMode="contain" source={{uri: image}} />
                 </View>

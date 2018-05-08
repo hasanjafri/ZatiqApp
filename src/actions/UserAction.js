@@ -28,8 +28,8 @@ export const onSignIn = async (type) => {
             } else {
                 return { success: false, message: 'Something went wrong' } ;
             }
-        } catch(e) {
-            console.log(e);
+        } catch(err) {
+            console.log(err);
             return { success: false, message: 'Something went wrong' };
         }
     } else if (type === 'google') {
@@ -51,8 +51,8 @@ export const onSignIn = async (type) => {
             } else {
                 return { success: false, message: 'Something went wrong' };
             }
-        } catch(e) {
-            console.log(e);
+        } catch(err) {
+            console.log(err);
             return { success: false, message: 'Something went wrong' };
         }
     }

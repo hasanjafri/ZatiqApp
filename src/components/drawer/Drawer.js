@@ -14,8 +14,10 @@ class Drawer extends React.Component {
         this.state = {
             selected: 'Home'
         }
+        const state = appState.getInstance();
         const changeRoute = (route, currentSelected) => {
             this.setState({ selected: currentSelected });
+            state.setSelectedDrawerItem(currentSelected);
             this.props.navigation.navigate(route);
         }
         this.items = [
@@ -23,7 +25,7 @@ class Drawer extends React.Component {
             { text: 'Find Restaurant', action: () => changeRoute('FindRestaurant', 'Find Restaurant')},
             { text: 'Find Food', action: () => changeRoute('FindFood', 'Find Food')}
         ];
-        const state = appState.getInstance();
+        
         this.user = state.getUser();
         if (this.user.type === 'business') {
             this.items.push({ section: 'BUSINESS SECTION' });
@@ -34,6 +36,10 @@ class Drawer extends React.Component {
         } else if (this.user.type === 'user') {
             this.items.push({ text: 'Reviews', action: () => changeRoute('Reviews', 'Reviews')});
         }
+    }
+    componentWillReceiveProps() {
+        const state = appState.getInstance();
+        this.setState({ selected: state.getSelectedDrawerItem() });
     }
     render() {
         const drawerItems = this.items.map((item, i) => {

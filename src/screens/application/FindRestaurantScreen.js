@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { findRestaurantByName } from '../../actions/UserAction';
 import textStyles from '../../styles/text.style';
 import styles from '../../styles/screens/application/FindRestaurantScreen.style';
+import appState from '../../appState';
 
 class FindRestaurant extends React.Component {
     constructor(props) {
@@ -36,15 +37,19 @@ class FindRestaurant extends React.Component {
         } else if (!this.state.restaurants || this.state.restaurants.length === 0) {
             renderedElement = <Text style={[textStyles.medium, { marginTop: 30, color: 'black', paddingHorizontal: 20  }]}>No restaurants found with that name.</Text>
         } else {
+            const state = appState.getInstance();
             renderedElement = (
                 this.state.restaurants.map((restaurant, i) => {
                     return (
                         <ListItem key={i}
                             leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: 'data:image/png;base64,' + restaurant.image.base64}}/></View>}
-                            onPress={() => this.props.navigation.navigate('Restaurant', {
-                                restaurant_id: restaurant.restaurant_id,
-                                restaurant_info: { ...restaurant }
-                            })}
+                            onPress={() => {
+                                state.setSelectedDrawerItem('Home');
+                                this.props.navigation.navigate('Restaurant', {
+                                    restaurant_id: restaurant.restaurant_id,
+                                    restaurant_info: { ...restaurant }
+                                });
+                            }}
                             subtitle={restaurant.address}
                             title={restaurant.name} />
                     );

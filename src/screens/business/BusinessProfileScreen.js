@@ -50,15 +50,17 @@ class BusinessProfileScreen extends React.Component {
                 registration={this.props.registration}
                 selectNextActiveItem={nextActiveItem => this.updateNextActiveItem(nextActiveItem)}
                 data={this.state.data}
-                nextAction={() => this.props.navigation.dispatch(
-                NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'BusinessUpload' }),
-                    ],
-                    key: null
-                })
-            )} />
+                nextAction={() => {
+                    this.props.navigation.dispatch(
+                        NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({ routeName: 'BusinessUpload' }),
+                            ],
+                            key: null
+                        })
+                    )}
+                } />
         );
     }
 
