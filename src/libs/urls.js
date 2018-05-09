@@ -1,4 +1,5 @@
-const hostname = 'http://165.227.43.65:5000';
+// const hostname = 'http://165.227.43.65:5000';
+const hostname = 'http://zatiq-server-1.wepspuhami.ca-central-1.elasticbeanstalk.com';
 
 const urls = {
     uploadImage: hostname + '/image/business/',
