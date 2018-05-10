@@ -3,7 +3,7 @@ import { View, Text, Platform, ScrollView, Image } from 'react-native';
 import { SearchBar, ListItem } from 'react-native-elements';
 import _ from 'lodash';
 // Custom imports
-import { findRestaurantByName } from '../../actions/UserAction';
+import { findRestaurantByName, closestRestaurants } from '../../actions/UserAction';
 import textStyles from '../../styles/text.style';
 import styles from '../../styles/screens/application/FindRestaurantScreen.style';
 import appState from '../../appState';
@@ -12,11 +12,21 @@ class FindRestaurant extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSearching: false,
+            isSearching: true,
             restaurants: []
         }
         this.loaded = false;
         this.onChangeTextDelayed = _.throttle(this.onChangeText, 1000);
+    }
+    async componentDidMount() {
+        const result = await closestRestaurants();
+        this.loaded = true;
+        if (result.success) {
+            this.setState({ isSearching: false, restaurants: result.data });
+        } else {
+            this.setState({ isSearching: false, restaurants: [] });
+            alert(result.message);
+        }
     }
     onChangeText = async (text) => {
         if (text !== '' && text.length >= 2) {

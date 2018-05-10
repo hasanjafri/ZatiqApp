@@ -298,6 +298,36 @@ export const getUserReviews = async (form) => {
     }
 }
 
+export const closestRestaurants = async (name) => {
+    try {
+        const user = state.getUser();
+        const api_token = user ? user.data.api_token : null;
+        if (!api_token) {
+            return { success: false, message: 'Not logged in' };
+        }
+
+        const response = await fetch(urls.closestRestaurants, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ api_token })
+        });
+        
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult.response }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
+
 export const findRestaurantByName = async (name) => {
     try {
         const user = state.getUser();

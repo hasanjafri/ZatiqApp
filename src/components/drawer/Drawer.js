@@ -7,14 +7,14 @@ import appState from '../../appState';
 
 import textStyles from '../../styles/text.style';
 import colors from '../../styles/colors.style';
+const state = appState.getInstance();
 
 class Drawer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: 'Home'
+            selected: state.getSelectedDrawerItem() ? state.getSelectedDrawerItem() : 'Home'
         }
-        const state = appState.getInstance();
         const changeRoute = (route, currentSelected) => {
             this.setState({ selected: currentSelected });
             state.setSelectedDrawerItem(currentSelected);
@@ -38,7 +38,7 @@ class Drawer extends React.Component {
         }
     }
     componentWillReceiveProps() {
-        const state = appState.getInstance();
+        
         this.setState({ selected: state.getSelectedDrawerItem() });
     }
     render() {

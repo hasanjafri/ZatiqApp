@@ -8,6 +8,7 @@ const urls = {
     userAddReview: hostname + '/user/review/add/',
     userReviews: hostname + '/user/reviews/all/',
 
+    closestRestaurants: hostname + '/restaurants/nearby/',
     userFindRestaurantByName: hostname + '/find/restaurant/name/',
     foodGrid: hostname + '/food/grid/',
     foodGridSearchName: hostname + '/food/grid/name/', // api_token, text

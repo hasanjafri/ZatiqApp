@@ -29,8 +29,8 @@ const SettingsButton = props => (
 
 const SkipButton = props => (
     <TouchableHighlight underlayColor={'transparent'} style={{ paddingRight: 20 }} onPress={() => {
-            state.setSelectedDrawerItem('BusinessRestaurant');
-            props.navigation.navigate('BusinessRestaurant')
+            state.setSelectedDrawerItem('My Restaurant');
+            props.navigation.navigate('BusinessRestaurant');
         }
     }>
         <Text style={{fontSize: 16, color: 'white', fontFamily: 'nunito', fontWeight: 'bold' }}>{props.hasValue ? 'Next' : 'Skip'}</Text>

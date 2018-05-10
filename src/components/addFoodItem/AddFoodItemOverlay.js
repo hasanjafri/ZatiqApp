@@ -26,11 +26,13 @@ class AddFoodItemOverlay extends React.Component {
         this.setOverviewRef = this.setOverviewRef.bind(this);
         this.setNameRef = this.setNameRef.bind(this);
         this.setPriceRef = this.setPriceRef.bind(this);
+        this.setCaloriesRef = this.setCaloriesRef.bind(this);
     }
     resetForm() {
         this.item_name = '';
         this.overview = '';
         this.item_price = '';
+        this.calories = '';
         this.meal_type = [0];
         this.tags = {
             is_beverage: false,
@@ -113,12 +115,13 @@ class AddFoodItemOverlay extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectedFoodItem) {
-            const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id } = nextProps.selectedFoodItem;
+            const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id, calories } = nextProps.selectedFoodItem;
             this.tags = tags;
             this.seafood = seafood;
             this.meat = meat;
             this.item_name = item_name;
             this.overview = overview;
+            this.calories = calories;
             this.item_price = item_price;
             const meal_indexes = [];
             if (meal_type.breakfast) {
@@ -164,6 +167,10 @@ class AddFoodItemOverlay extends React.Component {
             if (this.item_price_input) {
                 this.item_price_input.focus();
             }
+        } else if (type === 'item_price') {
+            if (this.calories_input) {
+                this.calories_input.focus();
+            }
         }
     }
     toggleItem = (type, value, status) => {
@@ -194,6 +201,7 @@ class AddFoodItemOverlay extends React.Component {
                 item_name: this.item_name,
                 overview: this.overview,
                 item_price: this.item_price,
+                calories: this.calories,
                 meal_type: meal_indexes,
                 tags: this.tags,
                 meat: this.meat,
@@ -223,6 +231,9 @@ class AddFoodItemOverlay extends React.Component {
     }
     setPriceRef(input) {
         this.item_price_input = input;
+    }
+    setCaloriesRef(input) {
+        this.calories_input = input;
     }
     render() {
         if (!this.props.showOverlay) {
@@ -308,6 +319,13 @@ class AddFoodItemOverlay extends React.Component {
                         value={this.item_price}
                         onSubmitEditing={(type) => this.onSubmitEditing(type)}
                         changeText={text => this.item_price = text} />
+                    
+                    <Text style={[textStyles.tiny, styles.headerText]}>Calories (Optional)</Text>
+                    <InputHandler type='calories'
+                        setRef={this.setCaloriesRef}
+                        value={this.calories}
+                        onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                        changeText={text => this.calories = text} />
               
                     <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meal</Text>
                     <ButtonGroupHandler onPress={selectedIndexes => this.meal_type = selectedIndexes} meal_type={this.meal_type} />
@@ -374,11 +392,11 @@ class InputHandler extends React.Component {
         return (
             <Input ref={setRef} value={this.state.input}
                 style={styles.input}
-                keyboardType={type === 'item_price' ? 'numeric' : 'default'}
+                keyboardType={type === 'item_price' || type === 'calories' ? 'numeric' : 'default'}
                 onSubmitEditing={() => this.onSubmitEditing()}
                 returnKeyLabel={'Next'}
                 returnKeyType={'next'}
-                blurOnSubmit={type === 'item_price'}
+                blurOnSubmit={type === 'calories'}
                 onChangeText={text => this.changeText(text)} />
         )
     }

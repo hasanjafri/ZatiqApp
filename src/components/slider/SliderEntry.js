@@ -67,7 +67,7 @@ export default class SliderEntry extends Component {
         const tagsDisplay = tagList.map((tag, i) => <Text style={[textStyles.miniItalic, styles.tag]} key={i}>{tag}</Text>);
         tagsDisplay.push(
             <TouchableOpacity activeOpacity={1} key={-1} onPress={() => this.props.showTagsOverlay(this.props.data)}>
-                <Text key={-1} style={[textStyles.miniItalic, { color: 'black', fontFamily: 'nunito-bold', lineHeight: 20 }]}>View All</Text>
+                <Text key={-1} style={[textStyles.miniItalic, { color: 'black', fontFamily: 'nunito-bold', lineHeight: 20, paddingLeft: 10 }]}>View All</Text>
             </TouchableOpacity>
         );
         return tagsDisplay;
@@ -77,6 +77,7 @@ export default class SliderEntry extends Component {
             food_item_id,
             item_name,
             item_price,
+            calories,
             tags,
             overview,
             restaurant_info: { name, number, hours }
@@ -95,9 +96,22 @@ export default class SliderEntry extends Component {
                             <View style={styles.leftPart}>
                                 <Text style={[textStyles.title, { fontSize: 16 }]} numberOfLines={2} >{ item_name }</Text>
                             </View>
-                            <Text style={[textStyles.subitle, { color: colors.gray, textAlign: 'center', right: 0, position: 'absolute' }]} >${ item_price }</Text>
+                            <View style={styles.rightPart}>
+                                <Text style={[textStyles.subtitle, { color: colors.gray, textAlign: 'center' }]} >${ item_price }</Text>
+                            </View>
                         </View>
-                        <Text style={textStyles.subtitle} numberOfLines={2} >{ overview }</Text>
+
+                        { calories ?    
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={styles.leftPart}>
+                                    <Text style={textStyles.subtitle} numberOfLines={2} >{ overview }</Text>
+                                </View>
+                                <View style={styles.rightPart}>
+                                    <Text style={[textStyles.subtitle, { color: colors.gray, textAlign: 'center' }]} >{ calories } Calories</Text>
+                                </View>
+                            </View> :
+                            <Text style={textStyles.subtitle} numberOfLines={2} >{ overview }</Text>
+                        }                        
                         <View style={styles.tagContainer}>{this.getTags(tags)}</View>
                         {
                             type === 'Suggestion' ?
@@ -106,7 +120,7 @@ export default class SliderEntry extends Component {
                                         <View style={[styles.leftPart, { paddingVertical: 10 }]}>
                                             <Text style={[textStyles.title,  { fontSize: 16 }]} numberOfLines={2} >{ name }</Text>
                                         </View>
-                                        <Text style={[styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
+                                        <Text style={[styles.rightPart, styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
                                             { isOpen ? 'Open now' : 'Closed' }
                                         </Text>
                                     </View>

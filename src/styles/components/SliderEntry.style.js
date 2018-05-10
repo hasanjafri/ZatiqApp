@@ -59,7 +59,7 @@ export default StyleSheet.create({
     
     tagContainer: {
         width: '100%',
-        marginTop: 5,
+        marginTop: 10,
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
@@ -71,7 +71,10 @@ export default StyleSheet.create({
         marginRight: 5
     },
     leftPart: {
-        width: slideWidth - 70
+        flex: 1
+    },
+    rightPart: {
+        paddingLeft: 10
     },
     open: {
         paddingHorizontal: 10,
@@ -80,9 +83,7 @@ export default StyleSheet.create({
         marginLeft: 10,
         lineHeight: 25,
         color: 'white',
-        textAlign: 'center',
-        right: 0,
-        position: 'absolute'
+        textAlign: 'center'
     },
     buttonBar: {
         marginTop: 10
