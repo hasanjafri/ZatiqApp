@@ -75,7 +75,6 @@ class BusinessLoginScreen extends React.Component {
                     <Button title="Log In"
                         titleStyle={{ textAlign: 'center', fontFamily: 'nunito' }}
                         buttonStyle={styles.primaryButton}
-                        clear
                         loading={this.state.isLoading}
                         onPress={() => this.businessLogin()}
                         containerStyle={{ marginVertical: 15 }} />
@@ -91,7 +90,6 @@ class BusinessLoginScreen extends React.Component {
                             borderRadius: 25,
                             marginBottom: 20
                         }}
-                        clear
                         onPress={() => this.props.navigation.navigate('BusinessSignUp')} />
                     <TouchableHighlight onPress={() => this.props.navigation.navigate('Login')}>
                         <Text style={{ color: 'white' }}>Not a business?</Text>

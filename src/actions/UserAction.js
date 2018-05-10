@@ -4,7 +4,6 @@ import keys from '../libs/keys';
 import urls from '../libs/urls';
 
 import appState from '../appState';
-import { ACTION_TRUSTED_CREDENTIALS_USER } from 'expo/src/IntentLauncherAndroid';
 
 const state = appState.getInstance();
 

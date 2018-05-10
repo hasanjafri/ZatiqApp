@@ -289,11 +289,13 @@ class AddFoodItemOverlay extends React.Component {
                 <ScrollView style={styles.wrapper}>
                     <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
                         { image ?
-                            <Avatar xlarge rounded
+                            <Avatar size="xlarge"
+                                rounded
                                 source={{ uri: image }}
                                 onPress={() => this.uploadPicture()}
                                 activeOpacity={0.7} /> :
-                            <Avatar xlarge rounded
+                            <Avatar size="xlarge"
+                                rounded
                                 icon={{ name: 'restaurant' }}
                                 onPress={() => this.uploadPicture()}
                                 activeOpacity={0.7} />
@@ -339,11 +341,11 @@ class AddFoodItemOverlay extends React.Component {
                     { seafoodItems }
                     <View style={styles.centered}>
                         <Button title='Save'
-                        loading={this.state.isLoading}
-                        titleStyle={[textStyles.medium, { height: 50 }]}
-                        buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                        loading={this.state.isLoading}
-                        onPress={() => this.saveFoodItem()} />
+                            loading={this.state.isLoading}
+                            titleStyle={[textStyles.medium, { height: 50 }]}
+                            buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                            loading={this.state.isLoading}
+                            onPress={() => this.saveFoodItem()} />
                     </View>
                 </ScrollView>
             </Overlay>

@@ -107,7 +107,6 @@ class BusinessSignUpScreen extends React.Component {
                     <Button title="Next"
                         titleStyle={{ textAlign: 'center', fontFamily: 'nunito', color: 'white' }}
                         buttonStyle={styles.primaryButton}
-                        clear
                         onPress={() => this.businessRegister()} />
                     <TouchableHighlight onPress={() => this.props.navigation.goBack()}>
                         <Text style={{ color: 'white', marginVertical: 15 }}>Already registered? Login here!</Text>

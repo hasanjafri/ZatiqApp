@@ -24,8 +24,10 @@ class FeelingScreen extends React.Component {
     }
     async componentDidMount() {
         this.props.navigation.setParams({ togglePreferenceModal: this.togglePreferenceModal });
-        let hasSeenPreferences = await appState.getInstance().hasSeenPreferences();
-        if (!hasSeenPreferences) {
+        const state = appState.getInstance();
+        const hasSeenPreferences = await state.hasSeenPreferences();
+        const userType = await state.getUser().type;
+        if (!hasSeenPreferences && userType === 'user') {
             this.togglePreferenceModal();
             await appState.getInstance().seenPreferences();
         }

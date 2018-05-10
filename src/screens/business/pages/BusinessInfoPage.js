@@ -66,10 +66,13 @@ class BusinessInfoPage extends React.Component {
                 <Text style={[textStyles.small, styles.headerText]}>Business Logo</Text>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         { imageUrl ?
-                            <Avatar xlarge source={{ uri: imageUrl }}
+                            <Avatar size="xlarge"
+                                rounded
+                                source={{ uri: imageUrl }}
                                 onPress={() => this.uploadPicture()}
                                 activeOpacity={0.7} /> :
-                            <Avatar xlarge rounded
+                            <Avatar size="xlarge"
+                                rounded
                                 icon={{ name: 'restaurant' }}
                                 onPress={() => this.uploadPicture()}
                                 activeOpacity={0.7} />

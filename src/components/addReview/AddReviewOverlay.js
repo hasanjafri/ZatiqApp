@@ -85,11 +85,13 @@ class AddReviewOverlay extends React.Component {
                 <Text style={[textStyles.tiny, styles.headerText]}>Picture (Optional)</Text>
                 <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
                     { image ?
-                        <Avatar xlarge rounded
+                        <Avatar size="xlarge"
+                            rounded
                             source={{ uri: image }}
                             onPress={() => this.uploadPicture()}
                             activeOpacity={0.7} /> :
-                        <Avatar xlarge rounded
+                        <Avatar size="xlarge"
+                            rounded
                             icon={{ name: 'restaurant' }}
                             onPress={() => this.uploadPicture()}
                             activeOpacity={0.7} />
