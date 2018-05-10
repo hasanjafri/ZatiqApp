@@ -1,7 +1,7 @@
 {
   "expo": {
    "name": "Your App Name",
-   "icon": "./src/assets/logos/zatiq_logo.jpg",
+   "icon": "./src/assets/logos/zatiq_logo.png",
    "version": "1.0.1",
    "slug": "zatiq-app",
    "sdkVersion": "25.0.0",
