@@ -48,7 +48,7 @@ export const onSignIn = async (type) => {
             };
         } else {
             options = {
-                behavior: 'system',
+                behavior: 'web',
                 androidStandaloneAppClientId: GOOGLE_STANDALONE_ANDROID_ID,
                 iosStandaloneAppClientId: GOOGLE_STANDALONE_IOS_ID,
                 webClientId: WEB_CLIENT_ID,
