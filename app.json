@@ -33,7 +33,7 @@
    "splash": {
     "backgroundColor": "#FEF9B0",
     "resizeMode": "cover",
-    "image": "../src/assets/backgrounds/splash.png"
+    "image": "./src/assets/backgrounds/splash.png"
   }
   }
 }
