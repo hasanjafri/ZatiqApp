@@ -51,14 +51,15 @@ export const onSignIn = async (type) => {
                 behavior: 'web',
                 androidStandaloneAppClientId: GOOGLE_STANDALONE_ANDROID_ID,
                 iosStandaloneAppClientId: GOOGLE_STANDALONE_IOS_ID,
-                webClientId: WEB_CLIENT_ID,
+                androidClientId: GOOGLE_ANDROID_ID,
+                iosClientId: GOOGLE_IOS_ID,
                 scopes: ['profile', 'email']
             };
         }
         
         try {
             const result = await Expo.Google.logInAsync(options);
-            console.warn(response);
+            console.log(result);
             if (result.type === 'success') {
                 parsedResult = {
                     accessToken: result.accessToken,
