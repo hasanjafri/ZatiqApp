@@ -15,6 +15,7 @@ const GOOGLE_ANDROID_ID = '1013702018515-5t8kr0mpf3k1vsbr3am9klm7qorqu8rc.apps.g
 
 const GOOGLE_STANDALONE_ANDROID_ID = '1013702018515-8u9a0lf5ktnh33lhpru0rve7vkqe215r.apps.googleusercontent.com';
 const GOOGLE_STANDALONE_IOS_ID = '1013702018515-lko3bqq6j30tph7l0pjvvte7u7g8acen.apps.googleusercontent.com';
+const WEB_CLIENT_ID = '013702018515-g3mjgf56essrqkp573bjjpfau5a62405.apps.googleusercontent.com';
 
 export const onSignIn = async (type) => {
     let parsedResult;
@@ -43,14 +44,15 @@ export const onSignIn = async (type) => {
             options = {
                 androidClientId: GOOGLE_ANDROID_ID,
                 iosClientId: GOOGLE_IOS_ID,
-                scopes: ['profile', 'email'],
+                scopes: ['profile', 'email']
             };
         } else {
             options = {
                 behavior: 'system',
                 androidStandaloneAppClientId: GOOGLE_STANDALONE_ANDROID_ID,
                 iosStandaloneAppClientId: GOOGLE_STANDALONE_IOS_ID,
-                scopes: ['profile', 'email'],
+                webClientId: WEB_CLIENT_ID,
+                scopes: ['profile', 'email']
             };
         }
         
