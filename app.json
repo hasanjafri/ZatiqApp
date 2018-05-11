@@ -6,7 +6,12 @@
    "slug": "zatiq-app",
    "sdkVersion": "25.0.0",
    "ios": {
-     "bundleIdentifier": "com.zatiq.zatiqapp"
+     "bundleIdentifier": "com.zatiq.zatiqapp",
+     "config": {
+      "googleSignIn": {
+        "reservedClientId": "com.googleusercontent.apps.1013702018515-lko3bqq6j30tph7l0pjvvte7u7g8acen"
+      }
+    }
    },
    "android": {
      "package": "com.zatiq.zatiqapp",
