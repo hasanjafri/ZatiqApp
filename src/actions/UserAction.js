@@ -7,9 +7,14 @@ import appState from '../appState';
 
 const state = appState.getInstance();
 
+const env = 'prod'; // prod
+
 const FB_APP_ID = '1277509129016312';
 const GOOGLE_IOS_ID = '1013702018515-ajvv6fh1d6usglha3qpgoeicac4o0dt3.apps.googleusercontent.com';
 const GOOGLE_ANDROID_ID = '1013702018515-5t8kr0mpf3k1vsbr3am9klm7qorqu8rc.apps.googleusercontent.com';
+
+const GOOGLE_STANDALONE_ANDROID_ID = '1013702018515-8u9a0lf5ktnh33lhpru0rve7vkqe215r.apps.googleusercontent.com';
+const GOOGLE_STANDALONE_IOS_ID = '1013702018515-lko3bqq6j30tph7l0pjvvte7u7g8acen.apps.googleusercontent.com';
 
 export const onSignIn = async (type) => {
     let parsedResult;
@@ -33,12 +38,24 @@ export const onSignIn = async (type) => {
         }
     } else if (type === 'google') {
         // Google login
-        try {
-            const result = await Expo.Google.logInAsync({
+        var options = {};
+        if (env === 'dev') {
+            options = {
                 androidClientId: GOOGLE_ANDROID_ID,
                 iosClientId: GOOGLE_IOS_ID,
                 scopes: ['profile', 'email'],
-            });
+            };
+        } else {
+            options = {
+                behavior: 'system',
+                androidStandaloneAppClientId: GOOGLE_STANDALONE_ANDROID_ID,
+                iosStandaloneAppClientId: GOOGLE_STANDALONE_IOS_ID,
+                scopes: ['profile', 'email'],
+            };
+        }
+        
+        try {
+            const result = await Expo.Google.logInAsync(options);
 
             if (result.type === 'success') {
                 parsedResult = {

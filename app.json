@@ -9,7 +9,13 @@
      "bundleIdentifier": "com.zatiq.zatiqapp"
    },
    "android": {
-     "package": "com.zatiq.zatiqapp"
+     "package": "com.zatiq.zatiqapp",
+     "config": {
+      "googleSignIn": {
+        "apiKey": "AIzaSyDYZyF8qQa9VAfAhDkfyCbyF3ndSALBOVc",
+        "certificateHash": "C855E76CEFBFA89DEBFEEDFBEC22DB5189D1EF88"
+      }
+     }
    }
   }
 }
