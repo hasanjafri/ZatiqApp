@@ -21,7 +21,7 @@
    "android": {
      "package": "com.zatiq.zatiqapp",
      "versionCode": 1,
-     "icon": "./src/assets/logos/zatiq_logo_na.png",
+     "icon": "./src/assets/logos/zatiq_logo.png",
      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"],
      "config": {
       "googleSignIn": {
@@ -31,7 +31,7 @@
      }
    },
    "splash": {
-    "backgroundColor": "#FEF9B0",
+    "backgroundColor": "#38cdff",
     "resizeMode": "cover",
     "image": "./src/assets/backgrounds/splash.png"
   }
