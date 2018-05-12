@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, KeyboardAvoidingView, ScrollView, Image } from 'react-native';
 import { Icon, Button, ListItem } from 'react-native-elements';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 
 import Loader from '../../components/Loader';
 import AddFoodItemOverlay from '../../components/addFoodItem/AddFoodItemOverlay';
@@ -50,29 +50,34 @@ class BusinessUploadScreen extends React.Component {
     }
 
     uploadMenu = async (type) => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            // allowsEditing: true,
-            aspect: [4, 3],
-            base64: true,
-            quality: 0.5
-        });
-
-        if (!result.cancelled) {
-            this.setState({ isLoading: true });
-            const newImages = this.state[type];
-            const image = {
-                image_aspect_ratio: (result.width / result.height).toString(),
-                base64: result.base64
-            };
-            const res = await BusinessInstance.uploadPicture({ type, image });
-            if (res.success) {
-                newImages.push({ image, image_id: res.data.image_id });
-                this.props.navigation.setParams({ hasValue: true });
-                this.setState({ [type]: newImages, isLoading: false });
-            } else {
-                this.setState({ isLoading: false });
-                alert(res.message);
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status === 'granted') {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                // allowsEditing: true,
+                aspect: [4, 3],
+                base64: true,
+                quality: 0.5
+            });
+    
+            if (!result.cancelled) {
+                this.setState({ isLoading: true });
+                const newImages = this.state[type];
+                const image = {
+                    image_aspect_ratio: (result.width / result.height).toString(),
+                    base64: result.base64
+                };
+                const res = await BusinessInstance.uploadPicture({ type, image });
+                if (res.success) {
+                    newImages.push({ image, image_id: res.data.image_id });
+                    this.props.navigation.setParams({ hasValue: true });
+                    this.setState({ [type]: newImages, isLoading: false });
+                } else {
+                    this.setState({ isLoading: false });
+                    alert(res.message);
+                }
             }
+        } else {
+            throw new Error('Camera permission not granted');
         }
     }
     saveFoodItem = ({ form, type }) => {

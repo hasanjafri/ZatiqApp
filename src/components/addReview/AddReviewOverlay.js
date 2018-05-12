@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, ScrollView, Dimensions, Image } from 'react-native';
 import { Overlay, Input, SearchBar, Icon, Button, Avatar, ListItem } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 
 import Loader from '../../components/Loader';
 import { foodItemsByRestaurantId, submitReview } from '../../actions/UserAction';
@@ -46,18 +46,23 @@ class AddReviewOverlay extends React.Component {
         }
     }
     uploadPicture = async (type) => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            // allowsEditing: true,
-            aspect: [4, 3],
-            base64: true,
-            quality: 0.5
-        });
-
-        if (!result.cancelled) {
-            this.setState({ image: {
-                image_aspect_ratio: (result.width / result.height).toString(),
-                base64: result.base64
-            }});
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status === 'granted') {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                // allowsEditing: true,
+                aspect: [4, 3],
+                base64: true,
+                quality: 0.5
+            });
+    
+            if (!result.cancelled) {
+                this.setState({ image: {
+                    image_aspect_ratio: (result.width / result.height).toString(),
+                    base64: result.base64
+                }});
+            }
+        } else {
+            throw new Error('Camera permission not granted');
         }
     }
     async submitReview() {

@@ -17,25 +17,6 @@ export default class AppState {
     getSelectedDrawerItem() {
         return this.selectedDrawerItem;
     }
-    async setAllowedCamera() {
-        try {
-            await AsyncStorage.setItem(keys.HAS_ALLOWED_CAMERA, JSON.stringify(true));
-        } catch(err) {
-            console.log(err);
-            return false;
-        };
-        return true;
-    }
-    async getAllowedCamera() {
-        let hasAllowedCamera;
-        try {
-            hasAllowedCamera = await AsyncStorage.getItem(keys.HAS_ALLOWED_CAMERA);
-            hasAllowedCamera = JSON.parse(hasAllowedCamera) || false; 
-        } catch(err) {
-            console.log(err);
-        }
-        return hasAllowedCamera;
-    }
     async hasSeenPreferences() {
         let hasSeen;
         try {

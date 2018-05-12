@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Button, Input, Avatar, Icon } from 'react-native-elements';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 
 import colors from '../../../styles/colors.style';
 import styles from '../../../styles/screens/business/Pages.style';
@@ -40,20 +40,25 @@ class BusinessInfoPage extends React.Component {
         this.setState({ [stateName]: text });
     }
     uploadPicture = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            // allowsEditing: true,
-            aspect: [4, 3],
-            base64: true,
-            quality: 0.5
-        });
-
-        if (!result.cancelled) {
-            const picture = {
-                base64: result.base64,
-                image_aspect_ratio: (result.width / result.height).toString()
-            };
-            BusinessInstance.setRegisterForm({ image: picture });
-            this.setState({ image: picture });
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status === 'granted') {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                // allowsEditing: true,
+                aspect: [4, 3],
+                base64: true,
+                quality: 0.5
+            });
+    
+            if (!result.cancelled) {
+                const picture = {
+                    base64: result.base64,
+                    image_aspect_ratio: (result.width / result.height).toString()
+                };
+                BusinessInstance.setRegisterForm({ image: picture });
+                this.setState({ image: picture });
+            }
+        } else {
+            throw new Error('Camera permission not granted');
         }
     }
     render() {

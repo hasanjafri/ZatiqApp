@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView, Dimensions } from 'react-native';
 import { Overlay, Input, SearchBar, Icon, Button, ButtonGroup, Avatar, ListItem } from 'react-native-elements';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 
 import lists from './foodItems';
 import textStyles from '../../styles/text.style';
@@ -144,18 +144,22 @@ class AddFoodItemOverlay extends React.Component {
         }
     }
     uploadPicture = async (type) => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            // allowsEditing: true,
-            aspect: [4, 3],
-            base64: true,
-            quality: 0.5
-        });
-
-        if (!result.cancelled) {
-            this.setState({ image: {
-                image_aspect_ratio: (result.width / result.height).toString(),
-                base64: result.base64
-            }});
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status === 'granted') {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                // allowsEditing: true,
+                aspect: [4, 3],
+                base64: true,
+                quality: 0.5
+            });
+            if (!result.cancelled) {
+                this.setState({ image: {
+                    image_aspect_ratio: (result.width / result.height).toString(),
+                    base64: result.base64
+                }});
+            }
+        } else {
+            throw new Error('Camera permission not granted');
         }
     }
     onSubmitEditing = type => {
