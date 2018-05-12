@@ -22,7 +22,7 @@
      "package": "com.zatiq.zatiqapp",
      "versionCode": 1,
      "icon": "./src/assets/logos/zatiq_logo.png",
-     "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"],
+     "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "READ_INTERNAL_STORAGE"],
      "config": {
       "googleSignIn": {
         "apiKey": "AIzaSyDYZyF8qQa9VAfAhDkfyCbyF3ndSALBOVc",
