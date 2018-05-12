@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Button, SocialIcon } from 'react-native-elements';
-import { Video } from 'expo';
+import { Video, Permissions } from 'expo';
 import { NavigationActions } from 'react-navigation'
 import  Icon  from 'react-native-vector-icons';
 
@@ -11,9 +11,19 @@ import { onSignIn } from '../../src/actions/UserAction';
 // Custom imports
 import styles from '../styles/screens/LoginScreen.style';
 
+import appState from '../appState';
 class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
+    }
+    async componentDidMount() {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status === 'granted') {
+            const state = appState.getInstance();
+            await state.setAllowedCamera();
+        } else {
+            throw new Error('Camera permission not granted');
+        }
     }
     onSignIn = async (type) => {
         const result = await onSignIn(type);
