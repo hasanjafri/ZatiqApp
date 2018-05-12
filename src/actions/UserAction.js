@@ -59,7 +59,6 @@ export const onSignIn = async (type) => {
         
         try {
             const result = await Expo.Google.logInAsync(options);
-            console.log(result);
             if (result.type === 'success') {
                 parsedResult = {
                     accessToken: result.accessToken,
