@@ -20,9 +20,9 @@ class PictureScreen extends React.Component {
         const { type } = this.state;
         return (
             <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
-                { type === 'Picture' ?
-                    <Slider noPaginate type={'Picture'} navigateTo={this.navigateTo} data={this.state.data} /> :
-                    <Slider noPaginate type={'Food'} navigateTo={this.navigateTo} data={this.state.data} />
+                { type === 'Food' ?
+                    <Slider noPaginate type={'Food'} navigateTo={this.navigateTo} data={this.state.data} /> :
+                    <Slider noPaginate type={'Picture'} navigateTo={this.navigateTo} data={this.state.data} />
                 }
             </ImageBackground>
         );

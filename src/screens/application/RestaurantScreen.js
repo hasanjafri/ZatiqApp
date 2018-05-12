@@ -38,9 +38,9 @@ class RestaurantScreen extends React.Component {
             restaurantPictures: data ? [{image: data.restaurant_info.image}] : null 
         };
         this.ITEMS = [
-            { text: 'Features', type: 'features', source: require('../../assets/backgrounds/Features-min.png') },
-            { text: 'Menu', type: 'menu', source: require('../../assets/backgrounds/menu-min.png') },
-            { text: 'Food', type: 'food', source: require('../../assets/backgrounds/Pictures-min.png') }
+            { text: 'Features', type: 'Features', source: require('../../assets/backgrounds/Features-min.png') },
+            { text: 'Menu', type: 'Menu', source: require('../../assets/backgrounds/menu-min.png') },
+            { text: 'Food', type: 'Food', source: require('../../assets/backgrounds/Pictures-min.png') }
         ];
     }
     async componentDidMount() {
@@ -183,13 +183,13 @@ class GridItem extends React.Component {
         isLoading: false
     }
     onGridPress = async type => {
-        if (type === 'features') {
+        if (type === 'Features') {
             this.props.openTagsOverlay();
         } else {
             this.setState({ isLoading: true });
             let result, data;
             const { restaurant_id } = this.props;
-            if (type === 'menu') {
+            if (type === 'Menu') {
                 result = await menuPicturesByRestaurantId(restaurant_id);
                 data = result.data.response;
             } else {
