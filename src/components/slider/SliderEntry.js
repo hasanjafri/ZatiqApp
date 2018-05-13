@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Linking, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import moment from 'moment';
@@ -16,6 +16,7 @@ const momentDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'fri
 function capitalizeWords(str) {
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
+const { height: viewportHeight } = Dimensions.get('window');
 
 export default class SliderEntry extends Component {
     static propTypes = {
@@ -36,7 +37,12 @@ export default class SliderEntry extends Component {
         const isFull = type === 'FullPicture';
         return (
             isFull ?
-                <Image source={{ uri: displayImage }} style={[styles.image, {borderWidth: 1, borderColor: 'white'}]} /> :
+                <Image source={{ uri: displayImage }} style={{
+                    width: '100%',
+                    height: (40 * viewportHeight) / 100,
+                    resizeMode: 'cover',
+                    borderWidth: 1,
+                    borderColor: 'white'}} /> :
                 <ParallaxImage source={{ uri: displayImage }}
                     containerStyle={styles.imageContainer}
                     style={styles.image}

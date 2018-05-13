@@ -65,9 +65,9 @@ class FeelingScreen extends React.Component {
                         <Category type={'special'}
                             navigate={navigate}
                             category={'Surprise Me'}
-                            style={[styles.equalWitdhView, { paddingRight: 5 }]}
+                            style={[styles.equalWitdhView, { marginRight: 5 }]}
                             src={require('../../assets/backgrounds/6.jpg')} />
-                        <View style={[styles.equalWitdhView, { paddingLeft: 5 }]}>
+                        <View style={[styles.equalWitdhView, { marginLeft: 5 }]}>
                             <View style={styles.equalHeightContainer}>
                                <Category type={'special'}
                                     navigate={navigate}
