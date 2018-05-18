@@ -52,7 +52,7 @@ class FindRestaurant extends React.Component {
                 this.state.restaurants.map((restaurant, i) => {
                     return (
                         <ListItem key={i}
-                            leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: 'data:image/png;base64,' + restaurant.image.base64}}/></View>}
+                            leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: restaurant.image.base64}}/></View>}
                             onPress={() => {
                                 state.setSelectedDrawerItem('Home');
                                 this.props.navigation.navigate('Restaurant', {

@@ -84,7 +84,7 @@ class AddReviewOverlay extends React.Component {
         }
     }
     _renderReview() {
-        const image = this.state.image ? `data:image/png;base64,${this.state.image.base64}` : null;
+        const image = this.state.image ? this.state.image.base64 : null;
         return (
             <ScrollView style={styles.wrapper}>
                 <Text style={[textStyles.tiny, styles.headerText]}>Picture (Optional)</Text>
@@ -146,7 +146,7 @@ class AddReviewOverlay extends React.Component {
                 { this.state.foodItems.map((item, i) => {
                     return (
                         <ListItem key={i}
-                            leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: 'data:image/png;base64,' + item.image.base64}}/></View>}
+                            leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: item.image.base64}}/></View>}
                             onPress={() => this.goNextStep(item.food_item_id)}
                             subtitle={item.overview}
                             title={item.item_name} />

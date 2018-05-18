@@ -33,7 +33,7 @@ export default class SliderEntry extends Component {
         if (!base64) {
             return <Image style={styles.imagePlaceholder} />
         }
-        const displayImage = 'data:image/png;base64,' + base64;
+        const displayImage = base64;
         const isFull = type === 'FullPicture';
         return (
             isFull ?

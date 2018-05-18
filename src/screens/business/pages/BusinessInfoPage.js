@@ -62,7 +62,7 @@ class BusinessInfoPage extends React.Component {
         }
     }
     render() {
-        const imageUrl = this.state.image.base64 ? 'data:image/png;base64,' + this.state.image.base64 : null;
+        const imageUrl = this.state.image.base64 ? this.state.image.base64 : null;
         return (
             <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={100} style={{ flex: 1 }}>
                 <ScrollView style={styles.wrapper}>

@@ -54,7 +54,7 @@ class FindFood extends React.Component {
         }
     }
     _renderFoodItem(item) {
-        const image = `data:image/png;base64,${item.image.base64}`
+        const image = item.image.base64;
         return (
             <TouchableOpacity activeOpacity={0.5} onPress={() => {
                     state.setSelectedDrawerItem('Home');

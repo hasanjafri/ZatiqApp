@@ -56,7 +56,7 @@ class ReviewsScreen extends React.Component {
                     <View style={styles.reviewsContainer}>
                         { this.state.reviews.map((review, i) =>
                             <View key={i} style={styles.reviewRow}>
-                                <Image style={{ height: 100, width: '30%', borderRadius: 20 }} resizeMode={'cover'} source={{ uri: `data:image/png;base64,${review.image.base64}`}} />
+                                <Image style={{ height: 100, width: '30%', borderRadius: 20 }} resizeMode={'cover'} source={{ uri: review.image.base64 }} />
 
                                 <View style={{ width: '70%', paddingLeft: 10 }}>
                                     <Text style={styles.reviewTitle}>{review.name}</Text>

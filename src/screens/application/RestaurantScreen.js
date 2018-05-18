@@ -115,7 +115,7 @@ class RestaurantScreen extends React.Component {
             restaurant_info: { name, number, hours, address, image }
         }} = this.state;
         const isOpen = this.isOpen(hours);
-        const businessImage = 'data:image/png;base64,' + image.base64;
+        const businessImage = image.base64;
         return (
             <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <ScrollView style={styles.scrollViewContainer}>
