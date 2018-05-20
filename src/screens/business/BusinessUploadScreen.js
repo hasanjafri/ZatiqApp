@@ -123,7 +123,6 @@ class BusinessUploadScreen extends React.Component {
 
     }
     render() {
-        console.log('render');
         const { menuPictures, restaurantPictures } = this.state;
         const menuItems = menuPictures.map((item, i) => {
             let image;
