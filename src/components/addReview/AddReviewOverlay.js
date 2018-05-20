@@ -84,7 +84,14 @@ class AddReviewOverlay extends React.Component {
         }
     }
     _renderReview() {
-        const image = this.state.image ? this.state.image.base64 : null;
+        let image;
+        if (this.state.image) {
+            if (this.state.image.base64.includes('https://')) {
+                image = this.state.image.base64;
+            } else {
+                image = `data:image/png;base64,${this.state.image.base64}`;
+            }
+        }
         return (
             <ScrollView style={styles.wrapper}>
                 <Text style={[textStyles.tiny, styles.headerText]}>Picture (Optional)</Text>

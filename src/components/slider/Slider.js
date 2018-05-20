@@ -63,6 +63,7 @@ class Slider extends Component {
         );
     }
     render () {
+        console.log('slider render');
         return (
             <ScrollView style={styles.scrollview}
                 scrollEventThrottle={200}

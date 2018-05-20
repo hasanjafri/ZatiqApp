@@ -44,11 +44,9 @@ class BusinessUploadScreen extends React.Component {
             }
         }
     }
-
     showAddFoodOverlay() {
         this.setState({ showAddFoodOverlay: true });
     }
-
     uploadMenu = async (type) => {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status === 'granted') {
@@ -125,9 +123,17 @@ class BusinessUploadScreen extends React.Component {
 
     }
     render() {
+        console.log('render');
         const { menuPictures, restaurantPictures } = this.state;
         const menuItems = menuPictures.map((item, i) => {
-            const image = item.image.base64;
+            let image;
+            if (item.image) {
+                if (item.image.base64.includes('https://')) {
+                    image = item.image.base64;
+                } else {
+                    image = `data:image/png;base64,${item.image.base64}`;
+                }
+            }
             return (
                 <ListItem key={i}
                     leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: image}}/></View>}
@@ -136,7 +142,14 @@ class BusinessUploadScreen extends React.Component {
             )
         });
         const pictureItems = restaurantPictures.map((item, i) => {
-            const image = item.image.base64;
+            let image;
+            if (item.image) {
+                if (item.image.base64.includes('https://')) {
+                    image = item.image.base64;
+                } else {
+                    image = `data:image/png;base64,${item.image.base64}`;
+                }
+            }
             return (
                 <ListItem key={i}
                     leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: image}}/></View>}
@@ -145,7 +158,14 @@ class BusinessUploadScreen extends React.Component {
             )
         });
         const foodItems = this.state.foodItems.map((item, i) => {
-            const image = item.image.base64;
+            let image;
+            if (item.image) {
+                if (item.image.base64.includes('https://')) {
+                    image = item.image.base64;
+                } else {
+                    image = `data:image/png;base64,${item.image.base64}`;
+                }
+            }
             return (
                 <ListItem key={i}
                     leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: image}}/></View>}

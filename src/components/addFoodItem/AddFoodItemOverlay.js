@@ -243,7 +243,14 @@ class AddFoodItemOverlay extends React.Component {
         if (!this.props.showOverlay) {
             return null;
         }
-        const image = this.state.image ? this.state.image.base64 : null;
+        let image;
+        if (this.state.image) {
+            if (this.state.image.base64.includes('https://')) {
+                image = this.state.image.base64;
+            } else {
+                image = `data:image/png;base64,${this.state.image.base64}`;
+            }
+        }
         const tagItems = lists.tags.map((tag, i) => {
             const { text, value } = tag;
             const isActive = this.tags[value];
