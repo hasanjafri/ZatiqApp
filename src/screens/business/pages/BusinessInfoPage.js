@@ -21,10 +21,7 @@ class BusinessInfoPage extends React.Component {
             name: '',
             number: '',
             website: '',
-            image: {
-                base64: null,
-                image_aspect_ratio: null
-            }
+            image: null
         };
         this.user = state.user;
     }
@@ -70,6 +67,7 @@ class BusinessInfoPage extends React.Component {
                 imageUrl = `data:image/png;base64,${this.state.image.base64}`;
             }
         }
+        const imageUrl = this.state.image.base64 ? this.state.image.base64 : null;
         return (
             <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={100} style={{ flex: 1 }}>
                 <ScrollView style={styles.wrapper}>
