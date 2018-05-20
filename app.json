@@ -2,14 +2,14 @@
   "expo": {
    "name": "Zatiq",
    "icon": "./src/assets/logos/zatiq_logo.png",
-   "version": "1.0.1",
+   "version": "1.0.2",
    "scheme": "Zatiq",
    "slug": "zatiq-app",
    "sdkVersion": "27.0.0",
    "orientation": "portrait",
    "ios": {
      "supportsTablet": false,
-     "buildNumber": "1.0.2",
+     "buildNumber": "1.0.3",
      "bundleIdentifier": "com.zatiq.zatiqapp",
      "icon": "./src/assets/logos/zatiq_logo_na.png",
      "config": {
