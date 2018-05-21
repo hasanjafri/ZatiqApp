@@ -2,6 +2,7 @@ import React from 'react';
 import { ImageBackground } from 'react-native';
 import styles from '../styles/screens/PictureScreen.style';
 import Slider from '../components/slider/Slider';
+import TagsOverlay from '../components/TagsOverlay';
 
 class PictureScreen extends React.Component {
     constructor(props) {
@@ -9,7 +10,9 @@ class PictureScreen extends React.Component {
         const params = props.navigation.state.params;
         this.state = {
             data: params.data,
-            type: params.type
+            type: params.type,
+            currentData: null,
+            showTagsOverlay: false
         }
         this.navigateTo = this.navigateTo.bind(this);
     }
@@ -19,12 +22,17 @@ class PictureScreen extends React.Component {
     render () {
         const { type } = this.state;
         return (
+            <React.Fragment>
             <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
                 { type === 'Food' ?
-                    <Slider noPaginate type={'Food'} navigateTo={this.navigateTo} data={this.state.data} /> :
+                    <Slider noPaginate showTagsOverlay={data => this.setState({ showTagsOverlay: true, currentData: data })} type={'Food'} navigateTo={this.navigateTo} data={this.state.data} /> :
                     <Slider noPaginate type={'Picture'} navigateTo={this.navigateTo} data={this.state.data} />
                 }
             </ImageBackground>
+            <TagsOverlay showOverlay={this.state.showTagsOverlay}
+                data={this.state.currentData}
+                onClose={() => this.setState({ showTagsOverlay: false })} />
+            </React.Fragment>
         );
     }
 };

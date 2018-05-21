@@ -26,7 +26,7 @@ class FindRestaurant extends React.Component {
         } else {
             this.setState({ isSearching: false, restaurants: [] });
             alert(result.message);
-        }loaded = true;
+        }
         if (result.success) {
             this.setState({ isSearching: false, restaurants: result.data });
         } else {

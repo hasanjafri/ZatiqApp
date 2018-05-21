@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { Button, Input, Icon } from 'react-native-elements';
+import { Button, Input, Icon, CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
 
 import colors from '../../../styles/colors.style';
@@ -56,6 +56,7 @@ class BusinessHoursPage extends React.Component {
         this.setState({ date: this.state.date });
     }
     _dateRenderer = day => {
+        const dayToLower = day.toLowerCase();
         const datePicker = type => {
             return (
                 <DatePicker style={{width: '90%'}}
@@ -75,7 +76,7 @@ class BusinessHoursPage extends React.Component {
                             marginLeft: 0 }}
                         type='font-awesome' color={colors.blue} name='clock-o' />
                     }
-                    date={this.state.date[type][day.toLowerCase()]}
+                    date={this.state.date[type][dayToLower]}
                     mode="time"
                     format="HH:mm"
                     confirmBtnText="Confirm"
@@ -84,19 +85,34 @@ class BusinessHoursPage extends React.Component {
                     onDateChange={(time) => this.onDateChange(type, day, time)} />
             );
         };
+        const isClosed = this.state.date['start'][dayToLower] === 'closed' || this.state.date['end'][dayToLower] === 'closed';
         return (
             <View style={{ marginBottom: 20, marginTop: 10 }} key={day}>
                 <Text style={[textStyles.small, { color: colors.gray }]}>{day}</Text>
-                <View style={[styles.equalWidthContainer, { marginBottom: day === 'Sunday' ? 40 : 0 }]}>
-                    <View style={[styles.equalWidthView, { marginRight: 5 }]}>
-                        <Text style={[textStyles.tiny, styles.headerText, { color: colors.black }]}>From</Text>
-                        { datePicker('start') }
+                <CheckBox center title='Closed' checked={isClosed} onPress={() => {
+                    const { date } = this.state;
+                    if (isClosed) {
+                        date['start'][dayToLower] = '9:00';
+                        date['end'][dayToLower] = '20:00';
+                    } else {
+                        date['start'][dayToLower] = 'closed';
+                        date['end'][dayToLower] = 'closed';
+                    }
+                    BusinessInstance.setRegisterForm({ date });
+                    this.setState({ date });
+                }} />
+                { isClosed ? null :
+                    <View style={[styles.equalWidthContainer, { marginBottom: day === 'Sunday' ? 40 : 0 }]}>
+                        <View style={[styles.equalWidthView, { marginRight: 5 }]}>
+                            <Text style={[textStyles.tiny, styles.headerText, { color: colors.black }]}>From</Text>
+                            { datePicker('start') }
+                        </View>
+                        <View style={[styles.equalWidthView, { marginLeft: 5 }]}>
+                            <Text style={[textStyles.tiny, styles.headerText, { color: colors.black }]}>To</Text>
+                            { datePicker('end') }
+                        </View>
                     </View>
-                    <View style={[styles.equalWidthView, { marginLeft: 5 }]}>
-                        <Text style={[textStyles.tiny, styles.headerText, { color: colors.black }]}>To</Text>
-                        { datePicker('end') }
-                    </View>
-                </View>
+                }
             </View>
         );
     }

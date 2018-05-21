@@ -48,7 +48,6 @@ class TagsOverlay extends React.Component {
                             { this._renderTagsSection('Seafood','seafood') }
                             { this._renderTagsSection('Meat', 'meat') }
                         </React.Fragment>
-                        
                     }
                 </ScrollView>
             </Overlay>

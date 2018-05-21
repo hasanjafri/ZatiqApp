@@ -40,9 +40,7 @@ export default class SliderEntry extends Component {
                 <Image source={{ uri: displayImage }} style={{
                     width: '100%',
                     height: (40 * viewportHeight) / 100,
-                    resizeMode: 'cover',
-                    borderWidth: 1,
-                    borderColor: 'white'}} /> :
+                    resizeMode: 'cover' }} /> :
                 <ParallaxImage source={{ uri: displayImage }}
                     containerStyle={styles.imageContainer}
                     style={styles.image}
@@ -58,9 +56,15 @@ export default class SliderEntry extends Component {
     isOpen(hours) {
         const now = moment();
         const currentDay = momentDays[now.day()];
-        const startDate = moment(hours.start[currentDay], 'HH:mm');
-        const endDate = moment(hours.end[currentDay], 'HH:mm');
-        return now.isBetween(startDate, endDate);
+        const startHour = hours.start[currentDay];
+        const endHour = hours.end[currentDay];
+        if (startHour === 'closed' || endHour === 'closed') {
+            return false;
+        } else {
+            const startDate = moment(startHour, 'HH:mm');
+            const endDate = moment(endHour, 'HH:mm');
+            return now.isBetween(startDate, endDate);
+        }
     }
     getTags(tags) {
         const tagList = [];
@@ -70,13 +74,21 @@ export default class SliderEntry extends Component {
                 tagList.push(capitalizeWords(formattedKey));
             }
         });
-        const tagsDisplay = tagList.map((tag, i) => <Text style={[textStyles.miniItalic, styles.tag]} key={i}>{tag}</Text>);
-        tagsDisplay.push(
-            <TouchableOpacity activeOpacity={1} key={-1} onPress={() => this.props.showTagsOverlay(this.props.data)}>
-                <Text key={-1} style={[textStyles.miniItalic, { color: 'black', fontFamily: 'nunito-bold', lineHeight: 20, paddingLeft: 10 }]}>View All</Text>
+        const minimizedView = tagList.length <= 4;
+        const filteredTag = minimizedView ? tagList : tagList.slice(0, 4);
+        const tagsDisplay = filteredTag.map((tag, i) => <Text style={[textStyles.miniItalic, styles.tag]} key={i}>{tag}</Text>);
+        if (!minimizedView) {
+            tagsDisplay.push(
+                <Text style={[textStyles.miniItalic, styles.tag]} key={-1}>...</Text>
+            );
+        }
+        return (
+            minimizedView ? 
+            <View style={styles.tagContainer}>{tagsDisplay}</View>:
+            <TouchableOpacity style={styles.tagContainer} activeOpacity={1} onPress={() => this.props.showTagsOverlay(this.props.data)}>
+                {tagsDisplay}
             </TouchableOpacity>
         );
-        return tagsDisplay;
     }
     _renderSuggestionEntry(type) {
         const { data: {
@@ -110,19 +122,19 @@ export default class SliderEntry extends Component {
                         { calories ?    
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={styles.leftPart}>
-                                    <Text style={textStyles.subtitle} numberOfLines={2} >{ overview }</Text>
+                                    <Text style={textStyles.subtitle} numberOfLines={3} >{ overview }</Text>
                                 </View>
                                 <View style={styles.rightPart}>
                                     <Text style={[textStyles.subtitle, { color: colors.gray, textAlign: 'center' }]} >{ calories } Calories</Text>
                                 </View>
                             </View> :
-                            <Text style={textStyles.subtitle} numberOfLines={2} >{ overview }</Text>
+                            <Text style={textStyles.subtitle} numberOfLines={3} >{ overview }</Text>
                         }                        
-                        <View style={styles.tagContainer}>{this.getTags(tags)}</View>
+                        {this.getTags(tags)}
                         {
                             type === 'Suggestion' ?
                                 <React.Fragment>
-                                    <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                                         <View style={[styles.leftPart, { paddingVertical: 10 }]}>
                                             <Text style={[textStyles.title,  { fontSize: 16 }]} numberOfLines={2} >{ name }</Text>
                                         </View>
@@ -132,12 +144,10 @@ export default class SliderEntry extends Component {
                                     </View>
                                     <View style={styles.buttonBar}>
                                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={() => this.onCall(number)}>
-                                            <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'call'} color={'white'} />
-                                            <Text style={[textStyles.small, styles.buttonText]}>Contact Restaurant</Text>
+                                            <Text style={[textStyles.smallBold, styles.buttonText]}>CONTACT</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => this.props.navigateTo('Restaurant', this.props.data)}>
-                                            <Icon containerStyle={{ paddingLeft: 20, justifyContent: 'center' }} name={'import-contacts'} color={'white'} />
-                                            <Text style={[textStyles.small, styles.buttonText]}>View Restaurant</Text>
+                                            <Text style={[textStyles.smallBold, styles.buttonText]}>RESTAURANT</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </React.Fragment> : null

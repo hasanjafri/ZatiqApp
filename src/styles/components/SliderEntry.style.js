@@ -78,25 +78,29 @@ export default StyleSheet.create({
     },
     open: {
         paddingHorizontal: 10,
-        height: 25,
-        marginTop: 10,
         marginLeft: 10,
-        lineHeight: 25,
-        color: 'white',
-        textAlign: 'center'
+        lineHeight: 20,
+        fontSize: 11,
+        color: 'white'
     },
     buttonBar: {
-        marginTop: 10
+        marginTop: 10,
+        flexDirection: 'row',
+        height: 40
     },
     buttonCall: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: colors.primary,
-        height: 40,
-        flexDirection: 'row'
     },
     buttonView: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: 'rgba(160, 160, 160, 1)',
-        height: 40,
-        flexDirection: 'row'
     },
     buttonText: {
         flex: 1,

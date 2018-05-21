@@ -60,22 +60,40 @@ class RestaurantScreen extends React.Component {
     isOpen(hours) {
         const now = moment();
         const currentDay = momentDays[now.day()];
-        const startDate = moment(hours.start[currentDay], 'HH:mm');
-        const endDate = moment(hours.end[currentDay], 'HH:mm');
-        return now.isBetween(startDate, endDate);
+        const startHour = hours.start[currentDay];
+        const endHour = hours.end[currentDay];
+        if (startHour === 'closed' || endHour === 'closed') {
+            return false;
+        } else {
+            const startDate = moment(startHour, 'HH:mm');
+            const endDate = moment(endHour, 'HH:mm');
+            return now.isBetween(startDate, endDate);
+        }
     }
     renderHours(hours) {
         return (
             displayDays.map(day => {
                 const currentDay = day.toLowerCase();
-                const startDate = moment(hours.start[currentDay], 'HH:mm').format('h:mm A');
-                const endDate = moment(hours.end[currentDay], 'HH:mm').format('h:mm A');
-                return (
-                    <Text key={day}
-                        style={[textStyles.small, {lineHeight: 25}]}>
-                        {startDate} - {endDate}
-                    </Text>
-                );
+                const startHour = hours.start[currentDay];
+                const endHour = hours.end[currentDay];
+                if (startHour === 'closed' || endHour === 'closed') {
+                    return (
+                        <View key={day} style={styles.centered}>
+                            <Text style={[styles.open, { backgroundColor: 'red', fontFamily: 'nunito-italic' }]}>
+                                Closed
+                            </Text>
+                        </View>
+                    );
+                } else {
+                    const startDate = moment(startHour, 'HH:mm').format('h:mm A');
+                    const endDate = moment(endHour, 'HH:mm').format('h:mm A');
+                    return (
+                        <Text key={day}
+                            style={[textStyles.small, {lineHeight: 25}]}>
+                            {startDate} - {endDate}
+                        </Text>
+                    );
+                }
             })
         );
     }

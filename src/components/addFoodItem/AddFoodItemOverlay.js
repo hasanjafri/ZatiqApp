@@ -34,84 +34,16 @@ class AddFoodItemOverlay extends React.Component {
         this.item_price = '';
         this.calories = '';
         this.meal_type = [0];
-        this.tags = {
-            is_beverage: false,
-            burger: false,
-            canadian : false,
-            caribbean : false,
-            cheap : false,
-            chinese : false,
-            dessert : false,
-            fast_food : false,
-            fine_food : false,
-            gluten_free : false,
-            greek : false,
-            halal : false,
-            has_nuts : false,
-            healthy : false,
-            indian : false,
-            italian : false,
-            japanese : false,
-            korean : false,
-            kosher : false,
-            lactose_free : false,
-            mexican : false,
-            middle_eastern : false,
-            pizza : false,
-            snack : false,
-            spicy : false,
-            sushi : false,
-            thai : false,
-            vegan : false,
-            vegetarian : false,
-            vietnamese : false
-        };
-        this.meat = {
-            bacon: false,
-            bear: false,
-            beef: false,
-            buffalo: false,
-            calf: false,
-            caribou: false,
-            chicken: false,
-            duck: false,
-            goat: false,
-            goose: false,
-            ham: false,
-            hen: false,
-            horse: false,
-            kangaroo: false,
-            lamb: false,
-            moose: false,
-            mutton: false,
-            opossum: false,
-            ostrich: false,
-            pork: false,
-            quail: false,
-            rabbit: false,
-            snake: false,
-            squirrel: false,
-            turkey: false,
-            turtle: false,
-            veal: false
-        };
-        this.seafood = {
-            alaska_pollack: false,
-            catfish: false,
-            clam: false,
-            cod: false,
-            crab: false,
-            eel: false,
-            lobster: false,
-            pangasius: false,
-            pike: false,
-            salmon: false,
-            shark: false,
-            shrimp: false,
-            tilapia: false,
-            trout: false,
-            tuna: false
-        };
+        this.tags = {}, this.meat = {}, this.seafood = {};
+        lists.tags.forEach(tag => {
+            this.tags[tag.value] = false;
+        });
+        lists.meat.forEach(meat => {
+            this.meat[meat.value] = false;
+        });
+        lists.seafood.forEach(seafood => {
+            this.seafood[seafood.value] = false;
+        });
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectedFoodItem) {
