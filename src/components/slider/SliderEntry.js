@@ -146,7 +146,12 @@ export default class SliderEntry extends Component {
                                         <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={() => this.onCall(number)}>
                                             <Text style={[textStyles.smallBold, styles.buttonText]}>CONTACT</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => this.props.navigateTo('Restaurant', this.props.data)}>
+                                        <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => {
+                                            if (this.props.data.hasNavigate) {
+                                                return this.props.data.navigateTo('Restaurant', this.props.data);
+                                            }
+                                            return this.props.navigateTo('Restaurant', this.props.data);
+                                        }}>
                                             <Text style={[textStyles.smallBold, styles.buttonText]}>RESTAURANT</Text>
                                         </TouchableOpacity>
                                     </View>

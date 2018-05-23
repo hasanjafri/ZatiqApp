@@ -59,9 +59,11 @@ class FindFood extends React.Component {
         return (
             <TouchableOpacity activeOpacity={0.5} onPress={() => {
                     this.props.changeDrawerItem('Home');
-                    this.props.navigation.navigate('Restaurant', {
-                        restaurant_id: item.restaurant_id,
-                        restaurant_info: item.restaurant_info
+                    item.hasNavigate = true;
+                    item.navigateTo = this.props.navigation.navigate;
+                    this.props.navigation.navigate('Picture', {
+                        type: 'Suggestion',
+                        data: [item]
                     })
                 }}>
                 <View style={styles.item}>

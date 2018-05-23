@@ -23,15 +23,19 @@ class PictureScreen extends React.Component {
         const { type } = this.state;
         return (
             <React.Fragment>
-            <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
-                { type === 'Food' ?
-                    <Slider noPaginate showTagsOverlay={data => this.setState({ showTagsOverlay: true, currentData: data })} type={'Food'} navigateTo={this.navigateTo} data={this.state.data} /> :
-                    <Slider noPaginate type={'Picture'} navigateTo={this.navigateTo} data={this.state.data} />
-                }
-            </ImageBackground>
-            <TagsOverlay showOverlay={this.state.showTagsOverlay}
-                data={this.state.currentData}
-                onClose={() => this.setState({ showTagsOverlay: false })} />
+                <ImageBackground style={styles.view} source={require('../assets/backgrounds/background.png')}>
+                    { type === 'Food' || type === 'Suggestion' ?
+                        <Slider noPaginate
+                            showTagsOverlay={data => this.setState({ showTagsOverlay: true, currentData: data })}
+                            type={type}
+                            navigateTo={this.navigateTo}
+                            data={this.state.data} /> :
+                        <Slider noPaginate type={'Picture'} navigateTo={this.navigateTo} data={this.state.data} />
+                    }
+                </ImageBackground>
+                <TagsOverlay showOverlay={this.state.showTagsOverlay}
+                    data={this.state.currentData}
+                    onClose={() => this.setState({ showTagsOverlay: false })} />
             </React.Fragment>
         );
     }

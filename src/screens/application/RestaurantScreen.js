@@ -35,7 +35,7 @@ class RestaurantScreen extends React.Component {
             showOverlay: false,
             showTagsOverlay: false,
             data,
-            restaurantPictures: data ? [{image: data.restaurant_info.image}] : null 
+            restaurantPictures: data ? [{image: data.restaurant_info.image}] : [] 
         };
         this.ITEMS = [
             { text: 'Features', type: 'Features', source: require('../../assets/backgrounds/Features-min.png') },
