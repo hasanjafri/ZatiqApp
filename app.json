@@ -9,7 +9,7 @@
    "orientation": "portrait",
    "ios": {
      "supportsTablet": false,
-     "buildNumber": "1.0.3",
+     "buildNumber": "1.0.4",
      "bundleIdentifier": "com.zatiq.zatiqapp",
      "icon": "./src/assets/logos/zatiq_logo_na.png",
      "config": {
