@@ -1,8 +1,10 @@
 import React from 'react';
 import { Font } from 'expo';
 import { AsyncStorage } from 'react-native';
+import { Provider } from 'react-redux';
 import keys from './src/libs/keys';
 import appState from './src/appState';
+import store from './src/redux/store';
 
 // Custom imports
 import createRootNavigator from './src/routes';
@@ -31,7 +33,11 @@ class App extends React.Component {
     render() {
         const Layout = createRootNavigator(this.state.user);
         return (
-            !this.state.isLoading ? <Layout /> : null
+            !this.state.isLoading ? 
+                <Provider store={store}>
+                    <Layout />
+                </Provider>
+                : null
         );
     }
 }

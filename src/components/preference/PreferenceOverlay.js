@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Text, View, ScrollView, Dimensions } from 'react-native';
 import { Overlay, Icon, Button, ListItem } from 'react-native-elements';
 
+import { closePreferenceOverlay } from '../../redux/actions/general.action';
 import textStyles from '../../styles/text.style';
 import styles from '../../styles/screens/business/Pages.style';
 import colors from '../../styles/colors.style';
@@ -49,16 +51,15 @@ class PreferenceOverlay extends React.Component {
         this.setState({ isLoading: true });
         if (result.success) {
             this.setState({ preferences: result.data.preferences, isLoading: false });
-            this.props.onClose()
+            this.props.closePreferenceOverlay()
             alert('Preferences Updated!');
         } else {
             alert(result.message);
         }
     }
     render() {
-        const width = Dimensions.get('window').width;
-        const height = Dimensions.get('window').height;
-
+        const { width, height } = Dimensions.get('window');
+        const { isPreferenceOverlayShown } = this.props;
         const preferencesList = preferences.map((preference, i) => {
             const { text, value } = preference;
             const isActive = this.state.preferences[value];
@@ -79,14 +80,14 @@ class PreferenceOverlay extends React.Component {
             );
         });
         return (
-            <Overlay isVisible={this.props.showOverlay}
+            <Overlay isVisible={isPreferenceOverlayShown}
                 width={width - 20}
                 height={height - 100}
                 containerStyle={{ padding: 0 }}
                 overlayStyle={styles.overlayContainer}>
                     <View style={styles.header}>
                         <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Tell us a bit about yourself</Text>
-                        <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
+                        <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={() => this.props.closePreferenceOverlay()} />
                     </View>
                     { !this.state.isLoading ?
                         <ScrollView style={styles.wrapper}>
@@ -105,4 +106,9 @@ class PreferenceOverlay extends React.Component {
         );
     }
 }
-export default PreferenceOverlay;
+
+const mapStateToProps = (state) => ({
+    isPreferenceOverlayShown: state.generalReducer.isPreferenceOverlayShown
+});
+
+export default connect(mapStateToProps, { closePreferenceOverlay })(PreferenceOverlay);

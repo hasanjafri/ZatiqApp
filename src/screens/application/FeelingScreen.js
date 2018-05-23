@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Text, View, ImageBackground, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
+import { showPreferenceOverlay } from '../../redux/actions/general.action';
 // Custom imports
-import {searchCuisine} from '../../actions/UserAction';
+import { searchCuisine } from '../../actions/UserAction';
 import AddReviewButton from '../../components/addReview/AddReviewButton';
 import styles from '../../styles/screens/application/FeelingScreen.style';
 import textStyles from '../../styles/text.style';
@@ -13,82 +15,6 @@ import Loader from '../../components/Loader';
 import PreferenceOverlay from '../../components/preference/PreferenceOverlay';
 
 import appState from '../../appState';
-
-class FeelingScreen extends React.Component {
-    constructor(props) {
-        super(props);
-        this.user = appState.getInstance().getUser();
-        this.state = {
-            showPreferenceOverlay: false
-        }
-    }
-    async componentDidMount() {
-        this.props.navigation.setParams({ togglePreferenceModal: this.togglePreferenceModal });
-        const state = appState.getInstance();
-        const hasSeenPreferences = await state.hasSeenPreferences();
-        const userType = await state.getUser().type;
-        if (!hasSeenPreferences && userType === 'user') {
-            this.togglePreferenceModal();
-            await appState.getInstance().seenPreferences();
-        }
-    }
-    togglePreferenceModal = () => {
-        this.setState({ showPreferenceOverlay: !this.state.showPreferenceOverlay });
-    }
-    _renderCategoryItem = (item, i) => {
-        const { navigate } = this.props.navigation;
-        return <Category navigate={navigate} type={'grid'} item={item} />;
-    }
-    render() {
-        const { navigate } = this.props.navigation;
-        let name = 'friend';
-        if (this.user) {
-            const { type } = this.user;
-            if (type === 'user' && this.user.data) {
-                name =  this.user.data.user_name;
-            } else if (type === 'business' && this.user.data) {
-                name = this.user.data.name;
-            }
-        }
-        return (
-            <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
-                <View style={styles.questionView}>
-                    <Text style={textStyles.mediumBold}>Hey {name},</Text>
-                    <Text style={textStyles.small}>HUNGRY? Let's find you something to eat</Text>
-                    <Text style={[textStyles.smallBold, { paddingTop: 10, paddingBottom: 10 }]}>What are you in the mood for?</Text>
-                </View>
-                <ScrollView style={styles.scrollViewContainer}>
-                    <Category type={'main'}
-                        navigate={navigate}
-                        category={'Promotions'} />
-                    <View style={styles.equalWidthsContainer}>
-                        <Category type={'special'}
-                            navigate={navigate}
-                            category={'Surprise Me'}
-                            style={[styles.equalWitdhView, { marginRight: 5 }]}
-                            src={require('../../assets/backgrounds/6.jpg')} />
-                        <View style={[styles.equalWitdhView, { marginLeft: 5 }]}>
-                            <View style={styles.equalHeightContainer}>
-                               <Category type={'special'}
-                                    navigate={navigate}
-                                    category={'Top Picks'}
-                                    style={[styles.equalHeightView, { paddingBottom: 5}]}
-                                    src={require('../../assets/backgrounds/2.jpeg')} />
-                               <Category type={'special'}
-                                    navigate={navigate}
-                                    category={'Newest'}
-                                    style={[styles.equalHeightView, { paddingTop: 5 }]}
-                                    src={require('../../assets/backgrounds/2.jpeg')} />
-                            </View>
-                        </View>
-                    </View>
-                    <GridView itemDimension={130} items={categories} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
-                </ScrollView>
-                <PreferenceOverlay showOverlay={this.state.showPreferenceOverlay} onClose={() => this.setState({ showPreferenceOverlay: false })} />
-            </ImageBackground>
-        );
-    }
-};
 
 class Category extends React.Component {
     state = {
@@ -147,4 +73,78 @@ class Category extends React.Component {
         return categoryItem;
     }
 }
-export default FeelingScreen;
+
+class FeelingScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.user = appState.getInstance().getUser();
+    }
+    async componentDidMount() {
+        this.props.navigation.setParams({ togglePreferenceModal: this.togglePreferenceModal });
+        const state = appState.getInstance();
+        const hasSeenPreferences = await state.hasSeenPreferences();
+        const userType = await state.getUser().type;
+        if (!hasSeenPreferences && userType === 'user') {
+            this.togglePreferenceModal();
+            await appState.getInstance().seenPreferences();
+        }
+    }
+    togglePreferenceModal = () => {
+        this.props.showPreferenceOverlay();
+    }
+    _renderCategoryItem = (item, i) => {
+        const { navigate } = this.props.navigation;
+        return <Category navigate={navigate} type={'grid'} item={item} />;
+    }
+    render() {
+        const { navigate } = this.props.navigation;
+        let name = 'friend';
+        if (this.user) {
+            const { type } = this.user;
+            if (type === 'user' && this.user.data) {
+                name =  this.user.data.user_name;
+            } else if (type === 'business' && this.user.data) {
+                name = this.user.data.name;
+            }
+        }
+        return (
+            <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
+                <View style={styles.questionView}>
+                    <Text style={textStyles.mediumBold}>Hey {name},</Text>
+                    <Text style={textStyles.small}>HUNGRY? Let's find you something to eat</Text>
+                    <Text style={[textStyles.smallBold, { paddingTop: 10, paddingBottom: 10 }]}>What are you in the mood for?</Text>
+                </View>
+                <ScrollView style={styles.scrollViewContainer}>
+                    <Category type={'main'}
+                        navigate={navigate}
+                        category={'Promotions'} />
+                    <View style={styles.equalWidthsContainer}>
+                        <Category type={'special'}
+                            navigate={navigate}
+                            category={'Surprise Me'}
+                            style={[styles.equalWitdhView, { marginRight: 5 }]}
+                            src={require('../../assets/backgrounds/6.jpg')} />
+                        <View style={[styles.equalWitdhView, { marginLeft: 5 }]}>
+                            <View style={styles.equalHeightContainer}>
+                               <Category type={'special'}
+                                    navigate={navigate}
+                                    category={'Top Picks'}
+                                    style={[styles.equalHeightView, { paddingBottom: 5}]}
+                                    src={require('../../assets/backgrounds/2.jpeg')} />
+                               <Category type={'special'}
+                                    navigate={navigate}
+                                    category={'Newest'}
+                                    style={[styles.equalHeightView, { paddingTop: 5 }]}
+                                    src={require('../../assets/backgrounds/2.jpeg')} />
+                            </View>
+                        </View>
+                    </View>
+                    <GridView itemDimension={130} items={categories} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
+                </ScrollView>
+                <PreferenceOverlay />
+            </ImageBackground>
+        );
+    }
+};
+
+export default connect(null, { showPreferenceOverlay })(FeelingScreen);

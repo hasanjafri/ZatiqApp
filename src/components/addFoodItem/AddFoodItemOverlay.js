@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Text, View, ScrollView, Dimensions } from 'react-native';
 import { Overlay, Input, SearchBar, Icon, Button, ButtonGroup, Avatar, ListItem } from 'react-native-elements';
 import { ImagePicker, Permissions } from 'expo';
 
+import { closeFoodItemOverlay } from '../../redux/actions/general.action';
 import lists from './foodItems';
 import textStyles from '../../styles/text.style';
 import colors from '../../styles/colors.style';
@@ -11,8 +13,88 @@ import styles from '../../styles/screens/business/Pages.style';
 import BusinessAction from '../../actions/BusinessAction';
 const BusinessInstance = BusinessAction.getInstance();
 
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+const { width, height } = Dimensions.get('window');
+
+class ButtonGroupHandler extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            meal_type: props.meal_type
+        };
+    }
+    onPress(selectedIndexes) {
+        this.setState({ meal_type: selectedIndexes });
+        this.props.onPress(selectedIndexes);
+    }
+    render() {
+        return (
+            <ButtonGroup selectMultiple
+                onPress={selectedIndexes => this.onPress(selectedIndexes)}
+                selectedIndexes={this.state.meal_type}
+                buttons={['Breakfast', 'Brunch', 'Lunch', 'Dinner']}
+                containerStyle={{ height: 35 }} />
+        );
+    }
+}
+
+class InputHandler extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            input: props.value
+        }
+    }
+    changeText(text) {
+        this.setState({ input: text });
+        this.props.changeText(text);
+    }
+    onSubmitEditing() {
+        this.props.onSubmitEditing(this.props.type);
+    }
+    render() {
+        const { type, setRef } = this.props;
+        return (
+            <Input ref={setRef} value={this.state.input}
+                style={styles.input}
+                keyboardType={type === 'item_price' || type === 'calories' ? 'numeric' : 'default'}
+                onSubmitEditing={() => this.onSubmitEditing()}
+                returnKeyLabel={'Next'}
+                returnKeyType={'next'}
+                blurOnSubmit={type === 'calories'}
+                onChangeText={text => this.changeText(text)} />
+        )
+    }
+}
+class FoodItem extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            checked: props.isChecked
+        };
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            checked: nextProps.isChecked
+        })
+    }
+    toggleItem() {
+        this.setState({ checked: !this.state.checked });
+        this.props.toggleItem(this.props.stateName, this.props.value, !this.state.checked);
+    }
+    render() {
+        return (
+            <ListItem rightIcon={
+                    this.state.checked ?
+                    <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
+                    <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
+                }
+                titleStyle={{ fontFamily: 'nunito' }}
+                onPress={() => this.toggleItem()}
+                title={this.props.text}
+            />
+        )
+    }
+}
 
 class AddFoodItemOverlay extends React.Component {
     constructor(props) {
@@ -46,8 +128,8 @@ class AddFoodItemOverlay extends React.Component {
         });
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedFoodItem) {
-            const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id, calories } = nextProps.selectedFoodItem;
+        if (!this.props.editingFoodItem && nextProps.editingFoodItem) {
+            const { image, item_name, overview, item_price, meal_type, tags, seafood, meat, food_item_id, calories } = nextProps.editingFoodItem;
             this.tags = tags;
             this.seafood = seafood;
             this.meat = meat;
@@ -153,7 +235,7 @@ class AddFoodItemOverlay extends React.Component {
             this.setState({ isLoading: false });
             if (result.success) {
                 form.food_item_id = type === 'edit' ? result.data.food_item_id : result.data.response.food_item_id;
-                this.props.saveFoodItem({ form, type });
+                this.props.closeFoodItemOverlay({ form, type });
             } else {
                 alert(result.message);
             }
@@ -172,9 +254,6 @@ class AddFoodItemOverlay extends React.Component {
         this.calories_input = input;
     }
     render() {
-        if (!this.props.showOverlay) {
-            return null;
-        }
         let image;
         if (this.state.image) {
             if (this.state.image.base64.includes('https://')) {
@@ -219,162 +298,91 @@ class AddFoodItemOverlay extends React.Component {
                     toggleItem={this.toggleItem} />
             );
         });
+        const { isFoodItemOverlayShown, closeFoodItemOverlay } = this.props;
         return (
-            <Overlay isVisible={this.props.showOverlay}
+            <Overlay isVisible={isFoodItemOverlayShown}
                 width={width - 20}
                 height={height - 100}
                 containerStyle={{ padding: 0 }}
                 overlayStyle={styles.overlayContainer}>
-                <View style={styles.header}>
-                    <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Add Food Item</Text>
-                    <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
-                </View>
-                <ScrollView style={styles.wrapper}>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
-                        { image ?
-                            <Avatar size="xlarge"
-                                rounded
-                                source={{ uri: image }}
-                                onPress={() => this.uploadPicture()}
-                                activeOpacity={0.7} /> :
-                            <Avatar size="xlarge"
-                                rounded
-                                icon={{ name: 'restaurant' }}
-                                onPress={() => this.uploadPicture()}
-                                activeOpacity={0.7} />
-                        }
-                    </View>
-                    <Text style={[textStyles.tiny, styles.headerText]}>Food Name</Text>
-                    <InputHandler type='item_name'
-                        setRef={this.setNameRef}
-                        value={this.item_name}
-                        onSubmitEditing={(type) => this.onSubmitEditing(type)}
-                        changeText={text => this.item_name = text} />
-
-                    <Text style={[textStyles.tiny, styles.headerText]}>Food Description</Text>
-                    <InputHandler type='overview'
-                        setRef={this.setOverviewRef}
-                        value={this.overview}
-                        onSubmitEditing={(type) => this.onSubmitEditing(type)}
-                        changeText={text => this.overview = text} />
-
-                    <Text style={[textStyles.tiny, styles.headerText]}>Food Price</Text>
-                    <InputHandler type='item_price'
-                        setRef={this.setPriceRef}
-                        value={this.item_price}
-                        onSubmitEditing={(type) => this.onSubmitEditing(type)}
-                        changeText={text => this.item_price = text} />
+                { !isFoodItemOverlayShown ? null :
+                    <Fragment>
+                        <View style={styles.header}>
+                            <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Add Food Item</Text>
+                            <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={() => closeFoodItemOverlay()} />
+                        </View>
+                        <ScrollView style={styles.wrapper}>
+                            <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
+                                { image ?
+                                    <Avatar size="xlarge"
+                                        rounded
+                                        source={{ uri: image }}
+                                        onPress={() => this.uploadPicture()}
+                                        activeOpacity={0.7} /> :
+                                    <Avatar size="xlarge"
+                                        rounded
+                                        icon={{ name: 'restaurant' }}
+                                        onPress={() => this.uploadPicture()}
+                                        activeOpacity={0.7} />
+                                }
+                            </View>
+                            <Text style={[textStyles.tiny, styles.headerText]}>Food Name</Text>
+                            <InputHandler type='item_name'
+                                setRef={this.setNameRef}
+                                value={this.item_name}
+                                onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                                changeText={text => this.item_name = text} />
+        
+                            <Text style={[textStyles.tiny, styles.headerText]}>Food Description</Text>
+                            <InputHandler type='overview'
+                                setRef={this.setOverviewRef}
+                                value={this.overview}
+                                onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                                changeText={text => this.overview = text} />
+        
+                            <Text style={[textStyles.tiny, styles.headerText]}>Food Price</Text>
+                            <InputHandler type='item_price'
+                                setRef={this.setPriceRef}
+                                value={this.item_price}
+                                onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                                changeText={text => this.item_price = text} />
+                            
+                            <Text style={[textStyles.tiny, styles.headerText]}>Calories (Optional)</Text>
+                            <InputHandler type='calories'
+                                setRef={this.setCaloriesRef}
+                                value={this.calories}
+                                onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                                changeText={text => this.calories = text} />
                     
-                    <Text style={[textStyles.tiny, styles.headerText]}>Calories (Optional)</Text>
-                    <InputHandler type='calories'
-                        setRef={this.setCaloriesRef}
-                        value={this.calories}
-                        onSubmitEditing={(type) => this.onSubmitEditing(type)}
-                        changeText={text => this.calories = text} />
-              
-                    <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meal</Text>
-                    <ButtonGroupHandler onPress={selectedIndexes => this.meal_type = selectedIndexes} meal_type={this.meal_type} />
-
-                    <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
-                    <Text style={[textStyles.tiny, styles.headerText]}>Tags</Text>
-                    { tagItems }
-                    <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meat Type</Text>
-                    { meatItems }
-                    <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Seafood Type</Text>
-                    { seafoodItems }
-                    <View style={styles.centered}>
-                        <Button title='Save'
-                            loading={this.state.isLoading}
-                            titleStyle={[textStyles.medium, { height: 50 }]}
-                            buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                            loading={this.state.isLoading}
-                            onPress={() => this.saveFoodItem()} />
-                    </View>
-                </ScrollView>
+                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meal</Text>
+                            <ButtonGroupHandler onPress={selectedIndexes => this.meal_type = selectedIndexes} meal_type={this.meal_type} />
+        
+                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
+                            <Text style={[textStyles.tiny, styles.headerText]}>Tags</Text>
+                            { tagItems }
+                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meat Type</Text>
+                            { meatItems }
+                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Seafood Type</Text>
+                            { seafoodItems }
+                            <View style={styles.centered}>
+                                <Button title='Save'
+                                    loading={this.state.isLoading}
+                                    titleStyle={[textStyles.medium, { height: 50 }]}
+                                    buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                                    loading={this.state.isLoading}
+                                    onPress={() => this.saveFoodItem()} />
+                            </View>
+                        </ScrollView>
+                    </Fragment>
+                }
             </Overlay>
         );
     }
 }
 
-class ButtonGroupHandler extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            meal_type: props.meal_type
-        };
-    }
-    onPress(selectedIndexes) {
-        this.setState({ meal_type: selectedIndexes });
-        this.props.onPress(selectedIndexes);
-    }
-    render() {
-        return (
-            <ButtonGroup selectMultiple
-                onPress={selectedIndexes => this.onPress(selectedIndexes)}
-                selectedIndexes={this.state.meal_type}
-                buttons={['Breakfast', 'Brunch', 'Lunch', 'Dinner']}
-                containerStyle={{ height: 35 }} />
-        );
-    }
-}
+const mapStateToProps = (state) => ({
+    isFoodItemOverlayShown: state.generalReducer.isFoodItemOverlayShown,
+    editingFoodItem: state.generalReducer.editingFoodItem
+});
 
-class InputHandler extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            input: props.value
-        }
-    }
-    changeText(text) {
-        this.setState({ input: text });
-        this.props.changeText(text);
-    }
-    onSubmitEditing() {
-        this.props.onSubmitEditing(this.props.type);
-    }
-    render() {
-        const { type, setRef } = this.props;
-        return (
-            <Input ref={setRef} value={this.state.input}
-                style={styles.input}
-                keyboardType={type === 'item_price' || type === 'calories' ? 'numeric' : 'default'}
-                onSubmitEditing={() => this.onSubmitEditing()}
-                returnKeyLabel={'Next'}
-                returnKeyType={'next'}
-                blurOnSubmit={type === 'calories'}
-                onChangeText={text => this.changeText(text)} />
-        )
-    }
-}
-class FoodItem extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            checked: props.isChecked
-        };
-    }
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            checked: nextProps.isChecked
-        })
-    }
-    toggleItem() {
-        this.setState({ checked: !this.state.checked });
-        this.props.toggleItem(this.props.stateName, this.props.value, !this.state.checked);
-    }
-    render() {
-        return (
-            <ListItem rightIcon={
-                    this.state.checked ?
-                    <Icon containerStyle={{ marginRight: 5 }} color={colors.blue} type='font-awesome' name='check-circle' /> :
-                    <Icon containerStyle={{ marginRight: 5 }} color={colors.gray} type='font-awesome' name='circle-thin' />
-                }
-                titleStyle={{ fontFamily: 'nunito' }}
-                onPress={() => this.toggleItem()}
-                title={this.props.text}
-            />
-        )
-    }
-}
-
-export default AddFoodItemOverlay;
+export default connect(mapStateToProps, { closeFoodItemOverlay })(AddFoodItemOverlay);
