@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, Button, Image, ImageBackground, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 
@@ -9,7 +9,7 @@ import textStyles from '../../styles/text.style';
 import colors from '../../styles/colors.style';
 const state = appState.getInstance();
 
-class Drawer extends React.Component {
+class DrawerItems extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -38,7 +38,6 @@ class Drawer extends React.Component {
         }
     }
     componentWillReceiveProps() {
-        
         this.setState({ selected: state.getSelectedDrawerItem() });
     }
     render() {
@@ -82,6 +81,17 @@ class Drawer extends React.Component {
                     </TouchableOpacity>
                 </ScrollView>
             </SafeAreaView>
+        );
+    }
+}
+
+class Drawer extends Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.navigation.state.routeName !== this.props.navigation.state.routeName
+    }
+    render() {
+        return (
+            <DrawerItems {...this.props} />
         );
     }
 }

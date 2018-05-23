@@ -36,12 +36,11 @@ export default styles = StyleSheet.create({
     },
     item: {
         justifyContent: 'flex-end',
-        borderRadius: 5,
         padding: 10,
         height: 100,
-        backgroundColor: '#7f8c8d',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: 'rgba(127, 140, 141, 0.3)'
     },
     centered: {
         alignItems: 'center',

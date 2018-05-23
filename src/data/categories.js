@@ -8,7 +8,6 @@ export default [
     { value: 'dinner', text: 'Dinner', source: require('../assets/icons/Dinner.png') },
     { value: 'fastfood', text: 'Fast Food', source: require('../assets/icons/FastFood.png') },
     { value: 'finefood', text: 'Fine Food', source: require('../assets/icons/FineFood.png') },
-    { value: 'glutenfree', text: 'Gluten Free', source: require('../assets/icons/GlutenFree.png') },
     { value: 'greek', text: 'Greek', source: require('../assets/icons/Greek.png') },
     { value: 'healthy', text: 'Healthy', source: require('../assets/icons/Healthy.png') },
     { value: 'indian', text: 'Indian', source: require('../assets/icons/Indian.png') },

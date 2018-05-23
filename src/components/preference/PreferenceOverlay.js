@@ -7,6 +7,7 @@ import styles from '../../styles/screens/business/Pages.style';
 import colors from '../../styles/colors.style';
 import { getUserProfile, setUserProfile } from '../../actions/UserAction';
 import Loader from '../../components/Loader';
+import preferences from '../../data/preferences'
 
 import BusinessAction from '../../actions/BusinessAction';
 const BusinessInstance = BusinessAction.getInstance();
@@ -14,56 +15,17 @@ const BusinessInstance = BusinessAction.getInstance();
 class PreferenceOverlay extends React.Component {
     constructor(props) {
         super(props);
+
+        const preferenceInit = {};
+        preferences.forEach(preference => {
+            if (!preference.section) {
+                preferenceInit[preference.value] = false;
+            }
+        });
         this.state = {
             isLoading: false,
-            preferences: {
-                spicy: false,
-                halal: false,
-                kosher: false,
-                healthy: false,
-                vegan: false,
-                fish: false,
-                vegetarian: false,
-                lactose_intolerant: false,
-                gluten_free: false,
-                milk_allergy: false,
-                eggs_allergy: false,
-                crustacean_allergy: false,
-                wheat_allergy: false,
-                soybeans_allergy: false,
-                jain: false,
-                omnivore: false,
-                pescatarian: false,
-                peanuts_allergy: false,
-                treenuts_allergy: false
-            }
+            preferences: preferenceInit
         };
-        this.preferences = [
-            { section: 'I am' },
-            { text: 'Omnivore', value: 'omnivore'},
-            { text: 'Pescatarian', value: 'pescatarian'},
-            { text: 'Vegan', value: 'vegan'},
-            { text: 'Vegetarian', value: 'vegetarian'},
-
-            { section: 'I only eat' },
-            { text: 'Halal', value: 'halal'},
-            { text: 'Healthy', value: 'healthy'},
-            { text: 'Jain', value: 'jain'},
-            { text: 'Kosher', value: 'kosher'},
-
-            { section: 'I am allergic to' },
-            { text: 'Crustacean', value: 'crustacean_allergy'},
-            { text: 'Eggs', value: 'eggs_allergy'},
-            { text: 'Fish', value: 'fish_allergy'},
-            { text: 'Gluten', value: 'gluten_free'},
-            { text: 'Lactose', value: 'lactose_intolerant'},
-            { text: 'Milk', value: 'milk_allergy'},
-            { text: 'Peanuts', value: 'peanuts_allergy'},
-            { text: 'Spicy', value: 'spicy'},
-            { text: 'Soybeans', value: 'soybeans_allergy'},
-            { text: 'Tree Nuts', value: 'treenuts_allergy'},
-            { text: 'Wheat', value: 'wheat_allergy'},
-        ];
     }
     async componentWillReceiveProps(nextProps) {
         if (!this.props.showOverlay && nextProps.showOverlay) {
@@ -87,6 +49,7 @@ class PreferenceOverlay extends React.Component {
         this.setState({ isLoading: true });
         if (result.success) {
             this.setState({ preferences: result.data.preferences, isLoading: false });
+            this.props.onClose()
             alert('Preferences Updated!');
         } else {
             alert(result.message);
@@ -96,7 +59,7 @@ class PreferenceOverlay extends React.Component {
         const width = Dimensions.get('window').width;
         const height = Dimensions.get('window').height;
 
-        const preferences = this.preferences.map((preference, i) => {
+        const preferencesList = preferences.map((preference, i) => {
             const { text, value } = preference;
             const isActive = this.state.preferences[value];
             if (preference.section) {
@@ -116,29 +79,29 @@ class PreferenceOverlay extends React.Component {
             );
         });
         return (
-                <Overlay isVisible={this.props.showOverlay}
-                    width={width - 20}
-                    height={height - 100}
-                    containerStyle={{ padding: 0 }}
-                    overlayStyle={styles.overlayContainer}>
-                        <View style={styles.header}>
-                            <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Tell us a bit about yourself</Text>
-                            <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
-                        </View>
-                        { !this.state.isLoading ?
-                            <ScrollView style={styles.wrapper}>
-                                {preferences}
-                                <View style={styles.centered}>
-                                    <Button title='Save'
-                                        loading={this.state.isLoading}
-                                        titleStyle={[textStyles.medium, { height: 50 }]}
-                                        buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                                        loading={this.state.isLoading}
-                                        onPress={() => this.saveItem()} />
-                                </View>
-                            </ScrollView> :
-                            <View style={{ flex: 1, height: '100%', width: '100%' }}><Loader show clear/></View> }
-                </Overlay>
+            <Overlay isVisible={this.props.showOverlay}
+                width={width - 20}
+                height={height - 100}
+                containerStyle={{ padding: 0 }}
+                overlayStyle={styles.overlayContainer}>
+                    <View style={styles.header}>
+                        <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Tell us a bit about yourself</Text>
+                        <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
+                    </View>
+                    { !this.state.isLoading ?
+                        <ScrollView style={styles.wrapper}>
+                            {preferencesList}
+                            <View style={styles.centered}>
+                                <Button title='Save'
+                                    loading={this.state.isLoading}
+                                    titleStyle={[textStyles.medium, { height: 50 }]}
+                                    buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                                    loading={this.state.isLoading}
+                                    onPress={() => this.saveItem()} />
+                            </View>
+                        </ScrollView> :
+                        <View style={{ flex: 1, height: '100%', width: '100%' }}><Loader show clear/></View> }
+            </Overlay>
         );
     }
 }
