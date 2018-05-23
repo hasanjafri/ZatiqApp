@@ -15,7 +15,7 @@ import Loader from '../../components/Loader';
 import PreferenceOverlay from '../../components/preference/PreferenceOverlay';
 
 import appState from '../../appState';
-
+const state = appState.getInstance();
 class Category extends React.Component {
     state = {
         isLoading: false
@@ -81,7 +81,6 @@ class FeelingScreen extends React.Component {
     }
     async componentDidMount() {
         this.props.navigation.setParams({ togglePreferenceModal: this.togglePreferenceModal });
-        const state = appState.getInstance();
         const hasSeenPreferences = await state.hasSeenPreferences();
         const userType = await state.getUser().type;
         if (!hasSeenPreferences && userType === 'user') {

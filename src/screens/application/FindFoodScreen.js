@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { changeDrawerItem } from '../../redux/actions/drawer.action';
+
 import { View, Text, Platform, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { SearchBar, List, ListItem } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
@@ -9,8 +12,6 @@ import { foodGrid, foodGridSearchName } from '../../actions/UserAction';
 import textStyles from '../../styles/text.style';
 
 import _ from 'lodash';
-import appState from '../../appState';
-const state = appState.getInstance();
 
 class FindFood extends React.Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class FindFood extends React.Component {
         const image = item.image.base64;
         return (
             <TouchableOpacity activeOpacity={0.5} onPress={() => {
-                    state.setSelectedDrawerItem('Home');
+                    this.props.changeDrawerItem('Home');
                     this.props.navigation.navigate('Restaurant', {
                         restaurant_id: item.restaurant_id,
                         restaurant_info: item.restaurant_info
@@ -93,7 +94,6 @@ class FindFood extends React.Component {
     }
 };
 
-
 const styles = StyleSheet.create({
     view: {
         flex: 1,
@@ -109,4 +109,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default FindFood;
+export default connect(null, { changeDrawerItem })(FindFood);

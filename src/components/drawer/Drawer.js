@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { changeDrawerItem } from '../../redux/actions/drawer.action';
+
 import { View, Text, Button, Image, ImageBackground, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 
@@ -12,12 +15,8 @@ const state = appState.getInstance();
 class DrawerItems extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selected: state.getSelectedDrawerItem() ? state.getSelectedDrawerItem() : 'Home'
-        }
         const changeRoute = (route, currentSelected) => {
-            this.setState({ selected: currentSelected });
-            state.setSelectedDrawerItem(currentSelected);
+            this.props.changeDrawerItem(currentSelected);
             this.props.navigation.navigate(route);
         }
         this.items = [
@@ -37,9 +36,6 @@ class DrawerItems extends Component {
             this.items.push({ text: 'Reviews', action: () => changeRoute('Reviews', 'Reviews')});
         }
     }
-    componentWillReceiveProps() {
-        this.setState({ selected: state.getSelectedDrawerItem() });
-    }
     render() {
         const drawerItems = this.items.map((item, i) => {
             let drawerItem;
@@ -51,7 +47,7 @@ class DrawerItems extends Component {
                     </View>
                 )
             } else {
-                const selected = this.state.selected === item.text;
+                const selected = this.props.drawerItem === item.text;
                 drawerItem = (
                     <TouchableOpacity activeOpacity={1} style={styles.itemContainer} key={i} onPress={() => item.action()}>
                         <Text style={[textStyles.medium, { color: selected ? colors.primary : 'black' }]}>{item.text}</Text>
@@ -85,13 +81,19 @@ class DrawerItems extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    drawerItem: state.drawerReducer.drawerItem,
+});
+
+const DrawerItemsContainer = connect(mapStateToProps, { changeDrawerItem })(DrawerItems);
+
 class Drawer extends Component {
     shouldComponentUpdate(nextProps) {
-        return nextProps.navigation.state.routeName !== this.props.navigation.state.routeName
+        return false;
     }
     render() {
         return (
-            <DrawerItems {...this.props} />
+            <DrawerItemsContainer {...this.props} />
         );
     }
 }

@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, Platform, ScrollView, Image } from 'react-native';
 import { SearchBar, ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { changeDrawerItem } from '../../redux/actions/drawer.action';
+
 import _ from 'lodash';
 // Custom imports
 import { findRestaurantByName, closestRestaurants } from '../../actions/UserAction';
@@ -60,7 +63,7 @@ class FindRestaurant extends React.Component {
                         <ListItem key={i}
                             leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: restaurant.image.base64}}/></View>}
                             onPress={() => {
-                                state.setSelectedDrawerItem('Home');
+                                this.props.changeDrawerItem('Home');
                                 this.props.navigation.navigate('Restaurant', {
                                     restaurant_id: restaurant.restaurant_id,
                                     restaurant_info: { ...restaurant }
@@ -87,4 +90,4 @@ class FindRestaurant extends React.Component {
     }
 };
 
-export default FindRestaurant;
+export default connect(null, { changeDrawerItem })(FindRestaurant);;
