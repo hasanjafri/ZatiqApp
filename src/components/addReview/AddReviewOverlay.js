@@ -86,7 +86,7 @@ class AddReviewOverlay extends React.Component {
     _renderReview() {
         let image;
         if (this.state.image) {
-            if (this.state.image.base64.includes('https://')) {
+            if (this.state.image.base64.includes('http')) {
                 image = this.state.image.base64;
             } else {
                 image = `data:image/png;base64,${this.state.image.base64}`;

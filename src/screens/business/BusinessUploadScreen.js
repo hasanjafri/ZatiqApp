@@ -101,7 +101,7 @@ class FoodItems extends Component {
         const foodItems = this.state.foodItems.map((item, i) => {
             let image;
             if (item.image) {
-                if (item.image.base64.includes('https://')) {
+                if (item.image.base64.includes('http')) {
                     image = item.image.base64;
                 } else {
                     image = `data:image/png;base64,${item.image.base64}`;
@@ -188,7 +188,7 @@ class Pictures extends Component {
         const pictureItems = this.state.data.map((item, i) => {
             let image;
             if (item.image) {
-                if (item.image.base64.includes('https://')) {
+                if (item.image.base64.includes('http')) {
                     image = item.image.base64;
                 } else {
                     image = `data:image/png;base64,${item.image.base64}`;

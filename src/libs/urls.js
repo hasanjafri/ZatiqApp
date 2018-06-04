@@ -26,7 +26,7 @@ const urls = {
 
     businessProfile:  hostname + '/business/profile/',
     businessEditProfile:  hostname + '/business/profile/edit/', 
-    businessReviews:  hostname + '/business/reviews/all/', 
+    businessReviews:  hostname + '/business/reviews/all/',
 
     businessAddMenuPicture:  hostname + '/restaurant/menu/add/',
     businessDeleteMenuPicture:  hostname + '/restaurant/menu/delete/',

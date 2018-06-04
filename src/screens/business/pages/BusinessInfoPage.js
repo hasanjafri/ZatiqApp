@@ -61,7 +61,7 @@ class BusinessInfoPage extends React.Component {
     render() {
         let imageUrl;
         if (this.state.image) {
-            if (this.state.image.base64.includes('https://')) {
+            if (this.state.image.base64.includes('http')) {
                 imageUrl = this.state.image.base64;
             } else {
                 imageUrl = `data:image/png;base64,${this.state.image.base64}`;
