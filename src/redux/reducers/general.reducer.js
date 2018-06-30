@@ -4,7 +4,9 @@ const initialState = {
     isPreferenceOverlayShown: false,
     isFoodItemOverlayShown: false,
     editingFoodItem: null,
-    savingFoodItem: null
+    savingFoodItem: null,
+
+    signInCallback: null
 }
 
 const generalReducer = (state = initialState, action) => {
@@ -33,6 +35,16 @@ const generalReducer = (state = initialState, action) => {
                 isFoodItemOverlayShown: false,
                 editingFoodItem: null,
                 savingFoodItem: data
+            }
+        case types.SHOW_SIGN_IN_OVERLAY:
+            return {
+                ...state,
+                signInCallback: data
+            }
+        case types.CLOSE_SIGN_IN_OVERLAY:
+            return {
+                ...state,
+                signInCallback: null
             }
         default:
             return state;

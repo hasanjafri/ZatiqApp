@@ -17,6 +17,13 @@ const GOOGLE_STANDALONE_ANDROID_ID = '1013702018515-8u9a0lf5ktnh33lhpru0rve7vkqe
 const GOOGLE_STANDALONE_IOS_ID = '1013702018515-lko3bqq6j30tph7l0pjvvte7u7g8acen.apps.googleusercontent.com';
 const WEB_CLIENT_ID = '013702018515-g3mjgf56essrqkp573bjjpfau5a62405.apps.googleusercontent.com';
 
+import { guestCuisines } from '../libs/constants';
+
+export const onSignInAsGuest = async (type) => {
+    await state.setUser({ data: null, type: 'user' });
+    return { success: true };
+};
+
 export const onSignIn = async (type) => {
     let parsedResult;
     if (type === 'facebook') {
@@ -153,19 +160,32 @@ export const setUserProfile = async (preferences) => {
 export const searchCuisine = async (cuisine) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
-        const type = user ? user.type : null;
-        if (!api_token) {
-            return { success: false, message: 'Not logged in' };
+        let url, option;
+        if (user.data) {
+            url = urls.searchCuisine.replace(':cuisine', cuisine);
+            option = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({ api_token: user.data.api_token, type: user.type })
+            }
+        } else {
+            if (guestCuisines.indexOf(cuisine) > -1) {
+                url = urls.guestCuisine.replace(':cuisine', cuisine);
+                option = {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-type': 'application/json'
+                    }
+                }
+            } else {
+                return { success: false, message: 'Please log in first' };
+            }
         }
-        const response = await fetch(urls.searchCuisine.replace(':cuisine', cuisine), {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({ api_token, type })
-        });
+        const response = await fetch(url, option);
         const parsedResult = await response.json();
         if (response.status === 200) {
             return { success: true, data: parsedResult }

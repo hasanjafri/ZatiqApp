@@ -100,7 +100,7 @@ class BusinessSignUpScreen extends React.Component {
                         secureTextEntry
                         onChangeText={text => this.setState({ repeatPassword: text })} />
 
-                    <TouchableHighlight onPress={() => this.openTermsAndConditions()}>
+                    <TouchableHighlight underlayColor="transparent" onPress={() => this.openTermsAndConditions()}>
                         <Text style={{ color: 'white', paddingBottom: 15 }} >Terms and Conditions</Text>
                     </TouchableHighlight>
 
@@ -108,10 +108,10 @@ class BusinessSignUpScreen extends React.Component {
                         titleStyle={{ textAlign: 'center', fontFamily: 'nunito', color: 'white' }}
                         buttonStyle={styles.primaryButton}
                         onPress={() => this.businessRegister()} />
-                    <TouchableHighlight onPress={() => this.props.navigation.goBack()}>
+                    <TouchableHighlight underlayColor="transparent" onPress={() => this.props.navigation.goBack()}>
                         <Text style={{ color: 'white', marginVertical: 15 }}>Already registered? Login here!</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={() => this.props.navigation.navigate('Login')}>
+                    <TouchableHighlight underlayColor="transparent" onPress={() => this.props.navigation.navigate('Login')}>
                         <Text style={{ color: 'white' }}>Not a business?</Text>
                     </TouchableHighlight>
                 </ImageBackground>

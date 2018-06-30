@@ -25,5 +25,10 @@ export default styles = StyleSheet.create({
     },
     signInButtons: {
         borderRadius: 25
+    },
+    centered: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

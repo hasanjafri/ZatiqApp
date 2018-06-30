@@ -1,0 +1,1 @@
+export const guestCuisines = ['Promotions', 'Surprise Me', 'Top Picks', 'Newest'];

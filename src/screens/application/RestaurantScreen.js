@@ -1,10 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { ImageBackground, ScrollView, Image, View, Text, TouchableOpacity, Linking } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import moment from 'moment';
 import GridView from 'react-native-super-grid';
 import phoneFormatter from 'phone-formatter';
 import Slider from '../../components/slider/Slider';
+
+import {showSignInOverlay} from '../../redux/actions/general.action';
 
 // Custom imports
 import styles from '../../styles/screens/application/RestaurantScreen.style';
@@ -19,6 +22,7 @@ import { foodItemsByRestaurantId } from '../../actions/UserAction';
 import { restaurantPicturesByRestaurantId, menuPicturesByRestaurantId } from '../../actions/UserAction';
 
 import appState from '../../appState';
+import SignInOverlay from '../../components/SignInOverlay';
 const state = appState.getInstance();
 
 const momentDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -112,6 +116,14 @@ class RestaurantScreen extends React.Component {
     openTagsOverlay = type => {
         this.setState({ showTagsOverlay: true });
     }
+    onAddReview = () => {
+        const user = state.getUser();
+        if (!user.data) {
+            this.props.showSignInOverlay(() => this.setState({ showOverlay: true }));
+        } else {
+            this.setState({ showOverlay: true });
+        }
+    }
     _renderMenuItem = item => {
         return (
             <TouchableOpacity onPress={() => this.onGridPress(item.type)}>
@@ -178,12 +190,13 @@ class RestaurantScreen extends React.Component {
                         { !this.props.self && !this.isBusiness ?
                             <React.Fragment>
                                 { this._renderSection('Leave a Review') }
-                                <AddReviewButton onPress={() => this.setState({ showOverlay: true })} />
+                                <AddReviewButton onPress={() => this.onAddReview()} />
                             </React.Fragment>
                             : null
                         }
                     </View>
                 </ScrollView>
+                <SignInOverlay />
                 <AddReviewOverlay showOverlay={this.state.showOverlay}
                     restaurant_id={restaurant_id}
                     onClose={() => this.setState({ showOverlay: false })}/>
@@ -236,4 +249,5 @@ class GridItem extends React.Component {
     }
 }
 
-export default RestaurantScreen;
+
+export default connect(null, { showSignInOverlay })(RestaurantScreen);

@@ -17,6 +17,7 @@ const urls = {
     businessInterior: hostname + '/user/interior/all/',
 
     searchCuisine: hostname + '/search/:cuisine/',
+    guestCuisine: hostname + '/guest/:cuisine/',
     userPreferences: hostname + '/user/preferences/',
     
     businessesList:  hostname + '/businesses/list/',

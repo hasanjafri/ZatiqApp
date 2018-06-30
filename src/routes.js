@@ -37,7 +37,7 @@ const mainApplication = StackNavigator({
             const { params = {} } = navigation.state;
             const user = state.getUser();
             let headerRight = (<View></View>);
-            if (user && user.type === 'user') {
+            if (user && user.type === 'user' && user.data) {
                 headerRight =  <SettingsButton navigation={navigation} onPress={params.togglePreferenceModal} />;
             }
             return {
