@@ -203,9 +203,6 @@ export const foodItemsByRestaurantId = async (restaurant_id) => {
         const user = state.getUser();
         const api_token = user ? user.data.api_token : null;
         const type = user ? user.type : null;
-        if (!api_token) {
-            return { success: false, message: 'Not logged in' };
-        }
         const response = await fetch(urls.businessFoodItems, {
             method: 'POST',
             headers: {
@@ -230,9 +227,6 @@ export const menuPicturesByRestaurantId = async (restaurant_id) => {
     try {
         const user = state.getUser();
         const api_token = user ? user.data.api_token : null;
-        if (!api_token) {
-            return { success: false, message: 'Not logged in' };
-        }
         const response = await fetch(urls.businessMenus, {
             method: 'POST',
             headers: {
@@ -257,9 +251,6 @@ export const restaurantPicturesByRestaurantId = async (restaurant_id) => {
     try {
         const user = state.getUser();
         const api_token = user ? user.data.api_token : null;
-        if (!api_token) {
-            return { success: false, message: 'Not logged in' };
-        }
         const response = await fetch(urls.businessInterior, {
             method: 'POST',
             headers: {
@@ -340,10 +331,6 @@ export const closestRestaurants = async (name) => {
     try {
         const user = state.getUser();
         const api_token = user ? user.data.api_token : null;
-        if (!api_token) {
-            return { success: false, message: 'Not logged in' };
-        }
-
         const response = await fetch(urls.closestRestaurants, {
             method: 'POST',
             headers: {
@@ -370,10 +357,6 @@ export const findRestaurantByName = async (name) => {
     try {
         const user = state.getUser();
         const api_token = user ? user.data.api_token : null;
-        if (!api_token) {
-            return { success: false, message: 'Not logged in' };
-        }
-
         const response = await fetch(urls.userFindRestaurantByName, {
             method: 'POST',
             headers: {
@@ -398,9 +381,6 @@ export const foodGrid = async () => {
     try {
         const user = state.getUser();
         const api_token = user ? user.data.api_token : null;
-        if (!api_token) {
-            return { success: false, message: 'Not logged in' };
-        }
         const response = await fetch(urls.foodGrid, {
             method: 'POST',
             headers: {
@@ -425,9 +405,6 @@ export const foodGridSearchName = async (name) => {
     try {
         const user = state.getUser();
         const api_token = user ? user.data.api_token : null;
-        if (!api_token) {
-            return { success: false, message: 'Not logged in' };
-        }
         const response = await fetch(urls.foodGridSearchName, {
             method: 'POST',
             headers: {
