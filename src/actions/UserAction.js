@@ -106,7 +106,7 @@ export const onSignIn = async (type) => {
 export const getUserProfile = async () => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         if (!api_token) {
             return { success: false, message: 'Not logged in' };
         }
@@ -133,7 +133,7 @@ export const getUserProfile = async () => {
 export const setUserProfile = async (preferences) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         if (!api_token) {
             return { success: false, message: 'Not logged in' };
         }
@@ -201,7 +201,8 @@ export const searchCuisine = async (cuisine) => {
 export const foodItemsByRestaurantId = async (restaurant_id) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        console.log(restaurant_id);
+        const api_token = user && user.data ? user.data.api_token : null;
         const type = user ? user.type : null;
         const response = await fetch(urls.businessFoodItems, {
             method: 'POST',
@@ -212,6 +213,7 @@ export const foodItemsByRestaurantId = async (restaurant_id) => {
             body: JSON.stringify({ api_token, type, restaurant_id })
         });
         const parsedResult = await response.json();
+        console.log(parsedResult);
         if (response.status === 200) {
             return { success: true, data: parsedResult }
         } else {
@@ -226,7 +228,7 @@ export const foodItemsByRestaurantId = async (restaurant_id) => {
 export const menuPicturesByRestaurantId = async (restaurant_id) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         const response = await fetch(urls.businessMenus, {
             method: 'POST',
             headers: {
@@ -250,7 +252,7 @@ export const menuPicturesByRestaurantId = async (restaurant_id) => {
 export const restaurantPicturesByRestaurantId = async (restaurant_id) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         const response = await fetch(urls.businessInterior, {
             method: 'POST',
             headers: {
@@ -274,7 +276,7 @@ export const restaurantPicturesByRestaurantId = async (restaurant_id) => {
 export const submitReview = async (form) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         const type = user ? user.type : null;
         if (!api_token) {
             return { success: false, message: 'Not logged in' };
@@ -302,7 +304,7 @@ export const submitReview = async (form) => {
 export const getUserReviews = async (form) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         if (!api_token || user.type !== 'user') {
             return { success: false, message: 'Not logged in' };
         }
@@ -330,7 +332,7 @@ export const getUserReviews = async (form) => {
 export const closestRestaurants = async (name) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         const response = await fetch(urls.closestRestaurants, {
             method: 'POST',
             headers: {
@@ -356,7 +358,7 @@ export const closestRestaurants = async (name) => {
 export const findRestaurantByName = async (name) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         const response = await fetch(urls.userFindRestaurantByName, {
             method: 'POST',
             headers: {
@@ -380,7 +382,7 @@ export const findRestaurantByName = async (name) => {
 export const foodGrid = async () => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         const response = await fetch(urls.foodGrid, {
             method: 'POST',
             headers: {
@@ -404,7 +406,7 @@ export const foodGrid = async () => {
 export const foodGridSearchName = async (name) => {
     try {
         const user = state.getUser();
-        const api_token = user ? user.data.api_token : null;
+        const api_token = user && user.data ? user.data.api_token : null;
         const response = await fetch(urls.foodGridSearchName, {
             method: 'POST',
             headers: {
