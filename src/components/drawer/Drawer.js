@@ -42,10 +42,6 @@ class DrawerItems extends Component {
             this.items.push({ text: 'Find Restaurant', action: () => changeRoute('FindRestaurant', 'Find Restaurant')});
             this.items.push({ text: 'Find Food', action: () => changeRoute('FindFood', 'Find Food')});
             this.items.push({ text: 'Reviews', action: () => changeRoute('Reviews', 'Reviews')});
-        } else if (!this.user.data) {
-            this.items.push({ text: 'Login', action: () => {
-                changeRoute('DrawerOpen', 'Home');
-            }});
         }
     }
     onLogout = async () => {
