@@ -2,7 +2,7 @@
   "expo": {
    "name": "Zatiq",
    "icon": "./src/assets/logos/zatiq_logo.png",
-   "version": "1.0.3",
+   "version": "1.0.4",
    "scheme": "Zatiq",
    "slug": "zatiq-app",
    "sdkVersion": "27.0.0",
@@ -20,7 +20,7 @@
    },
    "android": {
      "package": "com.zatiq.zatiqapp",
-     "versionCode": 3,
+     "versionCode": 4,
      "icon": "./src/assets/logos/zatiq_logo.png",
      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "READ_INTERNAL_STORAGE", "WRITE_INTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
      "config": {
