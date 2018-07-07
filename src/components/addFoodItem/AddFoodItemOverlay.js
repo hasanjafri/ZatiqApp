@@ -115,7 +115,7 @@ class AddFoodItemOverlay extends React.Component {
         this.overview = '';
         this.item_price = '';
         this.calories = '';
-        this.meal_type = [0];
+        this.meal_type = [];
         this.tags = {}, this.meat = {}, this.seafood = {};
         lists.tags.forEach(tag => {
             this.tags[tag.value] = false;
@@ -209,10 +209,10 @@ class AddFoodItemOverlay extends React.Component {
         } else {
             const { image, food_item_id  } = this.state;
             const meal_indexes = {
-                breakfast: Boolean(this.meal_type.indexOf(0)),
-                brunch: Boolean(this.meal_type.indexOf(1)),
-                lunch: Boolean(this.meal_type.indexOf(2)),
-                dinner: Boolean(this.meal_type.indexOf(3))
+                breakfast: Boolean(this.meal_type.indexOf(0) > -1),
+                brunch: Boolean(this.meal_type.indexOf(1) > -1),
+                lunch: Boolean(this.meal_type.indexOf(2) > -1),
+                dinner: Boolean(this.meal_type.indexOf(3) > -1)
             };
             const form = {
                 image,

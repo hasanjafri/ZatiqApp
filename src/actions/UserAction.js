@@ -201,7 +201,6 @@ export const searchCuisine = async (cuisine) => {
 export const foodItemsByRestaurantId = async (restaurant_id) => {
     try {
         const user = state.getUser();
-        console.log(restaurant_id);
         const api_token = user && user.data ? user.data.api_token : null;
         const type = user ? user.type : null;
         const response = await fetch(urls.businessFoodItems, {
@@ -213,7 +212,6 @@ export const foodItemsByRestaurantId = async (restaurant_id) => {
             body: JSON.stringify({ api_token, type, restaurant_id })
         });
         const parsedResult = await response.json();
-        console.log(parsedResult);
         if (response.status === 200) {
             return { success: true, data: parsedResult }
         } else {
