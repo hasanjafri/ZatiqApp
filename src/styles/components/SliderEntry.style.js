@@ -24,36 +24,45 @@ export default StyleSheet.create({
         height: slideHeight,
         paddingHorizontal: itemHorizontalMargin
     },
-    shadow: {
+    fullImageContainer: {
+        height: 300,
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    pictureContainer: {
+        flex: 1,
+        height: '100%',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     imageContainer: {
         flex: 1,
-        marginBottom: IS_IOS ? 0 : -1, 
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: IS_IOS ? 0 : -1,
         backgroundColor: 'white'
     },
     imagePlaceholder: {
         resizeMode: 'cover',
-        // width: 150,
         backgroundColor: colors.lightGrey,
         alignItems: 'center',
         justifyContent: 'center'
     },
+    fullImage: {
+        width: '100%',
+        alignSelf: 'center'
+    },
     image: {
-        ...StyleSheet.absoluteFillObject,
-        resizeMode: 'cover'
-    },
-    radiusMask: {
-    },
-    radiusMaskEven: {
+        width: slideWidth,
+        alignSelf: 'center'
     },
     contentContainer: {
-        justifyContent: 'center',
-        paddingTop: 20 - entryBorderRadius,
-        paddingBottom: 20,
+        paddingVertical: 16,
         paddingHorizontal: 16,
-        backgroundColor: 'white'
-    },
-    contentContainerEven: {
         backgroundColor: 'white'
     },
     
@@ -66,6 +75,7 @@ export default StyleSheet.create({
     tag: {
         backgroundColor: colors.blue,
         lineHeight: 20,
+        height: 20,
         marginBottom: 5,
         paddingHorizontal: 10,
         marginRight: 5

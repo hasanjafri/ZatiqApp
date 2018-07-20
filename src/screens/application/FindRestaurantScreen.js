@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Platform, ScrollView, Image } from 'react-native';
-import { SearchBar, ListItem } from 'react-native-elements';
+import { View, Text, Platform, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { changeDrawerItem } from '../../redux/actions/drawer.action';
 
@@ -49,6 +49,13 @@ class FindRestaurant extends React.Component {
             }
         }
     }
+    onSelectRestaurant = (restaurant) => {
+        this.props.changeDrawerItem('Home');
+        this.props.navigation.navigate('Restaurant', {
+            restaurant_id: restaurant.restaurant_id,
+            restaurant_info: { ...restaurant }
+        });
+    }
     render() {
         let renderedElement;
         if (!this.loaded) {
@@ -60,17 +67,13 @@ class FindRestaurant extends React.Component {
             renderedElement = (
                 this.state.restaurants.map((restaurant, i) => {
                     return (
-                        <ListItem key={i}
-                            leftIcon={<View style={{ paddingRight: 10 }}><Image style={{width: 35, height: 35, borderRadius: 17.5}} source={{uri: restaurant.image.base64}}/></View>}
-                            onPress={() => {
-                                this.props.changeDrawerItem('Home');
-                                this.props.navigation.navigate('Restaurant', {
-                                    restaurant_id: restaurant.restaurant_id,
-                                    restaurant_info: { ...restaurant }
-                                });
-                            }}
-                            subtitle={restaurant.address}
-                            title={restaurant.name} />
+                        <TouchableOpacity activeOpacity={0.7} key={i} onPress={() => this.onSelectRestaurant(restaurant)}>
+                            <View elevation={3} style={styles.box}>
+                                <Image style={[styles.image, {aspectRatio: Number(restaurant.image.image_aspect_ratio)}]} resizeMode="cover" source={{uri: restaurant.image.base64}} />
+                                <Text numberOfLines={1} style={styles.restaurantName}>{restaurant.name}</Text>
+                                <Text numberOfLines={1} style={styles.restaurantAddress}>{restaurant.address}</Text>
+                            </View>
+                        </TouchableOpacity>
                     );
                 })
             );
@@ -82,7 +85,7 @@ class FindRestaurant extends React.Component {
                     showLoading={this.state.isSearching}
                     onChangeText={this.onChangeTextDelayed}
                     placeholder='Search Restaurant'/>
-                <ScrollView style={[styles.view]}>
+                <ScrollView style={styles.view}>
                     {renderedElement}
                 </ScrollView>
             </React.Fragment>

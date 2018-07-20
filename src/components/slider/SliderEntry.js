@@ -29,25 +29,16 @@ export default class SliderEntry extends Component {
         return false;
     }
     get image () {
-        const { data: {  image: { base64, image_aspect_ratio } }, parallaxProps, even, type } = this.props;
+        const { data: { image: { base64, image_aspect_ratio } }, parallaxProps, even, type } = this.props;
         if (!base64) {
             return <Image style={styles.imagePlaceholder} />
         }
+        const isFull = this.props.type === 'FullPicture';
         const displayImage = base64;
-        const isFull = type === 'FullPicture';
         return (
-            isFull ?
-                <Image source={{ uri: displayImage }} style={{
-                    width: '100%',
-                    height: (40 * viewportHeight) / 100,
-                    resizeMode: 'cover' }} /> :
-                <ParallaxImage source={{ uri: displayImage }}
-                    containerStyle={styles.imageContainer}
-                    style={styles.image}
-                    parallaxFactor={0.05}
-                    showSpinner
-                    spinnerColor={even ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.25)'}
-                    {...parallaxProps} />
+            <Image source={{ uri: displayImage }}
+                style={[isFull ? styles.fullImage : styles.image, { aspectRatio: Number(image_aspect_ratio) }]}
+                resizeMode="cover" />
         );
     }
     onCall(number) {
@@ -84,10 +75,10 @@ export default class SliderEntry extends Component {
         }
         return (
             minimizedView ? 
-            <View style={styles.tagContainer}>{tagsDisplay}</View>:
-            <TouchableOpacity style={styles.tagContainer} activeOpacity={1} onPress={() => this.props.showTagsOverlay(this.props.data)}>
-                {tagsDisplay}
-            </TouchableOpacity>
+                <View style={styles.tagContainer}>{tagsDisplay}</View> :
+                <TouchableOpacity style={styles.tagContainer} activeOpacity={1} onPress={() => this.props.showTagsOverlay(this.props.data)}>
+                    {tagsDisplay}
+                </TouchableOpacity>
         );
     }
     _renderSuggestionEntry(type) {
@@ -104,12 +95,10 @@ export default class SliderEntry extends Component {
         return (
             <React.Fragment>
                 <View style={styles.slideInnerContainer}>
-                    <View style={styles.shadow} />
-                    <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
+                    <View style={styles.imageContainer}>
                         { this.image }
-                        <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
                     </View>
-                    <View style={[styles.contentContainer, even ? styles.contentContainerEven : {}]}>
+                    <View style={styles.contentContainer}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={styles.leftPart}>
                                 <Text style={[textStyles.title, { fontSize: 16 }]} numberOfLines={2} >{ item_name }</Text>
@@ -162,23 +151,22 @@ export default class SliderEntry extends Component {
             </React.Fragment>
         );
     }
-    _renderImageEntry() {
-        return (
-            <View style={styles.slideInnerContainer}>
-                <View style={styles.shadow} />
-                <View style={styles.imageContainer}>
-                    { this.image }
-                    <View style={styles.radiusMask} />
-                </View>
-            </View>
-        );
-    }
     render () {
         const { type } = this.props;
         if (type === 'Suggestion' || type === 'Food') {
             return this._renderSuggestionEntry(type);
-        } else if (type === 'Picture' || type === 'FullPicture') {
-            return this._renderImageEntry();
+        } else if (type === 'Picture') {
+            return (
+                <View style={styles.pictureContainer}>
+                    { this.image }
+                </View>
+            );
+        } else if (type === 'FullPicture') {
+            return (
+                <View style={styles.fullImageContainer}>
+                    {this.image}
+                </View>
+            );
         }
     }
 }

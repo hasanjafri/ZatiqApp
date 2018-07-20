@@ -31,8 +31,6 @@ class Slider extends Component {
         const { activeItem } = this.state;
         const { noPaginate, type } = this.props;
         const isFull = type === 'FullPicture';
-        const containerCustomStyle = isFull ? { height: (40 * viewportHeight) / 100 } : styles.slider;
-        const contentContainerCustomStyle = isFull ? { marginTop: 20 } : styles.sliderContentContainer;
         return (
             <React.Fragment>
                 <Carousel ref={c => this.slider = c}
@@ -40,12 +38,11 @@ class Slider extends Component {
                     renderItem={this._renderItem}
                     sliderWidth={sliderWidth}
                     itemWidth={itemWidth}
-                    hasParallaxImages
                     firstItem={this.state.activeItem}
-                    inactiveSlideScale={0.94}
-                    inactiveSlideOpacity={0.7}
-                    containerCustomStyle={containerCustomStyle}
-                    contentContainerCustomStyle={contentContainerCustomStyle}
+                    inactiveSlideScale={0.7}
+                    inactiveSlideOpacity={1}
+                    containerCustomStyle={styles.slider}
+                    contentContainerCustomStyle={styles.sliderContentContainer}
                     onSnapToItem={index => this.setState({ activeItem: index }) } />
                 {   noPaginate ? null :
                         <Pagination dotsLength={this.props.data.length}

@@ -249,5 +249,4 @@ class GridItem extends React.Component {
     }
 }
 
-
 export default connect(null, { showSignInOverlay })(RestaurantScreen);
