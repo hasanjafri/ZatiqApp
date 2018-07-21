@@ -5,7 +5,7 @@ export default styles = StyleSheet.create({
         fontSize: 16,
         color: 'white',
         textAlign: 'center',
-        lineHeight: 30,
+        lineHeight: 25,
         fontFamily: 'nunito'
     },
     miniItalic: {

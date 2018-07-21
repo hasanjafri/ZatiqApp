@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View, ImageBackground, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Text, View, ImageBackground, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
 import { showPreferenceOverlay, showSignInOverlay } from '../../redux/actions/general.action';
+
 // Custom imports
 import { searchCuisine } from '../../actions/UserAction';
 import AddReviewButton from '../../components/addReview/AddReviewButton';
@@ -12,6 +13,7 @@ import styles from '../../styles/screens/application/FeelingScreen.style';
 import textStyles from '../../styles/text.style';
 import categories from '../../data/categories';
 import Loader from '../../components/Loader';
+import Slider from '../../components/slider/Slider';
 
 import SignInOverlay from '../../components/SignInOverlay';
 import PreferenceOverlay from '../../components/preference/PreferenceOverlay';
@@ -21,7 +23,23 @@ import { guestCuisines } from '../../libs/constants';
 import appState from '../../appState';
 const state = appState.getInstance();
 
-class Category extends React.Component {
+class Promotions extends React.Component {4
+    navigateTo = (route, item) => {
+        this.props.navigation.navigate(route, item);
+    }
+    render() {
+        return (
+            <Slider type="Promotion"
+                containerStyle={{}}
+                navigateTo={this.navigateTo}
+                itemWidth={250}
+                data={[{ test: 1 }, { test: 1 }, { test: 1 }]}
+                noPaginate />
+        );
+    }
+}
+
+class FoodCategory extends React.Component {
     state = {
         isLoading: false
     }
@@ -31,68 +49,55 @@ class Category extends React.Component {
         this.setState({ isLoading:  false });
     }
     render() {
-        const { type } = this.props;
-        let categoryItem;
-        if (type === 'grid') {
-            const { item } = this.props;
-            categoryItem = (
-                <TouchableOpacity activeOpacity={0.5} onPress={() => this.onSearchCuisine(item.text)}>
-                    <View style={styles.item}>
-                        <Image style={{ height: 60, alignItems: 'center' }} resizeMode="contain" source={item.source} />
-                        <Text style={[textStyles.tiny, { marginTop: 10 }]}>{item.text.toUpperCase()}</Text>
-                    </View>
-                    <Loader light show={this.state.isLoading} />
-                </TouchableOpacity>
-            );
-        } else if (type === 'main') {
-            const { category } = this.props;
-            categoryItem = (
-                <TouchableOpacity style={styles.topPickView} onPress={() => this.onSearchCuisine(category)}>
-                    <ImageBackground style={styles.topPickImage} source={require('../../assets/backgrounds/top-picks.png')}>
-                        <View style={styles.topPickImageOverlay}>
-                            <Text style={textStyles.largeBold}>ZATIQ'S</Text>
-                            <Text style={textStyles.hugeBold}>LAUNCH DEALS</Text>
-                            {/* <Text style={textStyles.large}>OF THE DAY</Text> */}
-                        </View>
-                        <Loader light show={this.state.isLoading} />
-                    </ImageBackground>
-                </TouchableOpacity>
-            );
-        } else {
-            const { style, category, src } = this.props;
-            categoryItem = (
-                <TouchableOpacity style={style} onPress={() => this.onSearchCuisine(category)}>
-                    <ImageBackground style={styles.imageContainer} source={src}>
-                        <Text style={textStyles.largeBold}>{category.toUpperCase()}</Text>
-                    </ImageBackground>
-                    <Loader light show={this.state.isLoading} />
-                </TouchableOpacity>
-            );
-        }
-        return categoryItem;
+        const { type, item } = this.props;
+        return (
+            <TouchableOpacity activeOpacity={0.5} onPress={() => this.onSearchCuisine(item.text)}>
+                <View style={styles.item}>
+                    <Image style={{ height: 60, alignItems: 'center' }} resizeMode="contain" source={item.source} />
+                    <Text style={[textStyles.tiny, { marginTop: 10 }]}>{item.text.toUpperCase()}</Text>
+                </View>
+                <Loader light show={this.state.isLoading} />
+            </TouchableOpacity>
+        );
     }
 }
 
-class WelcomeSection extends React.Component {
+class FilterCategory extends React.Component {
+    state = {
+        isLoading: false
+    }
+    onSearchCuisine = async () => {
+        this.setState({ isLoading:  true });
+        await this.props.onSearchCuisine();
+        this.setState({ isLoading:  false });
+    }
     render() {
-        const user = appState.getInstance().getUser();
-        let name = 'guest';
-        if (user) {
-            const { type } = user;
-            if (type === 'user' && user.data) {
-                name =  user.data.user_name;
-            } else if (type === 'business' && user.data) {
-                name = user.data.name;
-            }
-        }
         return (
-            <View style={styles.questionView}>
-                <Text style={textStyles.mediumBold}>Hey {name},</Text>
-                <Text style={textStyles.small}>HUNGRY? Let's find you something to eat</Text>
-                <Text style={[textStyles.smallBold, { paddingTop: 10, paddingBottom: 10 }]}>What are you in the mood for?</Text>
-            </View>
+            <TouchableOpacity onPress={this.onSearchCuisine} activeOpacity={0.5} style={[styles.buttonTextContainer, this.props.last ? { marginTop: 10 } : {} ]}>
+                <Text numberOfLines={1} style={styles.buttonText}>{this.props.name}</Text>
+                <Loader light show={this.state.isLoading} />
+            </TouchableOpacity>
         );
     }
+}
+
+const WelcomeSection = props => {
+    const user = appState.getInstance().getUser();
+    let name = 'guest';
+    if (user) {
+        const { type } = user;
+        if (type === 'user' && user.data) {
+            name =  user.data.user_name;
+        } else if (type === 'business' && user.data) {
+            name = user.data.name;
+        }
+    }
+    return (
+        <View style={styles.questionView}>
+            <Text numberOfLines={1} style={textStyles.small}>Hey {name}! Let's find you something to eat</Text>
+            <Text numberOfLines={1} style={textStyles.small}>What are you in the mood for?</Text>
+        </View>
+    );
 }
 
 class FeelingScreen extends React.Component {
@@ -126,40 +131,25 @@ class FeelingScreen extends React.Component {
     togglePreferenceModal = () => {
         this.props.showPreferenceOverlay();
     }
-    _renderCategoryItem = (item, i) => {
-        const { navigate } = this.props.navigation;
-        return <Category onSearchCuisine={this.onSearchCuisine} navigate={navigate} type={'grid'} item={item} />;
-    }
     render() {
         return (
             <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
-                <WelcomeSection />
                 <ScrollView style={styles.scrollViewContainer}>
-                    <Category type={'main'}
-                        onSearchCuisine={this.onSearchCuisine} 
-                        category={'Promotions'} />
-                    <View style={styles.equalWidthsContainer}>
-                        <Category type={'special'}
-                            onSearchCuisine={this.onSearchCuisine} 
-                            category={'Surprise Me'}
-                            style={[styles.equalWitdhView, { marginRight: 5 }]}
-                            src={require('../../assets/backgrounds/6.jpg')} />
-                        <View style={[styles.equalWitdhView, { marginLeft: 5 }]}>
-                            <View style={styles.equalHeightContainer}>
-                               <Category type={'special'}
-                                    onSearchCuisine={this.onSearchCuisine} 
-                                    category={'Top Picks'}
-                                    style={[styles.equalHeightView, { paddingBottom: 5}]}
-                                    src={require('../../assets/backgrounds/2.jpeg')} />
-                               <Category type={'special'}
-                                    onSearchCuisine={this.onSearchCuisine} 
-                                    category={'Newest'}
-                                    style={[styles.equalHeightView, { paddingTop: 5 }]}
-                                    src={require('../../assets/backgrounds/2.jpeg')} />
-                            </View>
-                        </View>
+                    <Text numberOfLine={1} style={styles.topPicksLabel}>Top Picks</Text>
+                    <Promotions />
+                    <View style={styles.filterCategoryContainer}>
+                        <FilterCategory name="SURPRISE ME" onSearchCuisine={() => this.onSearchCuisine('Surprise Me')} />
+                        <FilterCategory name="TRENDING" onSearchCuisine={() => this.onSearchCuisine('Top Picks')} last />
                     </View>
-                    <GridView itemDimension={130} items={categories} renderItem={this._renderCategoryItem} style={{paddingTop: 0, flex: 1}}/>
+                    <WelcomeSection />
+                    <GridView itemDimension={130}
+                        items={categories}
+                        renderItem={(item, i) => (
+                            <FoodCategory onSearchCuisine={this.onSearchCuisine}
+                                navigate={this.props.navigation.navigate}
+                                item={item} />
+                        )}
+                        style={{paddingTop: 0, flex: 1}} />
                 </ScrollView>
                 <PreferenceOverlay />
                 <SignInOverlay />

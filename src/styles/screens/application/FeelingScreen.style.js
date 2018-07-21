@@ -6,61 +6,38 @@ export default styles = StyleSheet.create({
         height: '100%',
         width: '100%'
     },
-
-    // Question Container
-    questionView: {
-        borderBottomColor: 'white',
-        borderBottomWidth: 1,
-        marginVertical: 10,
-    },
-
-    // Top picks
-    topPickView: {
-        height: 130,
-        width: '100%',
-        paddingRight: 10,
-        paddingLeft: 10,
-        paddingBottom: 10,
-        alignItems: 'center',
-        justifyContent:'center'
-    },
-    topPickImage: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: '#70757c'
-    },
-    topPickImageOverlay: {
-        flex: 1,
-        justifyContent: 'center'
-    },
-
-    // Surprise Me & Popular & Newset
-    equalWidthsContainer: {
-        paddingHorizontal: 10,
-        paddingBottom: 10,
-        flexDirection: 'row',
-    },
-    equalWitdhView: {
-        width: '50%',
-        height: 130
-    },
-    imageContainer: {
-        height: '100%',
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,.6)',
-        justifyContent: 'center'
-    },
-    equalHeightContainer: {
-        height: '100%'
-    },
-    equalHeightView: {
-        height: 65
-    },
-
-    // Categories
     scrollViewContainer: {
         flex: 1
     },
+    questionView: {
+        marginVertical: 10,
+    },
+
+    topPicksLabel: {
+        fontSize: 20,
+        color: 'white',
+        marginVertical: 10,
+        fontFamily: 'nunito',
+        paddingLeft: 10
+    },
+    filterCategoryContainer: {
+        width: '100%',
+        marginTop: 10,
+        paddingHorizontal: 10
+    },
+    buttonTextContainer: {
+        paddingVertical: 7,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(127, 140, 141, 0.3)'
+    },
+    buttonText: {
+        color: 'white',
+        fontFamily: 'nunito',
+        fontSize: 23
+    },
+
     item: {
         flexDirection: 'column',
         alignItems: 'center',

@@ -8,45 +8,54 @@ import colors from '../../styles/colors.style';
 
 const { height: viewportHeight } = Dimensions.get('window');
 
+class CarouselContainer extends Component {
+    shouldComponentUpdate(nextProps) {
+        return this.props.activeItem === nextProps.activeItem;
+    }
+    _renderItem = ({item, index}) => {
+        return (
+            <SliderEntry data={item}
+                showTagsOverlay={this.props.showTagsOverlay}
+                navigateTo={this.props.navigateTo}
+                type={this.props.type} />
+        );
+    }
+    render() {
+        return (
+            <Carousel ref={c => this.slider = c}
+                data={this.props.data}
+                renderItem={this._renderItem}
+                sliderWidth={this.props.sliderWidth ? this.props.sliderWidth : sliderWidth}
+                itemWidth={this.props.itemWidth ? this.props.itemWidth : itemWidth}
+                inactiveSlideScale={0.9}
+                inactiveSlideOpacity={1}
+                containerCustomStyle={this.props.containerStyle ? this.props.containerStyle : styles.slider}
+                contentContainerCustomStyle={styles.sliderContentContainer}
+                onSnapToItem={this.props.updateActiveItem} />
+        );
+    }
+}
+
 class Slider extends Component {
     constructor (props) {
         super(props);
         this.state = {
             activeItem: 0
         };
-        this._renderItem = this._renderItem.bind(this);
     }
-    _renderItem ({item, index}, parallaxProps) {
-        return (
-            <SliderEntry data={item}
-                showTagsOverlay={this.props.showTagsOverlay}
-                navigateTo={this.props.navigateTo}
-                type={this.props.type}
-                even={(index + 1) % 2 === 0}
-                parallax
-                parallaxProps={parallaxProps} />
-        );
+    updateActiveItem = index => {
+        this.setState({ activeItem: index });
     }
-    _renderCarousel() {
+    render () {
         const { activeItem } = this.state;
         const { noPaginate, type } = this.props;
-        const isFull = type === 'FullPicture';
         return (
-            <React.Fragment>
-                <Carousel ref={c => this.slider = c}
-                    data={this.props.data}
-                    renderItem={this._renderItem}
-                    sliderWidth={sliderWidth}
-                    itemWidth={itemWidth}
-                    firstItem={this.state.activeItem}
-                    inactiveSlideScale={0.7}
-                    inactiveSlideOpacity={1}
-                    containerCustomStyle={styles.slider}
-                    contentContainerCustomStyle={styles.sliderContentContainer}
-                    onSnapToItem={index => this.setState({ activeItem: index }) } />
-                {   noPaginate ? null :
+            <ScrollView style={styles.scrollview} scrollEventThrottle={100} directionalLockEnabled >
+                <React.Fragment>
+                    <CarouselContainer {...this.props} activeItem={activeItem} updateActiveItem={this.updateActiveItem} />
+                    {  !noPaginate ?
                         <Pagination dotsLength={this.props.data.length}
-                            activeDotIndex={this.state.activeItem}
+                            activeDotIndex={activeItem}
                             containerStyle={styles.paginationContainer}
                             dotColor={'rgba(255, 255, 255, 0.92)'}
                             dotStyle={styles.paginationDot}
@@ -54,17 +63,9 @@ class Slider extends Component {
                             inactiveDotOpacity={0.4}
                             inactiveDotScale={0.6}
                             carouselRef={this.slider}
-                            tappableDots={!!this.slider} />
-                }
-            </React.Fragment>
-        );
-    }
-    render () {
-        return (
-            <ScrollView style={styles.scrollview}
-                scrollEventThrottle={200}
-                directionalLockEnabled >
-                { this._renderCarousel() }
+                            tappableDots={!!this.slider} /> : null
+                    }
+                </React.Fragment>
             </ScrollView>
         );
     }

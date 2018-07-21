@@ -1,5 +1,6 @@
 const colors = {
     primary: 'rgba(38, 170, 205, 1)',
+    primaryLightBackground: 'rgba(38, 170, 205, 0.4)',
     primaryHalfOpacity: 'rgba(38, 170, 205, 0.5)',
     blue: '#2089dc',
     black: '#1a1917',

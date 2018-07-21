@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity, Linking, Dimensions } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Linking, Dimensions, ImageBackground } from 'react-native';
 import PropTypes from 'prop-types';
 import StarRating from 'react-native-star-rating';
 import moment from 'moment';
@@ -18,29 +18,18 @@ function capitalizeWords(str) {
 }
 const { height: viewportHeight } = Dimensions.get('window');
 
-export default class SliderEntry extends Component {
-    static propTypes = {
-        data: PropTypes.object.isRequired,
-        even: PropTypes.bool,
-        parallax: PropTypes.bool,
-        parallaxProps: PropTypes.object,
-    };
-    shouldComponentUpdate(nextProps, nextState) {
-        return false;
-    }
-    get image () {
-        const { data: { image: { base64, image_aspect_ratio } }, parallaxProps, even, type } = this.props;
-        if (!base64) {
-            return <Image style={styles.imagePlaceholder} />
-        }
-        const isFull = this.props.type === 'FullPicture';
-        const displayImage = base64;
-        return (
-            <Image source={{ uri: displayImage }}
+const ImageGetter = props => {
+    const { image: { base64, image_aspect_ratio }, isFull } = props;
+    return (
+        base64 ?
+            <Image source={{ uri: base64 }}
                 style={[isFull ? styles.fullImage : styles.image, { aspectRatio: Number(image_aspect_ratio) }]}
-                resizeMode="cover" />
-        );
-    }
+                resizeMode="cover" /> :
+            <Image style={styles.imagePlaceholder} />
+    );
+}
+
+class SuggestionEntry extends Component {
     onCall(number) {
         Linking.openURL(`tel:+1${phoneFormatter.normalize(number)}`);
     }
@@ -81,92 +70,126 @@ export default class SliderEntry extends Component {
                 </TouchableOpacity>
         );
     }
-    _renderSuggestionEntry(type) {
-        const { data: {
+    render() {
+        const { data, type } = this.props;
+        const {
             food_item_id,
             item_name,
             item_price,
             calories,
             tags,
             overview,
-            restaurant_info: { name, number, hours }
-        }, even } = this.props;
+            restaurant_info: { name, number, hours },
+            image
+        } = data;
         const isOpen = this.isOpen(hours);
         return (
-            <React.Fragment>
-                <View style={styles.slideInnerContainer}>
-                    <View style={styles.imageContainer}>
-                        { this.image }
+            <View style={styles.slideInnerContainer}>
+                <View style={styles.imageContainer}>
+                    <ImageGetter image={image} />
+                </View>
+                <View style={styles.contentContainer}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={styles.leftPart}>
+                            <Text style={[textStyles.title, { fontSize: 16 }]} numberOfLines={2} >{ item_name }</Text>
+                        </View>
+                        <View style={styles.rightPart}>
+                            <Text style={[textStyles.subtitle, { color: colors.gray, textAlign: 'center' }]} >${ item_price }</Text>
+                        </View>
                     </View>
-                    <View style={styles.contentContainer}>
+
+                    { calories ?    
                         <View style={{ flexDirection: 'row' }}>
                             <View style={styles.leftPart}>
-                                <Text style={[textStyles.title, { fontSize: 16 }]} numberOfLines={2} >{ item_name }</Text>
+                                <Text style={textStyles.subtitle} numberOfLines={3} >{ overview }</Text>
                             </View>
                             <View style={styles.rightPart}>
-                                <Text style={[textStyles.subtitle, { color: colors.gray, textAlign: 'center' }]} >${ item_price }</Text>
+                                <Text style={[textStyles.subtitle, { color: colors.gray, textAlign: 'center' }]} >{ calories } Calories</Text>
                             </View>
-                        </View>
-
-                        { calories ?    
-                            <View style={{ flexDirection: 'row' }}>
-                                <View style={styles.leftPart}>
-                                    <Text style={textStyles.subtitle} numberOfLines={3} >{ overview }</Text>
+                        </View> :
+                        <Text style={textStyles.subtitle} numberOfLines={3} >{overview}</Text>
+                    }                        
+                    { this.getTags(tags) }
+                    { type === 'Suggestion' ?
+                        <React.Fragment>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <View style={[styles.leftPart, { paddingVertical: 10 }]}>
+                                    <Text style={[textStyles.title,  { fontSize: 16 }]} numberOfLines={2} >{ name }</Text>
                                 </View>
-                                <View style={styles.rightPart}>
-                                    <Text style={[textStyles.subtitle, { color: colors.gray, textAlign: 'center' }]} >{ calories } Calories</Text>
-                                </View>
-                            </View> :
-                            <Text style={textStyles.subtitle} numberOfLines={3} >{ overview }</Text>
-                        }                        
-                        {this.getTags(tags)}
-                        {
-                            type === 'Suggestion' ?
-                                <React.Fragment>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                        <View style={[styles.leftPart, { paddingVertical: 10 }]}>
-                                            <Text style={[textStyles.title,  { fontSize: 16 }]} numberOfLines={2} >{ name }</Text>
-                                        </View>
-                                        <Text style={[styles.rightPart, styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
-                                            { isOpen ? 'Open now' : 'Closed' }
-                                        </Text>
-                                    </View>
-                                    <View style={styles.buttonBar}>
-                                        <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={() => this.onCall(number)}>
-                                            <Text style={[textStyles.smallBold, styles.buttonText]}>CONTACT</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => {
-                                            if (this.props.data.hasNavigate) {
-                                                return this.props.data.navigateTo('Restaurant', this.props.data);
-                                            }
-                                            return this.props.navigateTo('Restaurant', this.props.data);
-                                        }}>
-                                            <Text style={[textStyles.smallBold, styles.buttonText]}>RESTAURANT</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </React.Fragment> : null
-                        }
-                    </View>
+                                <Text style={[styles.rightPart, styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
+                                    { isOpen ? 'Open now' : 'Closed' }
+                                </Text>
+                            </View>
+                            <View style={styles.buttonBar}>
+                                <TouchableOpacity activeOpacity={0.7} style={styles.buttonCall} onPress={() => this.onCall(number)}>
+                                    <Text style={[textStyles.smallBold, styles.buttonText]}>CONTACT</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity activeOpacity={0.7} style={styles.buttonView} onPress={() => {
+                                    if (data.hasNavigate) {
+                                        return data.navigateTo('Restaurant', data);
+                                    }
+                                    return this.props.navigateTo('Restaurant', data);
+                                }}>
+                                    <Text style={[textStyles.smallBold, styles.buttonText]}>RESTAURANT</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </React.Fragment> : null
+                    }
                 </View>
-            </React.Fragment>
+            </View>
         );
     }
-    render () {
+}
+
+class PromotionEntry extends Component {
+    render() {
+        return (
+            <View style={styles.promotionContainer}>
+                <ImageBackground style={styles.promotionBackgroundImage} source={require('../../assets/backgrounds/top-picks.png')}>
+                    <Text numberOfLines={1} style={styles.promotionPrice}>$100.99</Text>
+                    <View style={styles.promotionBottomContainer}>
+                        <Text numberOfLines={1} style={styles.promotionTitle}>Zatiq Burger</Text>
+                        <View style={styles.promotionLogoContainer}>
+                            <Image style={styles.promotionLogo} resizeMode="cover" source={require('../../assets/backgrounds/top-picks.png')} />
+                        </View>
+                    </View>
+                </ImageBackground>
+            </View>
+        );
+    }
+}
+
+class SliderEntry extends Component {
+    static propTypes = {
+        data: PropTypes.object.isRequired
+    };
+    shouldComponentUpdate(nextProps, nextState) {
+        return false;
+    }
+    render() {
         const { type } = this.props;
         if (type === 'Suggestion' || type === 'Food') {
-            return this._renderSuggestionEntry(type);
+            return (
+                <SuggestionEntry {...this.props} />
+            );
+        }  else if (type === 'Promotion') {
+            return (
+                <PromotionEntry {...this.props} />
+            );
         } else if (type === 'Picture') {
             return (
                 <View style={styles.pictureContainer}>
-                    { this.image }
+                    <ImageGetter image={this.props.data.image} />
                 </View>
             );
         } else if (type === 'FullPicture') {
             return (
                 <View style={styles.fullImageContainer}>
-                    {this.image}
+                    <ImageGetter image={this.props.data.image} isFull/>
                 </View>
             );
         }
     }
 }
+
+export default SliderEntry;

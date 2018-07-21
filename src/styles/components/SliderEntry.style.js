@@ -11,18 +11,16 @@ function wp (percentage) {
 
 const slideHeight = viewportHeight - 70 - 20 - 70; // 90 for header, 70 for pagination?
 const slideWidth = wp(85);
-const itemHorizontalMargin = wp(1);
 
 export const sliderWidth = viewportWidth;
-export const itemWidth = slideWidth + itemHorizontalMargin * 2;
+export const itemWidth = slideWidth;
 
 const entryBorderRadius = 8;
 
 export default StyleSheet.create({
     slideInnerContainer: {
         width: itemWidth,
-        height: slideHeight,
-        paddingHorizontal: itemHorizontalMargin
+        height: slideHeight
     },
     fullImageContainer: {
         height: 300,
@@ -118,5 +116,55 @@ export default StyleSheet.create({
         position: 'absolute',
         textAlign: 'center',
         lineHeight: 40
+    },
+
+    // Promotions
+    promotionContainer: {
+        height: 200,
+        width: 266,
+        borderBottomWidth: 5,
+        borderBottomColor: colors.primary, 
+    },
+    promotionBackgroundImage: {
+        flex: 1,
+        height: '100%',
+        width: '100%'
+    },
+    promotionPrice: {
+        color: 'white',
+        fontSize: 16,
+        paddingVertical: 5,
+        paddingRight: 25,
+        paddingLeft: 10,
+        alignSelf: 'flex-end',
+        fontFamily: 'nunito',
+        textAlign: 'center',
+        backgroundColor: '#2e2e2e'
+    },
+    promotionBottomContainer: {
+        height: 55,
+        backgroundColor: colors.primaryLightBackground,
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    promotionTitle: {
+        color: 'white',
+        fontFamily: 'nunito',
+        fontSize: 15,
+        marginBottom: 5,
+        paddingHorizontal: 10
+    },
+    promotionLogoContainer: {
+        marginRight: 25,
+        flex: 1,
+        justifyContent: 'flex-end'
+    },
+    promotionLogo: {
+        height: 40,
+        width: 50,
+        alignSelf: 'flex-end'
     }
 });

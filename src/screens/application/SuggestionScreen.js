@@ -11,10 +11,9 @@ class SuggestionScreen extends React.Component {
             data: props.navigation.state.params.data.food_items,
             showTagsOverlay: false,
             currentData: null
-        }
-        this.navigateTo = this.navigateTo.bind(this);
+        };
     }
-    navigateTo(route, item) {
+    navigateTo = (route, item) => {
         this.props.navigation.navigate(route, item);
     }
     render () {
