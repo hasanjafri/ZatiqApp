@@ -73,7 +73,6 @@ class FindFood extends React.Component {
         )
     }
     render() {
-        
         return (
             <React.Fragment>
                 <ScrollView style={styles.view}>

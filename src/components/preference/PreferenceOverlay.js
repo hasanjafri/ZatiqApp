@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View, ScrollView, Dimensions } from 'react-native';
-import { Overlay, Icon, Button, ListItem } from 'react-native-elements';
+import { Text, View, ScrollView } from 'react-native';
+import { Icon, Button, ListItem } from 'react-native-elements';
+import Dialog from '../Dialog';
 
 import { closePreferenceOverlay } from '../../redux/actions/general.action';
 import textStyles from '../../styles/text.style';
@@ -58,7 +59,6 @@ class PreferenceOverlay extends React.Component {
         }
     }
     render() {
-        const { width, height } = Dimensions.get('window');
         const { isPreferenceOverlayShown } = this.props;
         const preferencesList = preferences.map((preference, i) => {
             const { text, value } = preference;
@@ -80,29 +80,23 @@ class PreferenceOverlay extends React.Component {
             );
         });
         return (
-            <Overlay isVisible={isPreferenceOverlayShown}
-                width={width - 20}
-                height={height - 100}
-                containerStyle={{ padding: 0 }}
-                overlayStyle={styles.overlayContainer}>
-                    <View style={styles.header}>
-                        <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Tell us a bit about yourself</Text>
-                        <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={() => this.props.closePreferenceOverlay()} />
-                    </View>
-                    { !this.state.isLoading ?
-                        <ScrollView style={styles.wrapper}>
-                            {preferencesList}
-                            <View style={styles.centered}>
-                                <Button title='Save'
-                                    loading={this.state.isLoading}
-                                    titleStyle={[textStyles.medium, { height: 50 }]}
-                                    buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                                    loading={this.state.isLoading}
-                                    onPress={() => this.saveItem()} />
-                            </View>
-                        </ScrollView> :
-                        <View style={{ flex: 1, height: '100%', width: '100%' }}><Loader show clear/></View> }
-            </Overlay>
+            <Dialog show={isPreferenceOverlayShown}
+                title="Tell us a bit about yourself"
+                onDismissed={this.props.closePreferenceOverlay}>
+                { !this.state.isLoading ?
+                    <ScrollView style={styles.wrapper}>
+                        {preferencesList}
+                        <View style={styles.centered}>
+                            <Button title='Save'
+                                loading={this.state.isLoading}
+                                titleStyle={[textStyles.medium, { height: 50 }]}
+                                buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                                loading={this.state.isLoading}
+                                onPress={() => this.saveItem()} />
+                        </View>
+                    </ScrollView> :
+                    <View style={{ flex: 1, height: '100%', width: '100%' }}><Loader show clear/></View> }
+            </Dialog>
         );
     }
 }

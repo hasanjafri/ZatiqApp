@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity, Linking, Dimensions, ImageBackground } from 'react-native';
 import PropTypes from 'prop-types';
-import StarRating from 'react-native-star-rating';
 import moment from 'moment';
-import { ParallaxImage } from 'react-native-snap-carousel';
-import { Badge, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import phoneFormatter from 'phone-formatter';
+
+import Loader from '../../components/Loader';
 
 import colors from '../../styles/colors.style';
 import styles from '../../styles/components/SliderEntry.style';
 import textStyles from '../../styles/text.style';
+
+import BusinessAction from '../../actions/BusinessAction';
+const BusinessInstance = BusinessAction.getInstance();
 
 const momentDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
@@ -142,19 +145,40 @@ class SuggestionEntry extends Component {
 }
 
 class PromotionEntry extends Component {
+    state = {
+        isLoading: false
+    };
+    openFoodItem = async () => {
+        this.setState({ isLoading:  true });
+        const result = await BusinessInstance.getFoodItem(this.props.data.food_item_id);
+        this.setState({ isLoading:  false }, () => {
+            if (result.success) {
+                const food_item = result.data[0];
+                food_item.hasNavigate = true;
+                food_item.navigateTo = this.props.navigateTo;
+                this.props.navigateTo('Picture', {
+                    type: 'Suggestion',
+                    data: [food_item]
+                });
+            } else {
+                alert(result.message);
+            }
+        });
+    }
     render() {
         return (
-            <View style={styles.promotionContainer}>
-                <ImageBackground style={styles.promotionBackgroundImage} source={require('../../assets/backgrounds/top-picks.png')}>
-                    <Text numberOfLines={1} style={styles.promotionPrice}>$100.99</Text>
+            <TouchableOpacity activeOpacity={0.5} style={styles.promotionContainer} onPress={this.openFoodItem}>
+                <ImageBackground style={styles.promotionBackgroundImage} source={{ uri: this.props.data.image }}>
+                    <Text numberOfLines={1} style={styles.promotionPrice}>${this.props.data.item_price}</Text>
                     <View style={styles.promotionBottomContainer}>
-                        <Text numberOfLines={1} style={styles.promotionTitle}>Zatiq Burger</Text>
+                        <Text numberOfLines={1} style={styles.promotionTitle}>{this.props.data.item_name}</Text>
                         <View style={styles.promotionLogoContainer}>
-                            <Image style={styles.promotionLogo} resizeMode="cover" source={require('../../assets/backgrounds/top-picks.png')} />
+                            <Image style={[styles.promotionLogo, { aspectRatio: Number(this.props.data.restaurant_image_aspect_ratio) }]} resizeMode="cover" source={{ uri: this.props.data.restaurant_image }} />
                         </View>
                     </View>
+                    <Loader light show={this.state.isLoading} />
                 </ImageBackground>
-            </View>
+            </TouchableOpacity>
         );
     }
 }

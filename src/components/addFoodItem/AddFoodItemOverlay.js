@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Text, View, ScrollView, Dimensions } from 'react-native';
-import { Overlay, Input, SearchBar, Icon, Button, ButtonGroup, Avatar, ListItem } from 'react-native-elements';
+import { Input, SearchBar, Icon, Button, ButtonGroup, Avatar, ListItem } from 'react-native-elements';
 import { ImagePicker, Permissions } from 'expo';
+import Dialog from '../../components/Dialog';
 
 import { closeFoodItemOverlay } from '../../redux/actions/general.action';
 import lists from './foodItems';
@@ -300,82 +301,72 @@ class AddFoodItemOverlay extends React.Component {
         });
         const { isFoodItemOverlayShown, closeFoodItemOverlay } = this.props;
         return (
-            <Overlay isVisible={isFoodItemOverlayShown}
-                width={width - 20}
-                height={height - 100}
-                containerStyle={{ padding: 0 }}
-                overlayStyle={styles.overlayContainer}>
+            <Dialog show={isFoodItemOverlayShown} title="Add Food Item" onDismissed={() => closeFoodItemOverlay()} >
                 { !isFoodItemOverlayShown ? null :
-                    <Fragment>
-                        <View style={styles.header}>
-                            <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>Add Food Item</Text>
-                            <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={() => closeFoodItemOverlay()} />
+                    <ScrollView style={styles.wrapper}>
+                        <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
+                            { image ?
+                                <Avatar size="xlarge"
+                                    rounded
+                                    source={{ uri: image }}
+                                    onPress={() => this.uploadPicture()}
+                                    activeOpacity={0.7} /> :
+                                <Avatar size="xlarge"
+                                    rounded
+                                    icon={{ name: 'restaurant' }}
+                                    onPress={() => this.uploadPicture()}
+                                    activeOpacity={0.7} />
+                            }
                         </View>
-                        <ScrollView style={styles.wrapper}>
-                            <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
-                                { image ?
-                                    <Avatar size="xlarge"
-                                        rounded
-                                        source={{ uri: image }}
-                                        onPress={() => this.uploadPicture()}
-                                        activeOpacity={0.7} /> :
-                                    <Avatar size="xlarge"
-                                        rounded
-                                        icon={{ name: 'restaurant' }}
-                                        onPress={() => this.uploadPicture()}
-                                        activeOpacity={0.7} />
-                                }
-                            </View>
-                            <Text style={[textStyles.tiny, styles.headerText]}>Food Name</Text>
-                            <InputHandler type='item_name'
-                                setRef={this.setNameRef}
-                                value={this.item_name}
-                                onSubmitEditing={(type) => this.onSubmitEditing(type)}
-                                changeText={text => this.item_name = text} />
-        
-                            <Text style={[textStyles.tiny, styles.headerText]}>Food Description</Text>
-                            <InputHandler type='overview'
-                                setRef={this.setOverviewRef}
-                                value={this.overview}
-                                onSubmitEditing={(type) => this.onSubmitEditing(type)}
-                                changeText={text => this.overview = text} />
-        
-                            <Text style={[textStyles.tiny, styles.headerText]}>Food Price</Text>
-                            <InputHandler type='item_price'
-                                setRef={this.setPriceRef}
-                                value={this.item_price}
-                                onSubmitEditing={(type) => this.onSubmitEditing(type)}
-                                changeText={text => this.item_price = text} />
-                            
-                            <Text style={[textStyles.tiny, styles.headerText]}>Calories (Optional)</Text>
-                            <InputHandler type='calories'
-                                setRef={this.setCaloriesRef}
-                                value={this.calories}
-                                onSubmitEditing={(type) => this.onSubmitEditing(type)}
-                                changeText={text => this.calories = text} />
-                    
-                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meal</Text>
-                            <ButtonGroupHandler onPress={selectedIndexes => this.meal_type = selectedIndexes} meal_type={this.meal_type} />
-        
-                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
-                            <Text style={[textStyles.tiny, styles.headerText]}>Tags</Text>
-                            { tagItems }
-                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meat Type</Text>
-                            { meatItems }
-                            <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Seafood Type</Text>
-                            { seafoodItems }
-                            <View style={styles.centered}>
-                                <Button title='Save'
-                                    loading={this.state.isLoading}
-                                    titleStyle={[textStyles.medium, { height: 50 }]}
-                                    buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
-                                    loading={this.state.isLoading}
-                                    onPress={() => this.saveFoodItem()} />
-                            </View>
-                        </ScrollView>
-                    </Fragment>
+                        <Text style={[textStyles.tiny, styles.headerText]}>Food Name</Text>
+                        <InputHandler type='item_name'
+                            setRef={this.setNameRef}
+                            value={this.item_name}
+                            onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                            changeText={text => this.item_name = text} />
+    
+                        <Text style={[textStyles.tiny, styles.headerText]}>Food Description</Text>
+                        <InputHandler type='overview'
+                            setRef={this.setOverviewRef}
+                            value={this.overview}
+                            onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                            changeText={text => this.overview = text} />
+    
+                        <Text style={[textStyles.tiny, styles.headerText]}>Food Price</Text>
+                        <InputHandler type='item_price'
+                            setRef={this.setPriceRef}
+                            value={this.item_price}
+                            onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                            changeText={text => this.item_price = text} />
+                        
+                        <Text style={[textStyles.tiny, styles.headerText]}>Calories (Optional)</Text>
+                        <InputHandler type='calories'
+                            setRef={this.setCaloriesRef}
+                            value={this.calories}
+                            onSubmitEditing={(type) => this.onSubmitEditing(type)}
+                            changeText={text => this.calories = text} />
+                
+                        <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meal</Text>
+                        <ButtonGroupHandler onPress={selectedIndexes => this.meal_type = selectedIndexes} meal_type={this.meal_type} />
+    
+                        <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Select All That Applies</Text>
+                        <Text style={[textStyles.tiny, styles.headerText]}>Tags</Text>
+                        { tagItems }
+                        <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Meat Type</Text>
+                        { meatItems }
+                        <Text style={[textStyles.tiny, styles.headerText, { marginTop: 30 }]}>Seafood Type</Text>
+                        { seafoodItems }
+                        <View style={styles.centered}>
+                            <Button title='Save'
+                                loading={this.state.isLoading}
+                                titleStyle={[textStyles.medium, { height: 50 }]}
+                                buttonStyle={[styles.uploadButton, { marginTop: 40 }]}
+                                loading={this.state.isLoading}
+                                onPress={() => this.saveFoodItem()} />
+                        </View>
+                    </ScrollView>
                 }
-            </Overlay>
+            </Dialog>
         );
     }
 }

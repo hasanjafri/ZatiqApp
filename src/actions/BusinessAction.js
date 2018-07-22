@@ -304,23 +304,17 @@ export default class BusinessAction {
     }
     async getFoodItem(food_item_id) {
         try {
-            const businessUser = state.getUser();
-            const api_token = businessUser ? businessUser.data.api_token : null;
-            if (!api_token || businessUser.type !== 'business') {
-                return { success: false, message: 'Not logged in' };
-            }
-
             const response = await fetch(urls.businessFoodItem, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-type': 'application/json'
                 },
-                body: JSON.stringify({ api_token, food_item_id })
+                body: JSON.stringify({ food_item_id })
             });
             const parsedResult = await response.json();
             if (response.status === 200) {
-                return { success: true, data: parsedResult.response }
+                return { success: true, data: parsedResult.food_item }
             } else {
                 return { success: false, message: 'Something went wrong' };
             }

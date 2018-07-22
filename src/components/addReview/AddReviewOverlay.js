@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text, View, ScrollView, Dimensions, Image } from 'react-native';
-import { Overlay, Input, SearchBar, Icon, Button, Avatar, ListItem } from 'react-native-elements';
+import { Input, SearchBar, Icon, Button, Avatar, ListItem } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 import { ImagePicker, Permissions } from 'expo';
+import Dialog from '../../components/Dialog';
 
 import Loader from '../../components/Loader';
 import { foodItemsByRestaurantId, submitReview } from '../../actions/UserAction';
@@ -178,17 +179,9 @@ class AddReviewOverlay extends React.Component {
         }
 
         return (
-            <Overlay isVisible={this.props.showOverlay}
-                width={width - 20}
-                height={height - 100}
-                containerStyle={{ padding: 0 }}
-                overlayStyle={styles.overlayContainer}>
-                <View style={styles.header}>
-                    <Text style={[textStyles.medium, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>{ this.state.step === 0 ? 'Select the food item you\'d like to review': 'Leave a review'}</Text>
-                    <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
-                </View>
+            <Dialog show={this.props.showOverlay} title={this.state.step === 0 ? 'Select the food item you\'d like to review': 'Leave a review'} onDismissed={this.props.onClose} >
                 { renderedElement }
-            </Overlay>
+            </Dialog>
         );
     }
 }

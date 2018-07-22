@@ -12,6 +12,9 @@ const urls = {
     userFindRestaurantByName: hostname + '/find/restaurant/name/',
     foodGrid: hostname + '/food/grid/',
     foodGridSearchName: hostname + '/food/grid/name/', // api_token, text
+
+    deals: hostname + '/deals/',
+
     // restaurant screen endpoints
     businessMenus: hostname + '/user/menu/all/',
     businessInterior: hostname + '/user/interior/all/',
@@ -42,7 +45,7 @@ const urls = {
     businessEditFoodItem: hostname + '/business/edit/food/',
     businessDeleteFoodItem: hostname + '/business/delete/food/',
 
-    businessFoodItem: hostname + '/food/id/',
+    businessFoodItem: hostname + '/food/id/'
 }
 
 export default urls;

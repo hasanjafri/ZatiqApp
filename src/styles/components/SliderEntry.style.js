@@ -164,7 +164,6 @@ export default StyleSheet.create({
     },
     promotionLogo: {
         height: 40,
-        width: 50,
         alignSelf: 'flex-end'
     }
 });

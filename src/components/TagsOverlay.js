@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, ScrollView, Dimensions } from 'react-native';
-import { Overlay, Icon } from 'react-native-elements';
+import { Text, View, ScrollView } from 'react-native';
+import { Icon } from 'react-native-elements';
+import Dialog from './Dialog';
 
 import textStyles from '../styles/text.style';
 import styles from '../styles/screens/business/Pages.style';
@@ -26,18 +27,10 @@ class TagsOverlay extends React.Component {
         if (!this.props.showOverlay) {
             return false;
         }
-        const width = Dimensions.get('window').width;
-        const height = Dimensions.get('window').height;
         return (
-            <Overlay isVisible={this.props.showOverlay}
-                width={width - 20}
-                height={height - 100}
-                containerStyle={{ padding: 0 }}
-                overlayStyle={styles.overlayContainer}>
-                <View style={styles.header}>
-                    <Text style={[textStyles.large, {color: 'black', fontWeight: 'normal', textAlign: 'left' }]}>All Tags</Text>
-                    <Icon size={30} containerStyle={{ position: 'absolute', right: 0 }} name='clear' onPress={this.props.onClose} />
-                </View>
+            <Dialog show={this.props.showOverlay}
+                title="All Tags"
+                onDismissed={this.props.onClose}>
                 <ScrollView style={styles.wrapper}>
                     { this.props.feature ?  
                         <React.Fragment>
@@ -50,7 +43,7 @@ class TagsOverlay extends React.Component {
                         </React.Fragment>
                     }
                 </ScrollView>
-            </Overlay>
+            </Dialog>
         );
     }
 }

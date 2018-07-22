@@ -7,7 +7,7 @@ import GridView from 'react-native-super-grid';
 import { showPreferenceOverlay, showSignInOverlay } from '../../redux/actions/general.action';
 
 // Custom imports
-import { searchCuisine } from '../../actions/UserAction';
+import { searchCuisine, getDeals } from '../../actions/UserAction';
 import AddReviewButton from '../../components/addReview/AddReviewButton';
 import styles from '../../styles/screens/application/FeelingScreen.style';
 import textStyles from '../../styles/text.style';
@@ -23,7 +23,16 @@ import { guestCuisines } from '../../libs/constants';
 import appState from '../../appState';
 const state = appState.getInstance();
 
-class Promotions extends React.Component {4
+class Promotions extends React.Component {
+    state = {
+        deals: []
+    }
+    async componentDidMount() {
+        const result = await getDeals();
+        if (result.success) {
+            this.setState({ deals: result.data.deals })
+        }
+    }
     navigateTo = (route, item) => {
         this.props.navigation.navigate(route, item);
     }
@@ -33,7 +42,7 @@ class Promotions extends React.Component {4
                 containerStyle={{}}
                 navigateTo={this.navigateTo}
                 itemWidth={250}
-                data={[{ test: 1 }, { test: 1 }, { test: 1 }]}
+                data={this.state.deals}
                 noPaginate />
         );
     }
@@ -136,7 +145,7 @@ class FeelingScreen extends React.Component {
             <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <ScrollView style={styles.scrollViewContainer}>
                     <Text numberOfLine={1} style={styles.topPicksLabel}>Top Picks</Text>
-                    <Promotions />
+                    <Promotions navigation={this.props.navigation} />
                     <View style={styles.filterCategoryContainer}>
                         <FilterCategory name="SURPRISE ME" onSearchCuisine={() => this.onSearchCuisine('Surprise Me')} />
                         <FilterCategory name="TRENDING" onSearchCuisine={() => this.onSearchCuisine('Top Picks')} last />

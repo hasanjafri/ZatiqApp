@@ -156,6 +156,26 @@ export const setUserProfile = async (preferences) => {
         return { success: false, message: 'Something went wrong' };
     }
 }
+export const getDeals = async () => {
+    try {
+        const response = await fetch(urls.deals, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            }
+        });
+        const parsedResult = await response.json();
+        if (response.status === 200) {
+            return { success: true, data: parsedResult }
+        } else {
+            return { success: false, message: 'Something went wrong' };
+        }
+    } catch(err) {
+        console.log(err)
+        return { success: false, message: 'Something went wrong' };
+    }
+}
 
 export const searchCuisine = async (cuisine) => {
     try {
