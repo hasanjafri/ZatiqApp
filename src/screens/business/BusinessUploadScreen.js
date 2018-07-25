@@ -51,8 +51,8 @@ class BusinessUploadScreen extends Component {
                 <React.Fragment>
                     <ScrollView style={styles.listContainer}>
                         <FoodItemsContainer data={foodItems} navigation={this.props.navigation} />
-                        <Pictures type={'menuPictures'} data={menuPictures} navigation={this.props.navigation} />
-                        <Pictures type={'restaurantPictures'} data={restaurantPictures} navigation={this.props.navigation} />
+                        <Pictures type={'menuPictures'} data={menuPictures} navigation={this.props.navigation} title="Upload restaurant interior pictures" />
+                        <Pictures type={'restaurantPictures'} data={restaurantPictures} navigation={this.props.navigation} title="Upload restaurant menu pictures"/>
                     </ScrollView>
                     <AddFoodItemOverlay saveFoodItem={this.saveFoodItem} />
                 </React.Fragment> :
@@ -185,7 +185,7 @@ class Pictures extends Component {
         }
     }
     render() {
-        const pictureItems = this.state.data.map((item, i) => {
+        const pictureItems = this.state.data ? this.state.data.map((item, i) => {
             let image;
             if (item.image) {
                 if (item.image.base64.includes('http')) {
@@ -200,10 +200,10 @@ class Pictures extends Component {
                     rightIcon={<Icon name='clear' onPress={() => this.deleteRow({ type: 'restaurantPictures', index: i, item })}/>}
                     title={`${this.props.type === 'restaurantPictures' ? 'Picture' : 'Menu'} page ${i}`} />
             )
-        });
+        }) : [];
         return (
             <Fragment>
-                <Text style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>Upload interior pictures of your restaurant</Text>
+                <Text numberOfLines={1} style={[textStyles.large, { color: colors.gray, textAlign: 'left' }]}>{this.props.title}</Text>
                 { pictureItems.length > 0 ? pictureItems : null }
                 <View style={styles.centered}>
                     <Button title='Add'
