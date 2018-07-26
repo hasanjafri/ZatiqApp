@@ -9,7 +9,7 @@
    "orientation": "portrait",
    "ios": {
      "supportsTablet": false,
-     "buildNumber": "1.0.8",
+     "buildNumber": "1.0.9",
      "bundleIdentifier": "com.zatiq.zatiqapp",
      "icon": "./src/assets/logos/zatiq_logo_na.png",
      "config": {
@@ -20,7 +20,7 @@
    },
    "android": {
      "package": "com.zatiq.zatiqapp",
-     "versionCode": 5,
+     "versionCode": 6,
      "icon": "./src/assets/logos/zatiq_logo.png",
      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "READ_INTERNAL_STORAGE", "WRITE_INTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
      "config": {
