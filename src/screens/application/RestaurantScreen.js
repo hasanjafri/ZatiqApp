@@ -16,6 +16,7 @@ import AddReviewButton from '../../components/addReview/AddReviewButton';
 import AddReviewOverlay from '../../components/addReview/AddReviewOverlay';
 import TagsOverlay from '../../components/TagsOverlay';
 import Loader from '../../components/Loader';
+import { isOpen } from '../../libs/helper';
 
 import { foodItemsByRestaurantId } from '../../actions/UserAction';
 
@@ -25,7 +26,6 @@ import appState from '../../appState';
 import SignInOverlay from '../../components/SignInOverlay';
 const state = appState.getInstance();
 
-const momentDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 const displayDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 class RestaurantScreen extends React.Component {
@@ -61,19 +61,7 @@ class RestaurantScreen extends React.Component {
             alert(result.message);
         }
     }
-    isOpen(hours) {
-        const now = moment();
-        const currentDay = momentDays[now.day()];
-        const startHour = hours.start[currentDay];
-        const endHour = hours.end[currentDay];
-        if (startHour === 'closed' || endHour === 'closed') {
-            return false;
-        } else {
-            const startDate = moment(startHour, 'HH:mm');
-            const endDate = moment(endHour, 'HH:mm');
-            return now.isBetween(startDate, endDate);
-        }
-    }
+    
     renderHours(hours) {
         return (
             displayDays.map(day => {
@@ -144,7 +132,7 @@ class RestaurantScreen extends React.Component {
             restaurant_id,
             restaurant_info: { name, number, hours, address, image }
         }} = this.state;
-        const isOpen = this.isOpen(hours);
+        const isRestaurantOpen = isOpen(hours);
         const businessImage = image.base64;
         return (
             <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
@@ -179,8 +167,8 @@ class RestaurantScreen extends React.Component {
                             </View>
                             <View style={{ width: '50%', paddingLeft: 5 }}>
                                 <View style={styles.centered}>
-                                    <Text style={[styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
-                                        { isOpen ? 'Open now' : 'Closed' }
+                                    <Text style={[styles.open, { backgroundColor: isRestaurantOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
+                                        { isRestaurantOpen ? 'Open now' : 'Closed' }
                                     </Text>
                                 </View>
                                 {this.renderHours(hours)}

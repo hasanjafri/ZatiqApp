@@ -41,7 +41,8 @@ class Promotions extends React.Component {
             <Slider type="Promotion"
                 containerStyle={{}}
                 navigateTo={this.navigateTo}
-                itemWidth={250}
+                itemWidth={280}
+                sliderWidth={400}
                 data={this.state.deals}
                 noPaginate />
         );
@@ -103,7 +104,8 @@ const WelcomeSection = props => {
     }
     return (
         <View style={styles.questionView}>
-            <Text numberOfLines={1} style={textStyles.small}>Hey {name}! Let's find you something to eat</Text>
+            <Text numberOfLines={1} style={textStyles.small}>Hey {name}!</Text>
+            <Text numberOfLines={1} style={textStyles.small}>Let's find you something to eat.</Text>
             <Text numberOfLines={1} style={textStyles.small}>What are you in the mood for?</Text>
         </View>
     );

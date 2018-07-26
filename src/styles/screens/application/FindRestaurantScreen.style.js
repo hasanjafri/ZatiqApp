@@ -8,24 +8,22 @@ export default styles = StyleSheet.create({
         marginVertical: 10
     },
     box: {
+        borderWidth: 2,
+        borderColor: 'red',
         paddingVertical: 10,
         paddingHorizontal: 10,
         marginVertical: 10,
         marginHorizontal: 10,
         backgroundColor: 'white',
-        flex: 1,
-        flexDirection: 'column',
         height: 150,
-        alignItems: 'center',
-        justifyContent: 'center',
-
         shadowColor: 'red',
         shadowOffset: {
-            width: 0,
+            width: 2,
             height: 2
-        },
+        },   
+        elevation: 3,
         shadowRadius: 5,
-        shadowOpacity: 1.0
+        shadowOpacity: 1
     },
     image: {
         alignSelf: 'center',

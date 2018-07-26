@@ -3,6 +3,7 @@ import { View, Text, Platform, ScrollView, Image, TouchableOpacity } from 'react
 import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { changeDrawerItem } from '../../redux/actions/drawer.action';
+import { isOpen } from '../../libs/helper';
 
 import _ from 'lodash';
 // Custom imports
@@ -66,9 +67,13 @@ class FindRestaurant extends React.Component {
             const state = appState.getInstance();
             renderedElement = (
                 this.state.restaurants.map((restaurant, i) => {
+                    const isRestaurantOpen = isOpen(restaurant.hours);
                     return (
-                        <TouchableOpacity activeOpacity={0.7} key={i} onPress={() => this.onSelectRestaurant(restaurant)}>
-                            <View elevation={3} style={styles.box}>
+                        <TouchableOpacity style={styles.boxContainer} activeOpacity={0.7} key={i} onPress={() => this.onSelectRestaurant(restaurant)}>
+                            <View style={[styles.box, {
+                                shadowColor: isRestaurantOpen ? 'green' : 'red',
+                                borderColor: isRestaurantOpen ? 'green' : 'red'
+                            }]}>
                                 <Image style={[styles.image, {aspectRatio: Number(restaurant.image.image_aspect_ratio)}]} resizeMode="cover" source={{uri: restaurant.image.base64}} />
                                 <Text numberOfLines={1} style={styles.restaurantName}>{restaurant.name}</Text>
                                 <Text numberOfLines={1} style={styles.restaurantAddress}>{restaurant.address}</Text>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity, Linking, Dimensions, ImageBackground } from 'react-native';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Icon } from 'react-native-elements';
 import phoneFormatter from 'phone-formatter';
 
@@ -10,11 +9,10 @@ import Loader from '../../components/Loader';
 import colors from '../../styles/colors.style';
 import styles from '../../styles/components/SliderEntry.style';
 import textStyles from '../../styles/text.style';
+import { isOpen } from '../../libs/helper';
 
 import BusinessAction from '../../actions/BusinessAction';
 const BusinessInstance = BusinessAction.getInstance();
-
-const momentDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 function capitalizeWords(str) {
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -35,19 +33,6 @@ const ImageGetter = props => {
 class SuggestionEntry extends Component {
     onCall(number) {
         Linking.openURL(`tel:+1${phoneFormatter.normalize(number)}`);
-    }
-    isOpen(hours) {
-        const now = moment();
-        const currentDay = momentDays[now.day()];
-        const startHour = hours.start[currentDay];
-        const endHour = hours.end[currentDay];
-        if (startHour === 'closed' || endHour === 'closed') {
-            return false;
-        } else {
-            const startDate = moment(startHour, 'HH:mm');
-            const endDate = moment(endHour, 'HH:mm');
-            return now.isBetween(startDate, endDate);
-        }
     }
     getTags(tags) {
         const tagList = [];
@@ -85,7 +70,7 @@ class SuggestionEntry extends Component {
             restaurant_info: { name, number, hours },
             image
         } = data;
-        const isOpen = this.isOpen(hours);
+        const isRestaurantOpen = isOpen(hours);
         return (
             <View style={styles.slideInnerContainer}>
                 <View style={styles.imageContainer}>
@@ -119,8 +104,8 @@ class SuggestionEntry extends Component {
                                 <View style={[styles.leftPart, { paddingVertical: 10 }]}>
                                     <Text style={[textStyles.title,  { fontSize: 16 }]} numberOfLines={2} >{ name }</Text>
                                 </View>
-                                <Text style={[styles.rightPart, styles.open, { backgroundColor: isOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
-                                    { isOpen ? 'Open now' : 'Closed' }
+                                <Text style={[styles.rightPart, styles.open, { backgroundColor: isRestaurantOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
+                                    { isRestaurantOpen ? 'Open now' : 'Closed' }
                                 </Text>
                             </View>
                             <View style={styles.buttonBar}>
