@@ -31,7 +31,7 @@ class PreferenceOverlay extends React.Component {
         };
     }
     async componentWillReceiveProps(nextProps) {
-        if (!this.props.showOverlay && nextProps.showOverlay) {
+        if (!this.props.isPreferenceOverlayShown && nextProps.isPreferenceOverlayShown) {
             const result = await getUserProfile();
             this.setState({ isLoading: true });
             if (result.success) {
