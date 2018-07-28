@@ -51,8 +51,8 @@ class BusinessUploadScreen extends Component {
                 <React.Fragment>
                     <ScrollView style={styles.listContainer}>
                         <FoodItemsContainer data={foodItems} navigation={this.props.navigation} />
-                        <Pictures type={'menuPictures'} data={menuPictures} navigation={this.props.navigation} title="Upload restaurant interior pictures" />
-                        <Pictures type={'restaurantPictures'} data={restaurantPictures} navigation={this.props.navigation} title="Upload restaurant menu pictures"/>
+                        <Pictures type={'menuPictures'} data={menuPictures} navigation={this.props.navigation} title="Upload restaurant menu pictures" />
+                        <Pictures type={'restaurantPictures'} data={restaurantPictures} navigation={this.props.navigation} title="Upload restaurant interior pictures"/>
                     </ScrollView>
                     <AddFoodItemOverlay saveFoodItem={this.saveFoodItem} />
                 </React.Fragment> :
