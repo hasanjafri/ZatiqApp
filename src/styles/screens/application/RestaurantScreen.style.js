@@ -47,7 +47,10 @@ export default styles = StyleSheet.create({
         justifyContent: 'center'
     },
     widthsContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     sectionTitle: {
         paddingVertical: 10,
@@ -57,6 +60,7 @@ export default styles = StyleSheet.create({
         width: '90%'
     },
     open: {
+        marginVertical: 5,
         paddingHorizontal: 10,
         height: 25,
         lineHeight: 25,

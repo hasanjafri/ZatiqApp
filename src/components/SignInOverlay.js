@@ -16,7 +16,9 @@ class SignInOverlay extends React.Component {
         if (result.success) {
             this.props.signInCallback();
         } else {
-            alert(result.message);
+            if (result.message) {
+                alert(result.message);
+            }
         }
         this.props.closeSignInOverlay();
     }

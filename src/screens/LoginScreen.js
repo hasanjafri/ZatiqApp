@@ -1,9 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native';
-import { Button, SocialIcon } from 'react-native-elements';
+import { View, Text, Image, TouchableHighlight, Linking } from 'react-native';
+import { SocialIcon } from 'react-native-elements';
 import { Video } from 'expo';
-import { NavigationActions } from 'react-navigation'
-import  Icon  from 'react-native-vector-icons';
 
 // Actions
 import { onSignIn, onSignInAsGuest } from '../../src/actions/UserAction';
@@ -15,13 +13,18 @@ class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
     }
+    openTermsAndConditions() {
+        Linking.openURL('http://zatiq.com/wp-content/uploads/2018/04/TERMS-AND-CONDITIONS.pdf');
+    }
     onSignIn = async (type) => {
         const result = await onSignIn(type);
         if (result.success) {
             const { navigate } = this.props.navigation;
             navigate('SwitchIn');
         } else {
-            alert(result.message);
+            if (result.message) {
+                alert(result.message);
+            }
         }
     }
     onSignInAsGuest = async () => {
@@ -60,6 +63,9 @@ class LoginScreen extends React.Component {
                         light
                         style={styles.signInButtons}
                         onPress={() => navigate('BusinessLogin')}/>
+                    <TouchableHighlight underlayColor="transparent" onPress={() => this.openTermsAndConditions()}>
+                        <Text style={{ color: 'white', marginTop: 10, fontWeight: 'bold', textAlign: 'center' }} >Terms and Conditions</Text>
+                    </TouchableHighlight>
                 </View>
             </View>
         );

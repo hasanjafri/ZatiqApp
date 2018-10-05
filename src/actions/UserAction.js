@@ -73,6 +73,8 @@ export const onSignIn = async (type) => {
                     name: result.user.name,
                     email: result.user.email
                 };
+            } else if (result.type === 'cancel') {
+                return { success: false };
             } else {
                 return { success: false, message: 'Something went wrong' };
             }
@@ -91,7 +93,6 @@ export const onSignIn = async (type) => {
             body: JSON.stringify({ accessToken: parsedResult.accessToken, email: parsedResult.email, method: type })
         });
         const userInfo = await response.json();
-        
         if (response.status !== 200) {
             return { success: false, message: 'Something went wrong' };
         }

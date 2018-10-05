@@ -62,33 +62,6 @@ class RestaurantScreen extends React.Component {
         }
     }
     
-    renderHours(hours) {
-        return (
-            displayDays.map(day => {
-                const currentDay = day.toLowerCase();
-                const startHour = hours.start[currentDay];
-                const endHour = hours.end[currentDay];
-                if (startHour === 'closed' || endHour === 'closed') {
-                    return (
-                        <View key={day} style={styles.centered}>
-                            <Text style={[styles.open, { backgroundColor: 'red', fontFamily: 'nunito-italic' }]}>
-                                Closed
-                            </Text>
-                        </View>
-                    );
-                } else {
-                    const startDate = moment(startHour, 'HH:mm').format('h:mm A');
-                    const endDate = moment(endHour, 'HH:mm').format('h:mm A');
-                    return (
-                        <Text key={day}
-                            style={[textStyles.small, {lineHeight: 25}]}>
-                            {startDate} - {endDate}
-                        </Text>
-                    );
-                }
-            })
-        );
-    }
     onCall = (number) => {
         Linking.openURL(`tel:+1${phoneFormatter.normalize(number)}`);
     }
@@ -127,13 +100,36 @@ class RestaurantScreen extends React.Component {
             <Text style={[textStyles.mediumBold, styles.sectionTitle]}>{title}</Text>
         );
     }
+    _renderDayHour({day, hours}) {
+        const currentDay = day.toLowerCase();
+        const startHour = hours.start[currentDay];
+        const endHour = hours.end[currentDay];
+        if (startHour === 'closed' || endHour === 'closed') {
+            return (
+                <View style={[styles.centered, { flex: 1, flexDirection:'row', paddingHorizontal: 10 }]}>
+                    <Text style={[styles.open, { backgroundColor: 'red', fontFamily: 'nunito-italic', flexWrap: 'wrap' }]}>
+                        Closed
+                    </Text>
+                </View>
+            );
+        } else {
+            const startDate = moment(startHour, 'HH:mm').format('h:mm A');
+            const endDate = moment(endHour, 'HH:mm').format('h:mm A');
+            return (
+                <View style={[styles.centered, { flex: 1, flexDirection:'row', paddingHorizontal: 10 }]}>
+                    <Text style={[textStyles.small, { lineHeight: 25, flexWrap: 'wrap' }]}>
+                        {startDate} - {endDate}
+                    </Text>
+                </View>
+            );
+        }
+    }
     render () {
         const { data: {
             restaurant_id,
-            restaurant_info: { name, number, hours, address, image }
+            restaurant_info: { name, number, hours, address }
         }} = this.state;
         const isRestaurantOpen = isOpen(hours);
-        const businessImage = image.base64;
         return (
             <ImageBackground style={styles.view} source={require('../../assets/backgrounds/background.png')}>
                 <ScrollView style={styles.scrollViewContainer}>
@@ -142,8 +138,14 @@ class RestaurantScreen extends React.Component {
 
                     <View style={styles.centered}>
                         {/* Title & Address */}
-                        <Text style={[textStyles.largeBold, { paddingTop: 10 }]}>{name}</Text>
-                        <Text style={[textStyles.small, { fontFamily: 'nunito-italic'}]}>{address}</Text>
+                        <View style={{flexDirection:'row', paddingHorizontal: 10}}>
+                            <Text style={[textStyles.largeBold, { paddingTop: 10, flexWrap: 'wrap' }]}>{name}</Text>
+                        </View>
+                        
+                        <View style={{flexDirection:'row', paddingHorizontal: 10}}>
+                            <Text style={[textStyles.small, { fontFamily: 'nunito-italic', flexWrap: 'wrap'}]}>{address}</Text>
+                        </View>
+                        
                         {/* Features, Menu, Photos & Contact Restaurant */}
                         <GridView itemDimension={80}
                             items={this.ITEMS}
@@ -160,20 +162,27 @@ class RestaurantScreen extends React.Component {
                         </TouchableOpacity>
                         {/* Hours */}
                         { this._renderSection('Hours') }
-                        <View style={[styles.widthsContainer, { marginBottom: !this.props.self && !this.isBusiness ? 0 : 30 }]}>
-                            <View style={{ width: '50%', paddingRight: 5 }}>
-                                <Text style={[textStyles.small, {lineHeight: 25}]}>Current</Text>
-                                {displayDays.map(day => <Text key={day} style={[textStyles.small, {lineHeight: 25}]}>{day}</Text>)}
-                            </View>
-                            <View style={{ width: '50%', paddingLeft: 5 }}>
-                                <View style={styles.centered}>
-                                    <Text style={[styles.open, { backgroundColor: isRestaurantOpen ? 'green' : 'red', fontFamily: 'nunito-italic' }]}>
+                        <View style={{ marginBottom: !this.props.self && !this.isBusiness ? 0 : 30 }}>
+                            <View style={styles.widthsContainer}>
+                                <View style={{ width: '35%' }}>
+                                    <Text style={[textStyles.small, {lineHeight: 25}]}>Current</Text>
+                                </View>
+                                <View style={[styles.centered, { flex: 1, flexDirection:'row', paddingHorizontal: 10 }]}>
+                                    <Text style={[styles.open, { backgroundColor: isRestaurantOpen ? 'green' : 'red', fontFamily: 'nunito-italic', flexWrap: 'wrap' }]}>
                                         { isRestaurantOpen ? 'Open now' : 'Closed' }
                                     </Text>
                                 </View>
-                                {this.renderHours(hours)}
                             </View>
+                            { displayDays.map((day, i) =>
+                                <View key={i} style={styles.widthsContainer}>
+                                    <View style={{ width: '35%' }}>
+                                        <Text style={[textStyles.small, {lineHeight: 25}]}>{day}</Text>
+                                    </View>
+                                    {this._renderDayHour({day, hours})}
+                                </View>
+                            )}
                         </View>
+                        
                         {/* Leave a Review */}
                         { !this.props.self && !this.isBusiness ?
                             <React.Fragment>

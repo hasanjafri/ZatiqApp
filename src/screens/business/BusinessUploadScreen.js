@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, KeyboardAvoidingView, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image } from 'react-native';
 import { Icon, Button, ListItem } from 'react-native-elements';
 import { ImagePicker, Permissions } from 'expo';
 
