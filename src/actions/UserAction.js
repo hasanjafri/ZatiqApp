@@ -17,7 +17,7 @@ const GOOGLE_STANDALONE_ANDROID_ID = '1013702018515-8u9a0lf5ktnh33lhpru0rve7vkqe
 const GOOGLE_STANDALONE_IOS_ID = '1013702018515-lko3bqq6j30tph7l0pjvvte7u7g8acen.apps.googleusercontent.com';
 const WEB_CLIENT_ID = '013702018515-g3mjgf56essrqkp573bjjpfau5a62405.apps.googleusercontent.com';
 
-const behavior = 'native';
+const behavior = 'system';
 import { guestCuisines } from '../libs/constants';
 
 export const onSignInAsGuest = async (type) => {
