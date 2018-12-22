@@ -14,7 +14,7 @@
      "icon": "./src/assets/logos/zatiq_logo_na.png",
      "config": {
       "googleSignIn": {
-        "reservedClientId": "com.googleusercontent.apps.1013702018515-lko3bqq6j30tph7l0pjvvte7u7g8acen"
+        "reservedClientId": 
       }
     }
    },
@@ -25,8 +25,8 @@
      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "READ_INTERNAL_STORAGE", "WRITE_INTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
      "config": {
       "googleSignIn": {
-        "apiKey": "AIzaSyDYZyF8qQa9VAfAhDkfyCbyF3ndSALBOVc",
-        "certificateHash": "C855E76CEFBFA89DEBFEEDFBEC22DB5189D1EF88"
+        "apiKey": 
+        "certificateHash": 
       }
      }
    },
